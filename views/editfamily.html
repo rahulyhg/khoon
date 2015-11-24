@@ -1,0 +1,21 @@
+<div class="page">
+    <h2 class="title">
+</h2>
+
+    <div class="row">
+        <div class="col-md-12">
+            <section class="panel panel-default" style="border-radius:0px;">
+                <div class="panel-heading panel-hdr"><span class="glyphicon glyphicon-th mr5"></span>Edit Family
+                </div>
+                <div class="panel-body">
+                    <form name="form_constraints" class="form-validation" data-ng-submit="submitForm()">
+                        <div class='form-group'><label>Family Id</label><input type='text' class='form-control' ng-model = 'family.familyid' placeholder='Family Id' required > </div><div class='form-group ui-selecter'><label for='exampleInputEmail1'>Select Donor</label><div class='form-group'><ui-select multiple tagging tagging-label='false' ng-model = 'family.donor' on-select='ismatchDonor(family.donor,$select);'><ui-select-match placeholder='Select Donor'>{{$item.name}}</ui-select-match><ui-select-choices repeat='person in donor track by person._id' refresh='refreshDonor($select.search,$select.selected)' refresh-delay='0'><div ng-bind-html='person.name'></div></ui-select-choices></ui-select></div></div><!--Add New Tags-->
+                        <div class="text-center" style="padding-bottom:20px;">
+                            <button type="submit" class="btn btn-primary all-btn">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
