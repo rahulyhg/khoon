@@ -1,6 +1,28 @@
 var uploadres = [];
 var selectedData = [];
 var abc = {};
+var dummylogin = [{
+    email: "sadmin@wohlig.com",
+    password: "wohlig123",
+    accesslevel: "admin",
+    camp: "all"
+}, {
+    email: "verify@wohlig.com",
+    password: "wohlig123",
+    accesslevel: "verify",
+    camp: "58"
+}, {
+    email: "entry@wohlig.com",
+    password: "wohlig123",
+    accesslevel: "entry",
+    camp: "58"
+}, {
+    email: "gift@wohlig.com",
+    password: "wohlig123",
+    accesslevel: "gift",
+    camp: "58"
+}];
+
 var phonecatControllers = angular.module('phonecatControllers', ['templateservicemod', 'navigationservice', 'ngDialog', 'angularFileUpload', 'ui.select', 'ngSanitize']);
 window.uploadUrl = 'http://localhost:1337/user/uploadfile';
 phonecatControllers.controller('home', function($scope, TemplateService, NavigationService, $routeParams, $location) {
@@ -35,18 +57,17 @@ phonecatControllers.controller('login', function($scope, TemplateService, Naviga
     }
     $scope.verifylogin = function() {
         if ($scope.login.email && $scope.login.password && $scope.login.accesslevel && $scope.login.camp && $scope.login.email != "" && $scope.login.password != "" && $scope.login.accesslevel != "" && $scope.login.camp != "") {
-            if ($scope.login.camp == "all") {
-                delete $scope.login.camp;
-            }
-            NavigationService.adminLogin($scope.login, function(data, status) {
-                if (data.value == false) {
-                    $scope.login = {};
-                    $scope.isValidLogin = 0;
-                    document.getElementById("mydrop").disabled = false;
-                } else {
+            // if ($scope.login.camp == "all") {
+            //     delete $scope.login.camp;
+            // }
+
+            //remove
+
+            _.each(dummylogin, function(m) {
+                if (m.email == $scope.login.email && m.password == $scope.login.password && m.camp == $scope.login.camp) {
                     $scope.isValidLogin = 1;
-                    $.jStorage.set("adminuser", data);
-                    if (data.accesslevel == "admin") {
+                    $.jStorage.set("adminuser", m);
+                    if (m.accesslevel == "admin") {
                         _.each($scope.navigation, function(n) {
                             n.visible = "yes";
                         });
@@ -61,8 +82,38 @@ phonecatControllers.controller('login', function($scope, TemplateService, Naviga
                     }
                     NavigationService.setnav($scope.navigation);
                     $location.url("/home");
+                } else {
+                    $scope.isValidLogin = 0;
                 }
-            });
+            })
+
+            //remove
+
+            // NavigationService.adminLogin($scope.login, function(data, status) {
+            //     if (data.value == false) {
+            //         $scope.login = {};
+            //         $scope.isValidLogin = 0;
+            //         document.getElementById("mydrop").disabled = false;
+            //     } else {
+            //         $scope.isValidLogin = 1;
+            //         $.jStorage.set("adminuser", data);
+            //         if (data.accesslevel == "admin") {
+            //             _.each($scope.navigation, function(n) {
+            //                 n.visible = "yes";
+            //             });
+            //         } else {
+            //             _.each($scope.navigation, function(n) {
+            //                 if (n.name == "Donor") {
+            //                     n.visible = "yes";
+            //                 } else {
+            //                     n.visible = "no";
+            //                 }
+            //             });
+            //         }
+            //         NavigationService.setnav($scope.navigation);
+            //         $location.url("/home");
+            //     }
+            // });
         } else {
             $scope.login = {};
             document.getElementById("mydrop").disabled = false;
@@ -364,6 +415,7 @@ phonecatControllers.controller('oldDonorCtrl', function($scope, TemplateService,
     $scope.isValidLogin = 1;
     if ($scope.access == "admin" || $scope.access == "entry") {
         $scope.submitForm = function() {
+            $location.url('/editdonor/1');
             NavigationService.getDonorbyid($scope.donor, function(data, status) {
                 if (!data.value) {
                     $location.url('/editdonor/' + data._id);
@@ -376,6 +428,7 @@ phonecatControllers.controller('oldDonorCtrl', function($scope, TemplateService,
         };
     } else if ($scope.access == "verify") {
         $scope.submitForm = function() {
+            $scope.isValidLogin = 0;
             NavigationService.getDonorbyid($scope.donor, function(data, status) {
                 if (!data.value) {
                     // $scope.donor = data;
@@ -394,11 +447,12 @@ phonecatControllers.controller('oldDonorCtrl', function($scope, TemplateService,
                     $location.url('/donor');
                 });
             } else {
-                
+
             }
         };
     } else {
         $scope.submitForm = function() {
+            $scope.isValidLogin = 0;
             NavigationService.getDonorbyid($scope.donor, function(data, status) {
                 if (!data.value) {
                     // $scope.donor = data;
