@@ -19,13 +19,13 @@ var navigationservice = angular.module('navigationservice', [])
             subnav: [],
             visible: "yes"
         },
-         {
-            name: 'Family',
-            active: '',
-            link: '#/family',
-            subnav: [],
-            visible: "yes"
-        },
+        //  {
+        //     name: 'Family',
+        //     active: '',
+        //     link: '#/family',
+        //     subnav: [],
+        //     visible: "yes"
+        // },
          {
             name: 'Camp',
             active: '',
