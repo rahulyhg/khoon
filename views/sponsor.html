@@ -6,12 +6,12 @@
         <div class="row">
             <div class="col-md-12">
                 <section class="panel panel-default" style="border-radius:0px;">
-                    <div class="panel-heading panel-hdr"><span class="glyphicon glyphicon-th mr5"></span>Show User
+                    <div class="panel-heading panel-hdr"><span class="glyphicon glyphicon-th mr5"></span>Show Sponsor
                     </div>
                     <div class="panel-body">
                         <div class="bot search-box">
                             <input type="search" name="search" ng-model="pagedata.search" placeholder="Search" ng-change="reload(pagedata);" />
-                            <a href="#/createuser" class="right btn btn-primary all-btn create-btn">Create User</a>
+                            <a href="#/createsponsor" class="right btn btn-primary all-btn create-btn">Create Sponsor</a>
                             <div class="pull-right">
 
                                 <select ng-model="pagedata.limit" class="form-control" ng-change="reload({page:'1',limit:pagedata.limit,search:pagedata.search})">
@@ -31,12 +31,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="value in user.data">
+                                    <tr ng-repeat="value in sponsor.data">
                                         <td class="text-center">{{value.name}}</td>
                                         <td class="text-center"><a ng-click="deletefun(value._id)" class="btn btn-primary all-btn"><i class="fa fa-times"></i></a>
                                         </td>
                                         <td class="text-center">
-                                            <a href="#/edituser/{{value._id}}" class="btn btn-primary all-btn">
+                                            <a href="#/editsponsor/{{value._id}}" class="btn btn-primary all-btn">
                                                 <i class="fa fa-pencil-square-o"></i>
                                             </a>
                                         </td>

@@ -14,16 +14,13 @@ firstapp.config(
         //        uiSelectConfig.appendToBody = true;
 
 
-        $routeProvider.
-        when('/login', {
-            templateUrl: 'views/template.html',
-            controller: 'login'
-        }).
-        when('/home', {
-            templateUrl: 'views/template.html',
-            controller: 'home'
-        }).
-        when('/donor', {
+        $routeProvider.when('/login', {
+                templateUrl: 'views/template.html',
+                controller: 'login'
+            }).when('/home', {
+                templateUrl: 'views/template.html',
+                controller: 'home'
+            }).when('/donor', {
                 templateUrl: 'views/template.html',
                 controller: 'DonorCtrl'
             }).when('/createdonor', {
@@ -53,6 +50,33 @@ firstapp.config(
             }).when('/editcamp/:id', {
                 templateUrl: 'views/template.html',
                 controller: 'editCampCtrl'
+            }).when('/slider', {
+                templateUrl: 'views/template.html',
+                controller: 'SliderCtrl'
+            }).when('/createslider', {
+                templateUrl: 'views/template.html',
+                controller: 'createSliderCtrl'
+            }).when('/editslider/:id', {
+                templateUrl: 'views/template.html',
+                controller: 'editSliderCtrl'
+            }).when('/admin', {
+                templateUrl: 'views/template.html',
+                controller: 'AdminCtrl'
+            }).when('/createadmin', {
+                templateUrl: 'views/template.html',
+                controller: 'createAdminCtrl'
+            }).when('/editadmin/:id', {
+                templateUrl: 'views/template.html',
+                controller: 'editAdminCtrl'
+            }).when('/sponsor', {
+                templateUrl: 'views/template.html',
+                controller: 'SponsorCtrl'
+            }).when('/createsponsor', {
+                templateUrl: 'views/template.html',
+                controller: 'createSponsorCtrl'
+            }).when('/editsponsor/:id', {
+                templateUrl: 'views/template.html',
+                controller: 'editSponsorCtrl'
             }).when('/gifttype', {
                 templateUrl: 'views/template.html',
                 controller: 'GiftTypeCtrl'
@@ -163,5 +187,25 @@ firstapp.filter('touppercase', function() {
         var firstletter = input.substr(0, 1);
         var remaining = input.substr(1);
         return firstletter.toUpperCase() + remaining;
+    };
+});
+firstapp.directive('numbersOnly', function() {
+    return {
+        require: 'ngModel',
+        link: function(scope, element, attr, ngModelCtrl) {
+            function fromUser(text) {
+                if (text) {
+                    var transformedInput = text.replace(/[^0-9]/g, '');
+
+                    if (transformedInput !== text) {
+                        ngModelCtrl.$setViewValue(transformedInput);
+                        ngModelCtrl.$render();
+                    }
+                    return transformedInput;
+                }
+                return undefined;
+            }
+            ngModelCtrl.$parsers.push(fromUser);
+        }
     };
 });

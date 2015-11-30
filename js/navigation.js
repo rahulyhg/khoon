@@ -1,11 +1,11 @@
-var adminurl = "http://192.168.0.121:1337/";
+var adminurl = "http://192.168.0.116:1337/";
 var adminlogin = {
     "username": "admin@admin.com",
     "password": "admin123"
 };
 var navigationservice = angular.module('navigationservice', [])
 
-.factory('NavigationService', function($http) {
+.factory('NavigationService', function ($http) {
     var navigation = [{
             name: "Dashboard",
             classis: "active",
@@ -18,30 +18,42 @@ var navigationservice = angular.module('navigationservice', [])
             link: '#/donor',
             subnav: [],
             visible: "yes"
-        },
-        //  {
-        //     name: 'Family',
-        //     active: '',
-        //     link: '#/family',
-        //     subnav: [],
-        //     visible: "yes"
-        // },
-         {
+        }, {
             name: 'Camp',
             active: '',
             link: '#/camp',
             subnav: [],
             visible: "yes"
         }, {
-            name: 'GiftType',
+            name: 'Admin',
             active: '',
-            link: '#/gifttype',
+            link: '#/admin',
             subnav: [],
             visible: "yes"
-        }, {
+        },
+        //  {
+        //     name: 'GiftType',
+        //     active: '',
+        //     link: '#/gifttype',
+        //     subnav: [],
+        //     visible: "yes"
+        // },
+        {
             name: 'Hospital',
             active: '',
             link: '#/hospital',
+            subnav: [],
+            visible: "yes"
+        }, {
+            name: 'Sponsor',
+            active: '',
+            link: '#/sponsor',
+            subnav: [],
+            visible: "yes"
+        }, {
+            name: 'Slider',
+            active: '',
+            link: '#/slider',
             subnav: [],
             visible: "yes"
         }, //Add New Left
@@ -49,7 +61,7 @@ var navigationservice = angular.module('navigationservice', [])
     ];
 
     return {
-        makeactive: function(menuname) {
+        makeactive: function (menuname) {
             for (var i = 0; i < navigation.length; i++) {
                 if (navigation[i].name == menuname) {
                     navigation[i].classis = "active";
@@ -59,33 +71,33 @@ var navigationservice = angular.module('navigationservice', [])
             }
             return menuname;
         },
-        getnav: function() {
+        getnav: function () {
             return navigation;
         },
-        setnav: function(nav) {
+        setnav: function (nav) {
             navigation = nav;
         },
-        adminLogin: function(data, callback) {
+        adminLogin: function (data, callback) {
             $http({
                 url: adminurl + "admin/adminlogin",
                 method: "POST",
                 data: data
             }).success(callback);
         },
-        countUser: function(data, callback) {
+        countUser: function (data, callback) {
             $http({
                 url: adminurl + "donor/countdonor",
                 method: "POST",
                 data: data
             }).success(callback);
         },
-        setUser: function(data) {
+        setUser: function (data) {
             $.jStorage.set("user", data);
         },
-        getUser: function() {
+        getUser: function () {
             $.jStorage.get("user");
         },
-        getOneDonor: function(id, callback) {
+        getOneDonor: function (id, callback) {
             $http({
                 url: adminurl + 'donor/findone',
                 method: 'POST',
@@ -94,27 +106,53 @@ var navigationservice = angular.module('navigationservice', [])
                 }
             }).success(callback);
         },
-        getDonorbyid: function(data, callback) {
+        getDonorbyid: function (data, callback) {
             $http({
                 url: adminurl + 'donor/findbyid',
                 method: 'POST',
-                data: {
-                    'donorid': data.search
-                }
+                data: data
             }).success(callback);
         },
-        findLimitedDonor: function(donor, callback) {
+        getBlood: function (callback) {
+            $http({
+                url: adminurl + 'blood/find',
+                method: 'POST'
+            }).success(callback);
+        },
+        getverified: function (data, callback) {
+            $http({
+                url: adminurl + 'donor/getverified',
+                method: 'POST',
+                data: data
+            }).success(callback);
+        },
+        acksave: function (data, callback) {
+            $http({
+                url: adminurl + 'donor/acksave',
+                method: 'POST',
+                data: data
+            }).success(callback);
+        },
+        giftsave: function (data, callback) {
+            $http({
+                url: adminurl + 'donor/giftsave',
+                method: 'POST',
+                data: data
+            }).success(callback);
+        },
+        findLimitedDonor: function (donor, callback) {
             $http({
                 url: adminurl + 'donor/findlimited',
                 method: 'POST',
                 data: {
+                    'camp': donor.camp,
                     'search': donor.search,
                     'pagesize': parseInt(donor.limit),
                     'pagenumber': parseInt(donor.page)
                 }
             }).success(callback);
         },
-        deleteDonor: function(callback) {
+        deleteDonor: function (callback) {
             $http({
                 url: adminurl + 'donor/delete',
                 method: 'POST',
@@ -123,14 +161,14 @@ var navigationservice = angular.module('navigationservice', [])
                 }
             }).success(callback);
         },
-        saveDonor: function(data, callback) {
+        saveDonor: function (data, callback) {
             $http({
                 url: adminurl + 'donor/save',
                 method: 'POST',
                 data: data
             }).success(callback);
         },
-        saveVillage: function(data, callback) {
+        saveVillage: function (data, callback) {
             $http({
                 url: adminurl + 'village/save',
                 method: 'POST',
@@ -139,7 +177,7 @@ var navigationservice = angular.module('navigationservice', [])
                 }
             }).success(callback);
         },
-        findVillage: function(data, village, callback) {
+        findVillage: function (data, village, callback) {
             $http({
                 url: adminurl + 'village/find',
                 method: 'POST',
@@ -149,7 +187,7 @@ var navigationservice = angular.module('navigationservice', [])
                 }
             }).success(callback);
         },
-        getOneFamily: function(id, callback) {
+        getOneFamily: function (id, callback) {
             $http({
                 url: adminurl + 'family/findone',
                 method: 'POST',
@@ -158,7 +196,7 @@ var navigationservice = angular.module('navigationservice', [])
                 }
             }).success(callback);
         },
-        findLimitedFamily: function(family, callback) {
+        findLimitedFamily: function (family, callback) {
             $http({
                 url: adminurl + 'family/findlimited',
                 method: 'POST',
@@ -169,7 +207,7 @@ var navigationservice = angular.module('navigationservice', [])
                 }
             }).success(callback);
         },
-        deleteFamily: function(callback) {
+        deleteFamily: function (callback) {
             $http({
                 url: adminurl + 'family/delete',
                 method: 'POST',
@@ -178,33 +216,14 @@ var navigationservice = angular.module('navigationservice', [])
                 }
             }).success(callback);
         },
-        saveFamily: function(data, callback) {
+        saveFamily: function (data, callback) {
             $http({
                 url: adminurl + 'family/save',
                 method: 'POST',
                 data: data
             }).success(callback);
         },
-        saveDonor: function(data, callback) {
-            $http({
-                url: adminurl + 'donor/save',
-                method: 'POST',
-                data: {
-                    'name': data.name
-                }
-            }).success(callback);
-        },
-        findDonor: function(data, donor, callback) {
-            $http({
-                url: adminurl + 'donor/find',
-                method: 'POST',
-                data: {
-                    search: data,
-                    donor: donor
-                }
-            }).success(callback);
-        },
-        getOneCamp: function(id, callback) {
+        getOneCamp: function (id, callback) {
             $http({
                 url: adminurl + 'camp/findone',
                 method: 'POST',
@@ -213,7 +232,7 @@ var navigationservice = angular.module('navigationservice', [])
                 }
             }).success(callback);
         },
-        findLimitedCamp: function(camp, callback) {
+        findLimitedCamp: function (camp, callback) {
             $http({
                 url: adminurl + 'camp/findlimited',
                 method: 'POST',
@@ -224,7 +243,7 @@ var navigationservice = angular.module('navigationservice', [])
                 }
             }).success(callback);
         },
-        deleteCamp: function(callback) {
+        deleteCamp: function (callback) {
             $http({
                 url: adminurl + 'camp/delete',
                 method: 'POST',
@@ -233,21 +252,50 @@ var navigationservice = angular.module('navigationservice', [])
                 }
             }).success(callback);
         },
-        saveCamp: function(data, callback) {
+        saveCamp: function (data, callback) {
             $http({
                 url: adminurl + 'camp/save',
                 method: 'POST',
                 data: data
             }).success(callback);
         },
-        getSponsor: function(callback) {
+        getOneAdmin: function (id, callback) {
             $http({
-                url: adminurl + 'sponsor/find',
+                url: adminurl + 'admin/findone',
                 method: 'POST',
-                data: {}
+                data: {
+                    '_id': id
+                }
             }).success(callback);
         },
-        getOneGiftType: function(id, callback) {
+        findLimitedAdmin: function (admin, callback) {
+            $http({
+                url: adminurl + 'admin/findlimited',
+                method: 'POST',
+                data: {
+                    'search': admin.search,
+                    'pagesize': parseInt(admin.limit),
+                    'pagenumber': parseInt(admin.page)
+                }
+            }).success(callback);
+        },
+        deleteAdmin: function (callback) {
+            $http({
+                url: adminurl + 'admin/delete',
+                method: 'POST',
+                data: {
+                    '_id': $.jStorage.get('deleteadmin')
+                }
+            }).success(callback);
+        },
+        saveAdmin: function (data, callback) {
+            $http({
+                url: adminurl + 'admin/save',
+                method: 'POST',
+                data: data
+            }).success(callback);
+        },
+        getOneGiftType: function (id, callback) {
             $http({
                 url: adminurl + 'gifttype/findone',
                 method: 'POST',
@@ -256,7 +304,7 @@ var navigationservice = angular.module('navigationservice', [])
                 }
             }).success(callback);
         },
-        findLimitedGiftType: function(gifttype, callback) {
+        findLimitedGiftType: function (gifttype, callback) {
             $http({
                 url: adminurl + 'gifttype/findlimited',
                 method: 'POST',
@@ -267,7 +315,7 @@ var navigationservice = angular.module('navigationservice', [])
                 }
             }).success(callback);
         },
-        deleteGiftType: function(callback) {
+        deleteGiftType: function (callback) {
             $http({
                 url: adminurl + 'gifttype/delete',
                 method: 'POST',
@@ -276,14 +324,14 @@ var navigationservice = angular.module('navigationservice', [])
                 }
             }).success(callback);
         },
-        saveGiftType: function(data, callback) {
+        saveGiftType: function (data, callback) {
             $http({
                 url: adminurl + 'gifttype/save',
                 method: 'POST',
                 data: data
             }).success(callback);
         },
-        getOneHospital: function(id, callback) {
+        getOneHospital: function (id, callback) {
             $http({
                 url: adminurl + 'hospital/findone',
                 method: 'POST',
@@ -292,7 +340,7 @@ var navigationservice = angular.module('navigationservice', [])
                 }
             }).success(callback);
         },
-        findLimitedHospital: function(hospital, callback) {
+        findLimitedHospital: function (hospital, callback) {
             $http({
                 url: adminurl + 'hospital/findlimited',
                 method: 'POST',
@@ -303,7 +351,7 @@ var navigationservice = angular.module('navigationservice', [])
                 }
             }).success(callback);
         },
-        deleteHospital: function(callback) {
+        deleteHospital: function (callback) {
             $http({
                 url: adminurl + 'hospital/delete',
                 method: 'POST',
@@ -312,9 +360,87 @@ var navigationservice = angular.module('navigationservice', [])
                 }
             }).success(callback);
         },
-        saveHospital: function(data, callback) {
+        saveHospital: function (data, callback) {
             $http({
                 url: adminurl + 'hospital/save',
+                method: 'POST',
+                data: data
+            }).success(callback);
+        },
+        findallHospital: function (callback) {
+            $http({
+                url: adminurl + 'hospital/find',
+                method: 'POST'
+            }).success(callback);
+        },
+        getOneSponsor: function (id, callback) {
+            $http({
+                url: adminurl + 'sponsor/findone',
+                method: 'POST',
+                data: {
+                    '_id': id
+                }
+            }).success(callback);
+        },
+        findLimitedSponsor: function (sponsors, callback) {
+            $http({
+                url: adminurl + 'sponsor/findlimited',
+                method: 'POST',
+                data: {
+                    'search': sponsors.search,
+                    'pagesize': parseInt(sponsors.limit),
+                    'pagenumber': parseInt(sponsors.page)
+                }
+            }).success(callback);
+        },
+        deleteSponsor: function (callback) {
+            $http({
+                url: adminurl + 'sponsor/delete',
+                method: 'POST',
+                data: {
+                    '_id': $.jStorage.get('deletesponsor')
+                }
+            }).success(callback);
+        },
+        saveSponsor: function (data, callback) {
+            $http({
+                url: adminurl + 'sponsor/save',
+                method: 'POST',
+                data: data
+            }).success(callback);
+        },
+        getOneSlider: function (id, callback) {
+            $http({
+                url: adminurl + 'slider/findone',
+                method: 'POST',
+                data: {
+                    '_id': id
+                }
+            }).success(callback);
+        },
+        findLimitedSlider: function (slider, callback) {
+            $http({
+                url: adminurl + 'slider/findlimited',
+                method: 'POST',
+                data: {
+                    'search': slider.search,
+                    'pagesize': parseInt(slider.limit),
+                    'pagenumber': parseInt(slider.page)
+                }
+            }).success(callback);
+        },
+        deleteSlider: function (callback) {
+            $http({
+                url: adminurl + 'slider/delete',
+                method: 'POST',
+                data: {
+                    '_id': $.jStorage.get('deleteslider')
+                }
+            }).success(callback);
+        },
+        saveSlider: function (data, callback) {
+            $http({
+                url: adminurl + 'slider/save',
                 method: 'POST',
                 data: data
             }).success(callback);
