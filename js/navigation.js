@@ -1,4 +1,5 @@
-var adminurl = "http://localhost:1337/";
+// var adminurl = "http://localhost:1337/";
+var adminurl = "http://192.168.0.119:1337/";
 var adminlogin = {
     "username": "admin@admin.com",
     "password": "admin123"
@@ -56,8 +57,43 @@ var navigationservice = angular.module('navigationservice', [])
             link: '#/slider',
             subnav: [],
             visible: "yes"
+        }, {
+            name: 'Emergency Donation',
+            active: '',
+            link: '#/home',
+            subnav: [],
+            visible: "yes"
+        }, {
+            name: 'Need Blood',
+            active: '',
+            link: '#/home',
+            subnav: [],
+            visible: "yes"
+        }, {
+            name: 'Activity',
+            active: '',
+            link: '#/home',
+            subnav: [],
+            visible: "yes"
+        }, {
+            name: 'Notification',
+            active: '',
+            link: '#/home',
+            subnav: [],
+            visible: "yes"
+        }, {
+            name: 'Request',
+            active: '',
+            link: '#/home',
+            subnav: [],
+            visible: "yes"
+        }, {
+            name: 'Online Donation',
+            active: '',
+            link: '#/home',
+            subnav: [],
+            visible: "yes"
         }, //Add New Left
-
     ];
 
     return {
@@ -90,12 +126,6 @@ var navigationservice = angular.module('navigationservice', [])
                 method: "POST",
                 data: data
             }).success(callback);
-        },
-        setUser: function(data) {
-            $.jStorage.set("user", data);
-        },
-        getUser: function() {
-            $.jStorage.get("user");
         },
         getOneDonor: function(id, callback) {
             $http({
@@ -141,16 +171,41 @@ var navigationservice = angular.module('navigationservice', [])
             }).success(callback);
         },
         findLimitedDonor: function(donor, callback) {
-            $http({
-                url: adminurl + 'donor/findlimited',
-                method: 'POST',
-                data: {
-                    'camp': donor.camp,
-                    'search': donor.search,
-                    'pagesize': parseInt(donor.limit),
-                    'pagenumber': parseInt(donor.page)
-                }
-            }).success(callback);
+            if (donor.campnumber == 'All') {
+                $http({
+                    url: adminurl + 'donor/findlimited',
+                    method: 'POST',
+                    data: {
+                        'donorid': donor.donorid,
+                        'campnumber': '',
+                        'camp': donor.camp,
+                        'name': donor.name,
+                        'firstname': donor.firstname,
+                        'middlename': donor.middlename,
+                        'lastname': donor.lastname,
+                        'search': donor.search,
+                        'pagesize': parseInt(donor.limit),
+                        'pagenumber': parseInt(donor.page)
+                    }
+                }).success(callback);
+            } else {
+                $http({
+                    url: adminurl + 'donor/findlimited',
+                    method: 'POST',
+                    data: {
+                        'donorid': donor.donorid,
+                        'campnumber': donor.campnumber,
+                        'camp': donor.camp,
+                        'name': donor.name,
+                        'firstname': donor.firstname,
+                        'middlename': donor.middlename,
+                        'lastname': donor.lastname,
+                        'search': donor.search,
+                        'pagesize': parseInt(donor.limit),
+                        'pagenumber': parseInt(donor.page)
+                    }
+                }).success(callback);
+            }
         },
         deleteDonor: function(callback) {
             $http({
@@ -450,6 +505,23 @@ var navigationservice = angular.module('navigationservice', [])
                 method: 'POST',
                 data: data
             }).success(callback);
+        },
+        getLastBottleNumber: function(hospitalId, callback) {
+            $http({
+                url: adminurl + 'donor/lastbottlenumber',
+                method: 'POST',
+                data: {
+                    "hospital": hospitalId,
+                    "camp": $.jStorage.get("adminuser").camp,
+                    "campnumber": $.jStorage.get("adminuser").campnumber
+                }
+            }).success(callback);
+        },
+        setUser: function(data) {
+            $.jStorage.set("user", data);
+        },
+        getUser: function() {
+            $.jStorage.get("user");
         }, //Add New Service
 
     }

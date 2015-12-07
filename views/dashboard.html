@@ -8,72 +8,63 @@
                     <div class="panel-heading panel-hdr"><span class="glyphicon glyphicon-th mr5"></span>{{menutitle}}
                     </div>
                     <div class="panel-body">
-                        <div class="col-md-4" ng-if="access.accesslevel =='admin'">
-                            <div class="box">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="icon"><i class="fa fa-users"></i>
+                        <div class="row">
+                            <div class="col-md-4" ng-if="access.accesslevel =='admin' || access.accesslevel =='entry'">
+                                <div class="box">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="icon"><i class="fa fa-users"></i>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="text">
-                                            <h3 class="text-center">{{allusers}}</h3>
-                                            <p class="text-center">Total Donors</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="box">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="icon"><i class="fa fa-users"></i>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="text">
-                                            <h3 class="text-center">{{user}}</h3>
-                                            <p class="text-center">Total Donors For Your Camp</p>
+                                        <div class="col-md-6">
+                                            <div class="text">
+                                                <h3 class="text-center">{{allusers}}</h3>
+                                                <p class="text-center">Total Donors</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-4" ng-if="access.accesslevel !='admin'">
+                                <div class="box">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="icon"><i class="fa fa-users"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="text">
+                                                <h3 class="text-center">{{user}}</h3>
+                                                <p class="text-center">Total Donors For Your Camp</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" ng-if="access.accesslevel =='entry'">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr class="bg-dark">
+                                            <th class="text-center">Bottle Number</th>
+                                            <th class="text-center">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="value in blood">
+                                            <td class="text-center">{{value.number}}</td>
+                                            <td class="text-center">{{value.used}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                        <div class="col-md-4" ng-if="access.accesslevel =='entry'">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr class="bg-dark">
-                                        <th class="text-center">Bottle Number</th>
-                                        <th class="text-center">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="value in blood">
-                                        <td class="text-center">{{value.number}}</td>
-                                        <td class="text-center">{{value.used}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="row" style="margin-top:20px" ng-if="access.accesslevel !='admin'">
+                            <div class="col-md-4">
+                                <span style="margin-right: 5px;">Hospital</span>
+                                <select style="min-width: 150px;height: 34px;" ng-model="hospitalid" ng-change="storeHospital(hospitalid);" ng-options="hospital._id as hospital.name for hospital in hospitals">
+                                </select>
+                            </div>
                         </div>
-                        <!--
-                        <div class="col-md-4" ng-if="access.accesslevel =='admin' || access.accesslevel =='entry'">
-    <div class="box">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="icon"><span class="glyphicon glyphicon-envelope"></span>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="text">
-                    <h3 class="text-center">{{blood}}</h3>
-                    <p class="text-center">Bottles free</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
--->
                     </div>
                 </section>
             </div>

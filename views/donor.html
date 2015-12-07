@@ -8,11 +8,33 @@
                     <div class="panel-heading panel-hdr"><span class="glyphicon glyphicon-th mr5"></span>Show Donor
                     </div>
                     <div class="panel-body">
-                        <div class="bot search-box">
-                            <input type="search" name="search" ng-model="pagedata.search" placeholder="Search" ng-change="reload(pagedata);" />
-                            <a href="#/createdonor" class="right btn btn-primary all-btn create-btn" ng-if="access.accesslevel == 'entry'">New Donor</a>
-                            <div class="pull-right">
-                                <select ng-model="pagedata.limit" class="form-control" ng-change="reload({page:'1',limit:pagedata.limit,search:pagedata.search})">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="bot search-box">
+                                    <input type="search" name="search" ng-model="pagedata.search" placeholder="Search">
+                                </div>
+                            </div>
+                            <div class="col-md-2 text-center"><a class="btn btn-primary" ng-click="getFilterResults('id');">Donor Id</a></div>
+                            <div class="col-md-2"><a class="btn btn-primary" ng-click="getFilterResults('name');">Full Name</a></div>
+                            <div class="col-md-2"><a class="btn btn-primary" ng-click="getFilterResults('fname');">First Name</a></div>
+                            <div class="col-md-2"><a class="btn btn-primary" ng-click="getFilterResults('mname');">Middle Name</a></div>
+                            <div class="col-md-2"><a class="btn btn-primary" ng-click="getFilterResults('lname');">Last Name</a></div>
+                        </div>
+                        <div class="row" style="margin-top:20px">
+                            <div class="col-md-3"><a href="#/createdonor" class="right btn btn-primary all-btn create-btn" ng-if="access.accesslevel == 'entry'">New Donor</a>
+                            </div>
+                            <div class="col-md-3">
+                                <span style="margin-right: 5px;">Camp</span>
+                                <select style="min-width: 150px;height: 34px;" ng-model="pagedata.campnumber" ng-change="showVenues();" ng-options="camp.campnumber as camp.campnumber for camp in camps">
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <span style="margin-right: 5px;">Venue</span>
+                                <select style="min-width: 150px;height: 34px;" ng-model="pagedata.camp" ng-change="getFilterResults('venue')" ng-options="venue.value as venue.value for venue in venues">
+                                </select>
+                            </div>
+                            <div class="pull-right" style="margin-right: 17px;">
+                                <select ng-model="pagedata.limit" class="form-control" ng-change="getFilterResults('limit');">
                                     <option value="20" selected>20</option>
                                     <option value="50">50</option>
                                     <option value="100">100</option>
@@ -34,7 +56,7 @@
                                         <td class="text-center">{{value.name}}</td>
                                         <td class="text-center" ng-if="access.accesslevel == 'entry'"><a ng-click="deletefun(value._id)" class="btn btn-primary all-btn"><i class="fa fa-times"></i></a>
                                         </td>
-                                        <td class="text-center" ng-if="access.accesslevel == 'entry'">
+                                        <td class="text-center">
                                             <a href="#/editdonor/{{value._id}}" class="btn btn-primary all-btn">
                                                 <i class="fa fa-pencil-square-o"></i>
                                             </a>
@@ -44,7 +66,7 @@
                             </table>
                             <nav>
                                 <ul class="pagination">
-                                    <li ng-class="page.class" ng-repeat="page in pages"><a ng-click="reload({page:page.pageno,limit:pagedata.limit,search:pagedata.search});">{{page.pageno}}</a>
+                                    <li ng-class="page.class" ng-repeat="page in pages"><a ng-click="changePage(page);">{{page.pageno}}</a>
                                     </li>
                                 </ul>
                             </nav>
