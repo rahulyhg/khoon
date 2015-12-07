@@ -57,6 +57,7 @@ phonecatControllers.controller('home', function($scope, TemplateService, Navigat
         $scope.newdata = $.jStorage.get("adminuser");
         $scope.newdata.hospital = hospid;
         $.jStorage.set("adminuser", $scope.newdata);
+        window.location.reload();
     }
 
 });
@@ -75,6 +76,7 @@ phonecatControllers.controller('closeDialog', function($scope, TemplateService, 
             $scope.newdata.hospital = $scope.myhosp;
             $.jStorage.set("adminuser", $scope.newdata);
             ngDialog.close();
+            window.location.reload();
         }
     }
     $scope.adminOk = function() {
