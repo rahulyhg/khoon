@@ -10,8 +10,7 @@
                     <div class="panel-body">
                         <div class="bot search-box">
                             <input type="search" name="search" ng-model="pagedata.search" placeholder="Search" ng-change="reload(pagedata);" />
-                            <!-- <a href="#/olddonor" class="right btn btn-primary all-btn create-btn" ng-if="access.accesslevel == 'admin' || access.accesslevel == 'entry'">Old Donor</a> -->
-                            <a href="#/createdonor" class="right btn btn-primary all-btn create-btn" ng-if="access.accesslevel == 'admin' || access.accesslevel == 'entry'">New Donor</a>
+                            <a href="#/createdonor" class="right btn btn-primary all-btn create-btn" ng-if="access.accesslevel == 'entry'">New Donor</a>
                             <div class="pull-right">
                                 <select ng-model="pagedata.limit" class="form-control" ng-change="reload({page:'1',limit:pagedata.limit,search:pagedata.search})">
                                     <option value="20" selected>20</option>
@@ -26,16 +25,16 @@
                                     <tr class="bg-dark">
                                         <th class="text-center">Donor Id</th>
                                         <th class="text-center">Donor Name</th>
-                                        <th class="text-center" colspan="2">Operations</th>
+                                        <th class="text-center" colspan="2" ng-if="access.accesslevel == 'entry'">Operations</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="value in donor.data">
                                         <td class="text-center">{{value.donorid}}</td>
                                         <td class="text-center">{{value.name}}</td>
-                                        <td class="text-center"><a ng-click="deletefun(value._id)" class="btn btn-primary all-btn" ng-if="access.accesslevel == 'admin' || access.accesslevel == 'entry'"><i class="fa fa-times"></i></a>
+                                        <td class="text-center" ng-if="access.accesslevel == 'entry'"><a ng-click="deletefun(value._id)" class="btn btn-primary all-btn"><i class="fa fa-times"></i></a>
                                         </td>
-                                        <td class="text-center">
+                                        <td class="text-center" ng-if="access.accesslevel == 'entry'">
                                             <a href="#/editdonor/{{value._id}}" class="btn btn-primary all-btn">
                                                 <i class="fa fa-pencil-square-o"></i>
                                             </a>

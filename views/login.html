@@ -46,16 +46,12 @@
                                 <option value='gift'>Gift Level</option>
                             </select>
                         </div>
+                        <div class="form-group">
+                            <select id="campdrop" class="form-control selct-height" ng-model="login.campnumber" ng-options="cmp.campnumber as cmp.campnumber for cmp in camp" ng-change="changeloc();"></select>
+                        </div>
                         <div class='form-group'>
                             <!-- <label>Camp</label> -->
-                            <select id="mydrop" ng-model='login.camp' class='form-control selct-height' required>
-                                <option value='' selected>Select Location</option>
-                                <option value='Mulund'>Mulund</option>
-                                <option value='Thane'>Thane</option>
-                                <option value='Dombivli'>Dombivli</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
+                            <select id="mydrop" class="form-control selct-height" ng-model="login.camp" ng-options="loc.value as loc.value for loc in locations"></select>
                         </div>
                         <div class="form-group">
                             <button type="submit" ng-click="verifylogin();" class="btn btn-primary btn-lg btn-block">Login</button>

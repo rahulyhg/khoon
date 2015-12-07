@@ -1,10 +1,8 @@
 var uploadres = [];
 var selectedData = [];
-var dialogShow = "";
 var phonecatControllers = angular.module('phonecatControllers', ['templateservicemod', 'navigationservice', 'ngDialog', 'angularFileUpload', 'ui.select', 'ngSanitize']);
-window.uploadUrl = 'http://localhost:1337/user/uploadfile';
-phonecatControllers.controller('home', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
-    dialogShow();
+window.uploadUrl = 'http://localhost:1337/uploadfile/upload';
+phonecatControllers.controller('home', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive("Dashboard");
     TemplateService.title = $scope.menutitle;
@@ -15,24 +13,38 @@ phonecatControllers.controller('home', function ($scope, TemplateService, Naviga
     $scope.hospital = "";
     $scope.access = $.jStorage.get("adminuser");
     $scope.navigation = NavigationService.getnav();
-    NavigationService.countUser($.jStorage.get("adminuser"), function (data, status) {
+    NavigationService.countUser($.jStorage.get("adminuser"), function(data, status) {
         $scope.user = data;
     });
-
-    NavigationService.getBlood(function (data, status) {
-        console.log(data);
+    NavigationService.getBlood(function(data, status) {
         if (data.value == false) {} else {
             $scope.blood = data;
         }
-
     });
     if ($.jStorage.get("adminuser").accesslevel == "admin") {
-        NavigationService.countUser('', function (data, status) {
+        NavigationService.countUser('', function(data, status) {
             $scope.allusers = data;
         });
+    } else {
+        if (!$.jStorage.get("adminuser").hospital) {
+            NavigationService.findallHospital(function(data, status) {
+                if (data.value != false) {
+                    $scope.ngDialogData = data;
+                    ngDialog.open({
+                        template: 'views/selecthospital.html',
+                        closeByEscape: false,
+                        closeByDocument: false,
+                        showClose: false,
+                        data: $scope.ngDialogData
+                    });
+                } else {
+                    $scope.hospital = [];
+                }
+            });
+        }
     }
 });
-phonecatControllers.controller('closeDialog', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
+phonecatControllers.controller('closeDialog', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive("Hospital");
     TemplateService.title = $scope.menutitle;
@@ -41,7 +53,7 @@ phonecatControllers.controller('closeDialog', function ($scope, TemplateService,
     $scope.myhosp = "";
     $scope.hospital = "";
     $scope.access = $.jStorage.get("adminuser");
-    $scope.select = function () {
+    $scope.select = function() {
         if ($scope.myhosp != "") {
             $scope.newdata = $.jStorage.get("adminuser");
             $scope.newdata.hospital = $scope.myhosp;
@@ -49,13 +61,13 @@ phonecatControllers.controller('closeDialog', function ($scope, TemplateService,
             ngDialog.close();
         }
     }
-    $scope.adminOk = function () {
+    $scope.adminOk = function() {
         ngDialog.close();
         $location.url('/createhospital');
     }
     $scope.navigation = NavigationService.getnav();
 });
-phonecatControllers.controller('login', function ($scope, TemplateService, NavigationService, $routeParams, $location) {
+phonecatControllers.controller('login', function($scope, TemplateService, NavigationService, $routeParams, $location) {
     $scope.template = TemplateService;
     TemplateService.content = "views/login.html";
     TemplateService.list = 3;
@@ -64,44 +76,135 @@ phonecatControllers.controller('login', function ($scope, TemplateService, Navig
     $scope.isValidLogin = 1;
     $scope.showtext = 1;
     $scope.login = {};
-    $scope.verifylogin = function () {
-        if ($scope.login.email && $scope.login.password && $scope.login.accesslevel && $scope.login.camp && $scope.login.email != "" && $scope.login.password != "" && $scope.login.accesslevel != "" && $scope.login.camp != "") {
-            NavigationService.adminLogin($scope.login, function (data, status) {
+    $scope.camp = [];
+    $scope.locations = [];
+    $scope.locations = [{
+        value: "Select Location"
+    }];
+    NavigationService.getCamp(function(data, status) {
+        if (data.value != false) {
+            $scope.camp = data;
+            $scope.camp.unshift({
+                campnumber: "All"
+            });
+            $scope.camp.unshift({
+                campnumber: "Select Camp Number"
+            });
+            $scope.login.campnumber = "Select Camp Number";
+            $scope.login.camp = "Select Location";
+        } else {
+            $scope.camp = [];
+            $scope.camp.unshift({
+                campnumber: "All"
+            });
+            $scope.camp.unshift({
+                campnumber: "Select Camp Number"
+            });
+            $scope.login.campnumber = "Select Camp Number";
+            $scope.login.camp = "Select Location";
+        }
+    });
+    $scope.changedrop = function() {
+        if ($scope.login.accesslevel == "admin") {
+            $scope.login.campnumber = "All";
+            document.getElementById("mydrop").disabled = true;
+            document.getElementById("campdrop").disabled = true;
+        } else {
+            $scope.login.camp = "";
+            $scope.login.campnumber = "";
+            document.getElementById("mydrop").disabled = false;
+            document.getElementById("campdrop").disabled = false;
+        }
+        $scope.changeloc();
+    }
+    $scope.changeloc = function() {
+        var foundIndex = _.findIndex($scope.camp, {
+            'campnumber': $scope.login.campnumber
+        });
+        if (foundIndex != -1) {
+            if ($scope.login.campnumber != 'All' && $scope.login.campnumber != '') {
+                if ($scope.login.campnumber != "Select Camp Number") {
+                    $scope.locations = $scope.camp[foundIndex].venues;
+                    $scope.locations.unshift({
+                        value: "All"
+                    });
+                    $scope.locations.unshift({
+                        value: "Select Location"
+                    });
+                } else {
+                    $scope.locations = [];
+                    $scope.locations = [{
+                        value: "Select Location"
+                    }];
+                    $scope.login.camp = "Select Location";
+                }
+            } else {
+                if ($scope.login.campnumber == 'All') {
+                    $scope.locations = [{
+                        value: "Select Location"
+                    }, {
+                        value: "All"
+                    }];
+                    $scope.login.camp = "All";
+                } else {
+                    $scope.locations = [{
+                        value: "Select Location"
+                    }];
+                    $scope.login.camp = "Select Location";
+                }
+            }
+        } else {
+            $scope.locations = [{
+                value: "Select Location"
+            }];
+            $scope.login.camp = "Select Location";
+            $scope.login.campnumber = "Select Camp Number";
+        }
+        $scope.locations = _.uniq($scope.locations, 'value');
+    }
+    $scope.verifylogin = function() {
+        if ($scope.login.campnumber == "Select Camp Number") {
+            $scope.login.campnumber = "";
+        }
+        if ($scope.login.camp == "Select Location") {
+            $scope.login.camp = "";
+        }
+        if ($scope.login.email != "" && $scope.login.password != "" && $scope.login.accesslevel != "" && $scope.login.camp != "" && $scope.login.campnumber != "") {
+            NavigationService.adminLogin($scope.login, function(data, status) {
                 if (data.value == false) {
                     $scope.login = {};
                     $scope.isValidLogin = 0;
                 } else {
-                    console.log(data);
                     $scope.isValidLogin = 1;
                     $.jStorage.set("adminuser", data);
                     if (data.accesslevel == "admin") {
-                        _.each($scope.navigation, function (n) {
+                        _.each($scope.navigation, function(n) {
                             n.visible = "yes";
                         });
-                        location();
+                        locationcheck();
                     } else {
-                        NavigationService.findallHospital(function (data, status) {
+                        NavigationService.findallHospital(function(data, status) {
                             if (data.value == false) {
-                                $.jStorage.flush();
                                 $scope.showtext = 0;
                             } else {
-                                $scope.showtext = 1;
-                                _.each($scope.navigation, function (n) {
+                                _.each($scope.navigation, function(n) {
                                     if (n.name == "Donor") {
                                         n.visible = "yes";
                                     } else {
                                         n.visible = "no";
                                     }
                                 });
-                                location();
+                                locationcheck();
                             }
-                        });
 
-                        function location() {
-                            NavigationService.setnav($scope.navigation);
-                            $location.url("/home");
-                        }
+
+                        });
                     }
+                }
+
+                function locationcheck() {
+                    NavigationService.setnav($scope.navigation);
+                    $location.url("/home");
                 }
             });
         } else {
@@ -112,8 +215,7 @@ phonecatControllers.controller('login', function ($scope, TemplateService, Navig
     }
 });
 //Donor Controller
-phonecatControllers.controller('DonorCtrl', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
-    dialogShow();
+phonecatControllers.controller('DonorCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive('Donor');
     TemplateService.title = $scope.menutitle;
@@ -124,7 +226,6 @@ phonecatControllers.controller('DonorCtrl', function ($scope, TemplateService, N
         TemplateService.content = 'views/olddonor.html';
     }
     TemplateService.list = 2;
-    dialogShow();
     $scope.navigation = NavigationService.getnav();
     $scope.Donor = [];
     $scope.pagedata = {};
@@ -133,10 +234,10 @@ phonecatControllers.controller('DonorCtrl', function ($scope, TemplateService, N
     $scope.pagedata.search = '';
     $scope.number = 100;
     $scope.access = $.jStorage.get('adminuser');
-    $scope.reload = function (pagedata) {
+    $scope.reload = function(pagedata) {
         $scope.pagedata = pagedata;
         $scope.pagedata.camp = $scope.access.camp;
-        NavigationService.findLimitedDonor($scope.pagedata, function (data, status) {
+        NavigationService.findLimitedDonor($scope.pagedata, function(data, status) {
             $scope.donor = data;
             $scope.pages = [];
             var newclass = '';
@@ -154,13 +255,13 @@ phonecatControllers.controller('DonorCtrl', function ($scope, TemplateService, N
         });
     }
     $scope.reload($scope.pagedata);
-    $scope.confDelete = function () {
-        NavigationService.deleteDonor(function (data, status) {
+    $scope.confDelete = function() {
+        NavigationService.deleteDonor(function(data, status) {
             ngDialog.close();
             window.location.reload();
         });
     }
-    $scope.deletefun = function (id) {
+    $scope.deletefun = function(id) {
             $.jStorage.set('deletedonor', id);
             ngDialog.open({
                 template: 'views/delete.html',
@@ -173,7 +274,7 @@ phonecatControllers.controller('DonorCtrl', function ($scope, TemplateService, N
 });
 //donor Controller
 //createDonor Controller
-phonecatControllers.controller('createDonorCtrl', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
+phonecatControllers.controller('createDonorCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive('Donor');
     TemplateService.title = $scope.menutitle;
@@ -184,16 +285,16 @@ phonecatControllers.controller('createDonorCtrl', function ($scope, TemplateServ
     $scope.donor = {};
     $scope.bottleExist = 1;
     $scope.showfail = 1;
-    $scope.calculate = function () {
+    $scope.calculate = function() {
         var birth = new Date($scope.donor.birthdate);
         var curr = new Date();
         var diff = curr.getTime() - birth.getTime();
         $scope.donor.age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
     }
-    $scope.submitForm = function () {
+    $scope.submitForm = function() {
         $scope.donor.hospital = $.jStorage.get("adminuser").hospital;
         $scope.donor.camp = $.jStorage.get("adminuser").camp;
-        NavigationService.saveDonor($scope.donor, function (data, status) {
+        NavigationService.saveDonor($scope.donor, function(data, status) {
             if (data.value == true && data.comment == "Bottle already exists") {
                 $scope.bottleExist = 0;
             } else if (data.value == false) {
@@ -206,14 +307,14 @@ phonecatControllers.controller('createDonorCtrl', function ($scope, TemplateServ
         });
     };
     $scope.donor.village = [];
-    $scope.ismatchVillage = function (data, select) {
-        _.each(data, function (l, key) {
+    $scope.ismatchVillage = function(data, select) {
+        _.each(data, function(l, key) {
             if (typeof l == 'string') {
                 var item = {
                     _id: _.now(),
                     name: _.capitalize(l)
                 };
-                NavigationService.saveVillage(item, function (data, status) {
+                NavigationService.saveVillage(item, function(data, status) {
                     if (data.value == true) {
                         item._id = data.id;
                     }
@@ -224,10 +325,10 @@ phonecatControllers.controller('createDonorCtrl', function ($scope, TemplateServ
             }
         });
     }
-    $scope.refreshVillage = function (search) {
+    $scope.refreshVillage = function(search) {
         $scope.village = [];
         if (search) {
-            NavigationService.findVillage(search, $scope.donor.village, function (data, status) {
+            NavigationService.findVillage(search, $scope.donor.village, function(data, status) {
                 if (data.value != false) {
                     $scope.village = data;
                 }
@@ -238,7 +339,7 @@ phonecatControllers.controller('createDonorCtrl', function ($scope, TemplateServ
 });
 //createDonor Controller
 //editDonor Controller
-phonecatControllers.controller('editDonorCtrl', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
+phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive('Donor');
     TemplateService.title = $scope.menutitle;
@@ -246,8 +347,9 @@ phonecatControllers.controller('editDonorCtrl', function ($scope, TemplateServic
     TemplateService.content = 'views/editdonor.html';
     TemplateService.list = 2;
     $scope.navigation = NavigationService.getnav();
+    $scope.access = $.jStorage.get("adminuser");
     $scope.donor = {};
-    NavigationService.getOneDonor($routeParams.id, function (data, status) {
+    NavigationService.getOneDonor($routeParams.id, function(data, status) {
         $scope.donor = data; //Add More Array
         if ($scope.donor.new) {
             document.getElementById("bottle").disabled = true;
@@ -256,14 +358,17 @@ phonecatControllers.controller('editDonorCtrl', function ($scope, TemplateServic
         }
         $scope.donor.birthdate = new Date($scope.donor.birthdate);
     });
-    NavigationService.findallHospital(function (data, status) {
+    NavigationService.findallHospital(function(data, status) {
         $scope.hospital = data;
     });
-    $scope.submitForm = function () {
+    $scope.goback = function() {
+        $location.url('/donor');
+    }
+    $scope.submitForm = function() {
         $scope.donor._id = $routeParams.id;
         $scope.donor.hospital = $.jStorage.get("adminuser").hospital;
         $scope.donor.camp = $.jStorage.get("adminuser").camp;
-        NavigationService.saveDonor($scope.donor, function (data, status) {
+        NavigationService.saveDonor($scope.donor, function(data, status) {
             console.log(data);
             if (data.value == true && data.comment == "Bottle already exists") {
                 $scope.bottleExist = 0;
@@ -277,14 +382,14 @@ phonecatControllers.controller('editDonorCtrl', function ($scope, TemplateServic
         });
     };
     $scope.donor.village = [];
-    $scope.ismatchVillage = function (data, select) {
-        _.each(data, function (l, key) {
+    $scope.ismatchVillage = function(data, select) {
+        _.each(data, function(l, key) {
             if (typeof l == 'string') {
                 var item = {
                     _id: _.now(),
                     name: _.capitalize(l)
                 };
-                NavigationService.saveVillage(item, function (data, status) {
+                NavigationService.saveVillage(item, function(data, status) {
                     if (data.value == true) {
                         item._id = data.id;
                     }
@@ -295,10 +400,10 @@ phonecatControllers.controller('editDonorCtrl', function ($scope, TemplateServic
             }
         });
     }
-    $scope.refreshVillage = function (search) {
+    $scope.refreshVillage = function(search) {
         $scope.village = [];
         if (search) {
-            NavigationService.findVillage(search, $scope.donor.village, function (data, status) {
+            NavigationService.findVillage(search, $scope.donor.village, function(data, status) {
                 if (data.value != false) {
                     $scope.village = data;
                 }
@@ -308,7 +413,7 @@ phonecatControllers.controller('editDonorCtrl', function ($scope, TemplateServic
     //editDonor
 });
 //editDonor Controller
-phonecatControllers.controller('oldDonorCtrl', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog, $timeout) {
+phonecatControllers.controller('oldDonorCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog, $timeout) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive('Donor');
     TemplateService.title = $scope.menutitle;
@@ -327,10 +432,10 @@ phonecatControllers.controller('oldDonorCtrl', function ($scope, TemplateService
     $scope.editdonor.verified = false;
     $scope.editdonor.giftdone = false;
 
-    $scope.submitForm1 = function () {
+    $scope.submitForm1 = function() {
         $scope.searchdonor.camp = $.jStorage.get("adminuser").camp;
         $scope.searchdonor.hospital = $.jStorage.get("adminuser").hospital;
-        NavigationService.getDonorbyid($scope.searchdonor, function (data, status) {
+        NavigationService.getDonorbyid($scope.searchdonor, function(data, status) {
             if (data.value == false) {
                 $scope.searchdonor = {};
                 $scope.isValidLogin = 0;
@@ -340,10 +445,10 @@ phonecatControllers.controller('oldDonorCtrl', function ($scope, TemplateService
             }
         });
     }
-    $scope.submitForm2 = function () {
+    $scope.submitForm2 = function() {
         $scope.searchdonor.camp = $.jStorage.get("adminuser").camp;
         $scope.searchdonor.hospital = $.jStorage.get("adminuser").hospital;
-        NavigationService.getverified($scope.searchdonor, function (data, status) {
+        NavigationService.getverified($scope.searchdonor, function(data, status) {
             if (data.value == false) {
                 $scope.searchdonor = {};
                 $scope.isValidLogin = 0;
@@ -353,18 +458,18 @@ phonecatControllers.controller('oldDonorCtrl', function ($scope, TemplateService
             }
         });
     }
-    $scope.openverify = function (value) {
+    $scope.openverify = function(value) {
         $scope.editdonor = value;
         $scope.editdonor.verified = false;
         $scope.isValidLogin = 1;
     }
-    $scope.verify = function () {
+    $scope.verify = function() {
         if ($scope.editdonor.verified == true) {
             $scope.showerror = 1;
-            NavigationService.acksave($scope.editdonor, function (data, status) {
+            NavigationService.acksave($scope.editdonor, function(data, status) {
                 if (data.value == false && data.comment == "No data found") {
                     $scope.showerror2 = true;
-                    $timeout(function () {
+                    $timeout(function() {
                         $scope.showerror2 = false;
                     }, 2500);
                     $scope.editdonor = {};
@@ -373,7 +478,7 @@ phonecatControllers.controller('oldDonorCtrl', function ($scope, TemplateService
                     $scope.isValidLogin = 2;
                 } else {
                     $scope.showtrue = true;
-                    $timeout(function () {
+                    $timeout(function() {
                         $scope.showtrue = false;
                     }, 2500);
                     $scope.showerror2 = false;
@@ -387,19 +492,19 @@ phonecatControllers.controller('oldDonorCtrl', function ($scope, TemplateService
             $scope.showerror = 0;
         }
     };
-    $scope.opengift = function (value) {
+    $scope.opengift = function(value) {
         $scope.editdonor = value;
         $scope.editdonor.giftdone = false;
         $scope.isValidLogin = 1;
     }
-    $scope.gift = function () {
+    $scope.gift = function() {
         if ($scope.editdonor.giftdone == true) {
             $scope.showerror = 1;
             delete $scope.editdonor.donationcount;
-            NavigationService.giftsave($scope.editdonor, function (data, status) {
+            NavigationService.giftsave($scope.editdonor, function(data, status) {
                 if (data.value == false && data.comment == "No data found") {
                     $scope.showerror2 = true;
-                    $timeout(function () {
+                    $timeout(function() {
                         $scope.showerror2 = false;
                     }, 2500);
                     $scope.editdonor = {};
@@ -408,7 +513,7 @@ phonecatControllers.controller('oldDonorCtrl', function ($scope, TemplateService
                     $scope.isValidLogin = 2;
                 } else {
                     $scope.showtrue = true;
-                    $timeout(function () {
+                    $timeout(function() {
                         $scope.showtrue = false;
                     }, 2500);
                     $scope.showerror2 = false;
@@ -427,9 +532,8 @@ phonecatControllers.controller('oldDonorCtrl', function ($scope, TemplateService
 });
 //editDonor Controller
 //Family Controller
-phonecatControllers.controller('FamilyCtrl', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
+phonecatControllers.controller('FamilyCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
-    dialogShow();
     $scope.menutitle = NavigationService.makeactive('Family');
     TemplateService.title = $scope.menutitle;
     TemplateService.submenu = '';
@@ -442,9 +546,9 @@ phonecatControllers.controller('FamilyCtrl', function ($scope, TemplateService, 
     $scope.pagedata.limit = '20';
     $scope.pagedata.search = '';
     $scope.number = 100;
-    $scope.reload = function (pagedata) {
+    $scope.reload = function(pagedata) {
         $scope.pagedata = pagedata;
-        NavigationService.findLimitedFamily($scope.pagedata, function (data, status) {
+        NavigationService.findLimitedFamily($scope.pagedata, function(data, status) {
             $scope.family = data;
             $scope.pages = [];
             var newclass = '';
@@ -462,13 +566,13 @@ phonecatControllers.controller('FamilyCtrl', function ($scope, TemplateService, 
         });
     }
     $scope.reload($scope.pagedata);
-    $scope.confDelete = function () {
-        NavigationService.deleteFamily(function (data, status) {
+    $scope.confDelete = function() {
+        NavigationService.deleteFamily(function(data, status) {
             ngDialog.close();
             window.location.reload();
         });
     }
-    $scope.deletefun = function (id) {
+    $scope.deletefun = function(id) {
             $.jStorage.set('deletefamily', id);
             ngDialog.open({
                 template: 'views/delete.html',
@@ -481,7 +585,7 @@ phonecatControllers.controller('FamilyCtrl', function ($scope, TemplateService, 
 });
 //family Controller
 //createFamily Controller
-phonecatControllers.controller('createFamilyCtrl', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
+phonecatControllers.controller('createFamilyCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive('Family');
     TemplateService.title = $scope.menutitle;
@@ -490,20 +594,20 @@ phonecatControllers.controller('createFamilyCtrl', function ($scope, TemplateSer
     TemplateService.list = 2;
     $scope.navigation = NavigationService.getnav();
     $scope.family = {};
-    $scope.submitForm = function () {
-        NavigationService.saveFamily($scope.family, function (data, status) {
+    $scope.submitForm = function() {
+        NavigationService.saveFamily($scope.family, function(data, status) {
             $location.url('/family');
         });
     };
     $scope.family.donor = [];
-    $scope.ismatchDonor = function (data, select) {
-        _.each(data, function (l, key) {
+    $scope.ismatchDonor = function(data, select) {
+        _.each(data, function(l, key) {
             if (typeof l == 'string') {
                 var item = {
                     _id: _.now(),
                     name: _.capitalize(l)
                 };
-                NavigationService.saveDonor(item, function (data, status) {
+                NavigationService.saveDonor(item, function(data, status) {
                     if (data.value == true) {
                         item._id = data.id;
                     }
@@ -514,10 +618,10 @@ phonecatControllers.controller('createFamilyCtrl', function ($scope, TemplateSer
             }
         });
     }
-    $scope.refreshDonor = function (search) {
+    $scope.refreshDonor = function(search) {
         $scope.donor = [];
         if (search) {
-            NavigationService.findDonor(search, $scope.family.donor, function (data, status) {
+            NavigationService.findDonor(search, $scope.family.donor, function(data, status) {
                 if (data.value != false) {
                     $scope.donor = data;
                 }
@@ -528,7 +632,7 @@ phonecatControllers.controller('createFamilyCtrl', function ($scope, TemplateSer
 });
 //createFamily Controller
 //editFamily Controller
-phonecatControllers.controller('editFamilyCtrl', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
+phonecatControllers.controller('editFamilyCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive('Family');
     TemplateService.title = $scope.menutitle;
@@ -537,24 +641,24 @@ phonecatControllers.controller('editFamilyCtrl', function ($scope, TemplateServi
     TemplateService.list = 2;
     $scope.navigation = NavigationService.getnav();
     $scope.family = {};
-    NavigationService.getOneFamily($routeParams.id, function (data, status) {
+    NavigationService.getOneFamily($routeParams.id, function(data, status) {
         $scope.family = data; //Add More Array
     });
-    $scope.submitForm = function () {
+    $scope.submitForm = function() {
         $scope.family._id = $routeParams.id;
-        NavigationService.saveFamily($scope.family, function (data, status) {
+        NavigationService.saveFamily($scope.family, function(data, status) {
             $location.url('/family');
         });
     };
     $scope.family.donor = [];
-    $scope.ismatchDonor = function (data, select) {
-        _.each(data, function (l, key) {
+    $scope.ismatchDonor = function(data, select) {
+        _.each(data, function(l, key) {
             if (typeof l == 'string') {
                 var item = {
                     _id: _.now(),
                     name: _.capitalize(l)
                 };
-                NavigationService.saveDonor(item, function (data, status) {
+                NavigationService.saveDonor(item, function(data, status) {
                     if (data.value == true) {
                         item._id = data.id;
                     }
@@ -565,10 +669,10 @@ phonecatControllers.controller('editFamilyCtrl', function ($scope, TemplateServi
             }
         });
     }
-    $scope.refreshDonor = function (search) {
+    $scope.refreshDonor = function(search) {
         $scope.donor = [];
         if (search) {
-            NavigationService.findDonor(search, $scope.family.donor, function (data, status) {
+            NavigationService.findDonor(search, $scope.family.donor, function(data, status) {
                 if (data.value != false) {
                     $scope.donor = data;
                 }
@@ -579,9 +683,8 @@ phonecatControllers.controller('editFamilyCtrl', function ($scope, TemplateServi
 });
 //editFamily Controller
 //Camp Controller
-phonecatControllers.controller('CampCtrl', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
+phonecatControllers.controller('CampCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
-    dialogShow();
     $scope.menutitle = NavigationService.makeactive('Camp');
     TemplateService.title = $scope.menutitle;
     TemplateService.submenu = '';
@@ -594,9 +697,9 @@ phonecatControllers.controller('CampCtrl', function ($scope, TemplateService, Na
     $scope.pagedata.limit = '20';
     $scope.pagedata.search = '';
     $scope.number = 100;
-    $scope.reload = function (pagedata) {
+    $scope.reload = function(pagedata) {
         $scope.pagedata = pagedata;
-        NavigationService.findLimitedCamp($scope.pagedata, function (data, status) {
+        NavigationService.findLimitedCamp($scope.pagedata, function(data, status) {
             $scope.camp = data;
             $scope.pages = [];
             var newclass = '';
@@ -614,13 +717,13 @@ phonecatControllers.controller('CampCtrl', function ($scope, TemplateService, Na
         });
     }
     $scope.reload($scope.pagedata);
-    $scope.confDelete = function () {
-        NavigationService.deleteCamp(function (data, status) {
+    $scope.confDelete = function() {
+        NavigationService.deleteCamp(function(data, status) {
             ngDialog.close();
             window.location.reload();
         });
     }
-    $scope.deletefun = function (id) {
+    $scope.deletefun = function(id) {
             $.jStorage.set('deletecamp', id);
             ngDialog.open({
                 template: 'views/delete.html',
@@ -633,7 +736,7 @@ phonecatControllers.controller('CampCtrl', function ($scope, TemplateService, Na
 });
 //camp Controller
 //createCamp Controller
-phonecatControllers.controller('createCampCtrl', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
+phonecatControllers.controller('createCampCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive('Camp');
     TemplateService.title = $scope.menutitle;
@@ -642,8 +745,25 @@ phonecatControllers.controller('createCampCtrl', function ($scope, TemplateServi
     TemplateService.list = 2;
     $scope.navigation = NavigationService.getnav();
     $scope.camp = {};
-    $scope.submitForm = function () {
-        NavigationService.saveCamp($scope.camp, function (data, status) {
+
+    $scope.add = function(camp) {
+        if (!camp.venues) {
+            camp.venues = [{
+                "value": ""
+            }];
+        } else {
+            camp.venues.push({
+                "value": ""
+            });
+        }
+    };
+    $scope.remove = function(i, dev) {
+        dev.splice(i, 1);
+    };
+
+    $scope.submitForm = function() {
+        // console.log($scope.camp);
+        NavigationService.saveCamp($scope.camp, function(data, status) {
             $location.url('/camp');
         });
     };
@@ -651,7 +771,7 @@ phonecatControllers.controller('createCampCtrl', function ($scope, TemplateServi
 });
 //createCamp Controller
 //editCamp Controller
-phonecatControllers.controller('editCampCtrl', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
+phonecatControllers.controller('editCampCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive('Camp');
     TemplateService.title = $scope.menutitle;
@@ -660,8 +780,23 @@ phonecatControllers.controller('editCampCtrl', function ($scope, TemplateService
     TemplateService.list = 2;
     $scope.navigation = NavigationService.getnav();
     $scope.camp = {};
-    NavigationService.getOneCamp($routeParams.id, function (data, status) {
+    $scope.add = function(camp) {
+        if (!camp.venues) {
+            camp.venues = [{
+                "value": ""
+            }];
+        } else {
+            camp.venues.push({
+                "value": ""
+            });
+        }
+    };
+    $scope.remove = function(i, dev) {
+        dev.splice(i, 1);
+    };
+    NavigationService.getOneCamp($routeParams.id, function(data, status) {
         $scope.camp = data;
+        $scope.camp.date = new Date($scope.camp.date);
         // if (!$scope.camp.donation) {
         //     $scope.camp.donation = [];
         // }
@@ -672,9 +807,9 @@ phonecatControllers.controller('editCampCtrl', function ($scope, TemplateService
         //     $scope.camp.bottle = [];
         // } //Add More Array
     });
-    $scope.submitForm = function () {
+    $scope.submitForm = function() {
         $scope.camp._id = $routeParams.id;
-        NavigationService.saveCamp($scope.camp, function (data, status) {
+        NavigationService.saveCamp($scope.camp, function(data, status) {
             $location.url('/camp');
         });
     };
@@ -710,9 +845,8 @@ phonecatControllers.controller('editCampCtrl', function ($scope, TemplateService
     // }];
     //editCamp
 });
-phonecatControllers.controller('AdminCtrl', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
+phonecatControllers.controller('AdminCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
-    dialogShow();
     $scope.menutitle = NavigationService.makeactive('Admin');
     TemplateService.title = $scope.menutitle;
     TemplateService.submenu = '';
@@ -725,9 +859,9 @@ phonecatControllers.controller('AdminCtrl', function ($scope, TemplateService, N
     $scope.pagedata.limit = '20';
     $scope.pagedata.search = '';
     $scope.number = 100;
-    $scope.reload = function (pagedata) {
+    $scope.reload = function(pagedata) {
         $scope.pagedata = pagedata;
-        NavigationService.findLimitedAdmin($scope.pagedata, function (data, status) {
+        NavigationService.findLimitedAdmin($scope.pagedata, function(data, status) {
             $scope.admin = data;
             $scope.pages = [];
             var newclass = '';
@@ -745,13 +879,13 @@ phonecatControllers.controller('AdminCtrl', function ($scope, TemplateService, N
         });
     }
     $scope.reload($scope.pagedata);
-    $scope.confDelete = function () {
-        NavigationService.deleteAdmin(function (data, status) {
+    $scope.confDelete = function() {
+        NavigationService.deleteAdmin(function(data, status) {
             ngDialog.close();
             window.location.reload();
         });
     }
-    $scope.deletefun = function (id) {
+    $scope.deletefun = function(id) {
             $.jStorage.set('deleteadmin', id);
             ngDialog.open({
                 template: 'views/delete.html',
@@ -764,7 +898,7 @@ phonecatControllers.controller('AdminCtrl', function ($scope, TemplateService, N
 });
 //camp Controller
 //createCamp Controller
-phonecatControllers.controller('createAdminCtrl', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
+phonecatControllers.controller('createAdminCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive('Admin');
     TemplateService.title = $scope.menutitle;
@@ -773,8 +907,17 @@ phonecatControllers.controller('createAdminCtrl', function ($scope, TemplateServ
     TemplateService.list = 2;
     $scope.navigation = NavigationService.getnav();
     $scope.admin = {};
-    $scope.submitForm = function () {
-        NavigationService.saveAdmin($scope.admin, function (data, status) {
+    $scope.camp = [];
+    NavigationService.getCamp(function(data, status) {
+        console.log(data);
+        if (data.value != false) {
+            $scope.camp = data;
+        } else {
+            $scope.camp = [];
+        }
+    });
+    $scope.submitForm = function() {
+        NavigationService.saveAdmin($scope.admin, function(data, status) {
             $location.url('/admin');
         });
     };
@@ -782,7 +925,7 @@ phonecatControllers.controller('createAdminCtrl', function ($scope, TemplateServ
 });
 //createCamp Controller
 //editCamp Controller
-phonecatControllers.controller('editAdminCtrl', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
+phonecatControllers.controller('editAdminCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive('Admin');
     TemplateService.title = $scope.menutitle;
@@ -791,7 +934,15 @@ phonecatControllers.controller('editAdminCtrl', function ($scope, TemplateServic
     TemplateService.list = 2;
     $scope.navigation = NavigationService.getnav();
     $scope.admin = {};
-    NavigationService.getOneAdmin($routeParams.id, function (data, status) {
+    NavigationService.getCamp(function(data, status) {
+        console.log(data);
+        if (data.value != false) {
+            $scope.camp = data;
+        } else {
+            $scope.camp = [];
+        }
+    });
+    NavigationService.getOneAdmin($routeParams.id, function(data, status) {
         $scope.admin = data;
         // if (!$scope.camp.donation) {
         //     $scope.camp.donation = [];
@@ -803,9 +954,9 @@ phonecatControllers.controller('editAdminCtrl', function ($scope, TemplateServic
         //     $scope.camp.bottle = [];
         // } //Add More Array
     });
-    $scope.submitForm = function () {
+    $scope.submitForm = function() {
         $scope.admin._id = $routeParams.id;
-        NavigationService.saveAdmin($scope.admin, function (data, status) {
+        NavigationService.saveAdmin($scope.admin, function(data, status) {
             $location.url('/admin');
         });
     };
@@ -843,9 +994,8 @@ phonecatControllers.controller('editAdminCtrl', function ($scope, TemplateServic
 });
 //editCamp Controller
 //GiftType Controller
-phonecatControllers.controller('GiftTypeCtrl', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
+phonecatControllers.controller('GiftTypeCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
-    dialogShow();
     $scope.menutitle = NavigationService.makeactive('GiftType');
     TemplateService.title = $scope.menutitle;
     TemplateService.submenu = '';
@@ -858,9 +1008,9 @@ phonecatControllers.controller('GiftTypeCtrl', function ($scope, TemplateService
     $scope.pagedata.limit = '20';
     $scope.pagedata.search = '';
     $scope.number = 100;
-    $scope.reload = function (pagedata) {
+    $scope.reload = function(pagedata) {
         $scope.pagedata = pagedata;
-        NavigationService.findLimitedGiftType($scope.pagedata, function (data, status) {
+        NavigationService.findLimitedGiftType($scope.pagedata, function(data, status) {
             $scope.gifttype = data;
             $scope.pages = [];
             var newclass = '';
@@ -878,13 +1028,13 @@ phonecatControllers.controller('GiftTypeCtrl', function ($scope, TemplateService
         });
     }
     $scope.reload($scope.pagedata);
-    $scope.confDelete = function () {
-        NavigationService.deleteGiftType(function (data, status) {
+    $scope.confDelete = function() {
+        NavigationService.deleteGiftType(function(data, status) {
             ngDialog.close();
             window.location.reload();
         });
     }
-    $scope.deletefun = function (id) {
+    $scope.deletefun = function(id) {
             $.jStorage.set('deletegifttype', id);
             ngDialog.open({
                 template: 'views/delete.html',
@@ -897,7 +1047,7 @@ phonecatControllers.controller('GiftTypeCtrl', function ($scope, TemplateService
 });
 //gifttype Controller
 //createGiftType Controller
-phonecatControllers.controller('createGiftTypeCtrl', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
+phonecatControllers.controller('createGiftTypeCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive('GiftType');
     TemplateService.title = $scope.menutitle;
@@ -906,8 +1056,8 @@ phonecatControllers.controller('createGiftTypeCtrl', function ($scope, TemplateS
     TemplateService.list = 2;
     $scope.navigation = NavigationService.getnav();
     $scope.gifttype = {};
-    $scope.submitForm = function () {
-        NavigationService.saveGiftType($scope.gifttype, function (data, status) {
+    $scope.submitForm = function() {
+        NavigationService.saveGiftType($scope.gifttype, function(data, status) {
             $location.url('/gifttype');
         });
     };
@@ -915,7 +1065,7 @@ phonecatControllers.controller('createGiftTypeCtrl', function ($scope, TemplateS
 });
 //createGiftType Controller
 //editGiftType Controller
-phonecatControllers.controller('editGiftTypeCtrl', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
+phonecatControllers.controller('editGiftTypeCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive('GiftType');
     TemplateService.title = $scope.menutitle;
@@ -924,12 +1074,12 @@ phonecatControllers.controller('editGiftTypeCtrl', function ($scope, TemplateSer
     TemplateService.list = 2;
     $scope.navigation = NavigationService.getnav();
     $scope.gifttype = {};
-    NavigationService.getOneGiftType($routeParams.id, function (data, status) {
+    NavigationService.getOneGiftType($routeParams.id, function(data, status) {
         $scope.gifttype = data; //Add More Array
     });
-    $scope.submitForm = function () {
+    $scope.submitForm = function() {
         $scope.gifttype._id = $routeParams.id;
-        NavigationService.saveGiftType($scope.gifttype, function (data, status) {
+        NavigationService.saveGiftType($scope.gifttype, function(data, status) {
             $location.url('/gifttype');
         });
     };
@@ -937,9 +1087,8 @@ phonecatControllers.controller('editGiftTypeCtrl', function ($scope, TemplateSer
 });
 //editGiftType Controller
 //Hospital Controller
-phonecatControllers.controller('HospitalCtrl', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
+phonecatControllers.controller('HospitalCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
-    dialogShow();
     $scope.menutitle = NavigationService.makeactive('Hospital');
     TemplateService.title = $scope.menutitle;
     TemplateService.submenu = '';
@@ -952,9 +1101,9 @@ phonecatControllers.controller('HospitalCtrl', function ($scope, TemplateService
     $scope.pagedata.limit = '20';
     $scope.pagedata.search = '';
     $scope.number = 100;
-    $scope.reload = function (pagedata) {
+    $scope.reload = function(pagedata) {
         $scope.pagedata = pagedata;
-        NavigationService.findLimitedHospital($scope.pagedata, function (data, status) {
+        NavigationService.findLimitedHospital($scope.pagedata, function(data, status) {
             $scope.hospital = data;
             $scope.pages = [];
             var newclass = '';
@@ -972,13 +1121,13 @@ phonecatControllers.controller('HospitalCtrl', function ($scope, TemplateService
         });
     }
     $scope.reload($scope.pagedata);
-    $scope.confDelete = function () {
-        NavigationService.deleteHospital(function (data, status) {
+    $scope.confDelete = function() {
+        NavigationService.deleteHospital(function(data, status) {
             ngDialog.close();
             window.location.reload();
         });
     }
-    $scope.deletefun = function (id) {
+    $scope.deletefun = function(id) {
             $.jStorage.set('deletehospital', id);
             ngDialog.open({
                 template: 'views/delete.html',
@@ -991,7 +1140,7 @@ phonecatControllers.controller('HospitalCtrl', function ($scope, TemplateService
 });
 //hospital Controller
 //createHospital Controller
-phonecatControllers.controller('createHospitalCtrl', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
+phonecatControllers.controller('createHospitalCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive('Hospital');
     TemplateService.title = $scope.menutitle;
@@ -1000,8 +1149,8 @@ phonecatControllers.controller('createHospitalCtrl', function ($scope, TemplateS
     TemplateService.list = 2;
     $scope.navigation = NavigationService.getnav();
     $scope.hospital = {};
-    $scope.submitForm = function () {
-        NavigationService.saveHospital($scope.hospital, function (data, status) {
+    $scope.submitForm = function() {
+        NavigationService.saveHospital($scope.hospital, function(data, status) {
             $location.url('/hospital');
         });
     };
@@ -1009,7 +1158,7 @@ phonecatControllers.controller('createHospitalCtrl', function ($scope, TemplateS
 });
 //createHospital Controller
 //editHospital Controller
-phonecatControllers.controller('editHospitalCtrl', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
+phonecatControllers.controller('editHospitalCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive('Hospital');
     TemplateService.title = $scope.menutitle;
@@ -1018,12 +1167,12 @@ phonecatControllers.controller('editHospitalCtrl', function ($scope, TemplateSer
     TemplateService.list = 2;
     $scope.navigation = NavigationService.getnav();
     $scope.hospital = {};
-    NavigationService.getOneHospital($routeParams.id, function (data, status) {
+    NavigationService.getOneHospital($routeParams.id, function(data, status) {
         $scope.hospital = data; //Add More Array
     });
-    $scope.submitForm = function () {
+    $scope.submitForm = function() {
         $scope.hospital._id = $routeParams.id;
-        NavigationService.saveHospital($scope.hospital, function (data, status) {
+        NavigationService.saveHospital($scope.hospital, function(data, status) {
             $location.url('/hospital');
         });
     };
@@ -1031,9 +1180,8 @@ phonecatControllers.controller('editHospitalCtrl', function ($scope, TemplateSer
 });
 //editHospital Controller
 //Slider Controller
-phonecatControllers.controller('SliderCtrl', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
+phonecatControllers.controller('SliderCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
-    dialogShow();
     $scope.menutitle = NavigationService.makeactive('Slider');
     TemplateService.title = $scope.menutitle;
     TemplateService.submenu = '';
@@ -1046,9 +1194,9 @@ phonecatControllers.controller('SliderCtrl', function ($scope, TemplateService, 
     $scope.pagedata.limit = '20';
     $scope.pagedata.search = '';
     $scope.number = 100;
-    $scope.reload = function (pagedata) {
+    $scope.reload = function(pagedata) {
         $scope.pagedata = pagedata;
-        NavigationService.findLimitedSlider($scope.pagedata, function (data, status) {
+        NavigationService.findLimitedSlider($scope.pagedata, function(data, status) {
             $scope.slider = data;
             $scope.pages = [];
             var newclass = '';
@@ -1066,13 +1214,13 @@ phonecatControllers.controller('SliderCtrl', function ($scope, TemplateService, 
         });
     }
     $scope.reload($scope.pagedata);
-    $scope.confDelete = function () {
-        NavigationService.deleteSlider(function (data, status) {
+    $scope.confDelete = function() {
+        NavigationService.deleteSlider(function(data, status) {
             ngDialog.close();
             window.location.reload();
         });
     }
-    $scope.deletefun = function (id) {
+    $scope.deletefun = function(id) {
             $.jStorage.set('deleteslider', id);
             ngDialog.open({
                 template: 'views/delete.html',
@@ -1085,7 +1233,7 @@ phonecatControllers.controller('SliderCtrl', function ($scope, TemplateService, 
 });
 //slider Controller
 //createSlider Controller
-phonecatControllers.controller('createSliderCtrl', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog, $upload, $timeout) {
+phonecatControllers.controller('createSliderCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog, $upload, $timeout) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive('Slider');
     TemplateService.title = $scope.menutitle;
@@ -1095,7 +1243,7 @@ phonecatControllers.controller('createSliderCtrl', function ($scope, TemplateSer
     $scope.navigation = NavigationService.getnav();
     $scope.slider = {};
 
-    $scope.removeimage = function (i) {
+    $scope.removeimage = function(i) {
         $scope.slider.image.splice(i, 1);
     };
 
@@ -1104,20 +1252,20 @@ phonecatControllers.controller('createSliderCtrl', function ($scope, TemplateSer
     $scope.usingFlash = FileAPI && FileAPI.upload != null;
     $scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
     $scope.uploadRightAway = true;
-    $scope.changeAngularVersion = function () {
+    $scope.changeAngularVersion = function() {
         window.location.hash = $scope.angularVersion;
         window.location.reload(true);
     };
-    $scope.hasUploader = function (index) {
+    $scope.hasUploader = function(index) {
         return $scope.upload[index] != null;
     };
-    $scope.abort = function (index) {
+    $scope.abort = function(index) {
         $scope.upload[index].abort();
         $scope.upload[index] = null;
     };
     $scope.angularVersion = window.location.hash.length > 1 ? (window.location.hash.indexOf('/') === 1 ?
         window.location.hash.substring(2) : window.location.hash.substring(1)) : '1.2.20';
-    $scope.onFileSelect = function ($files) {
+    $scope.onFileSelect = function($files) {
         $scope.selectedFiles = [];
         $scope.progress = [];
         console.log($files);
@@ -1137,9 +1285,9 @@ phonecatControllers.controller('createSliderCtrl', function ($scope, TemplateSer
             if ($scope.fileReaderSupported && $file.type.indexOf('image') > -1) {
                 var fileReader = new FileReader();
                 fileReader.readAsDataURL($files[i]);
-                var loadFile = function (fileReader, index) {
-                    fileReader.onload = function (e) {
-                        $timeout(function () {
+                var loadFile = function(fileReader, index) {
+                    fileReader.onload = function(e) {
+                        $timeout(function() {
                             $scope.dataUrls[index] = e.target.result;
                         });
                     }
@@ -1152,7 +1300,7 @@ phonecatControllers.controller('createSliderCtrl', function ($scope, TemplateSer
         }
     };
 
-    $scope.start = function (index) {
+    $scope.start = function(index) {
         $scope.progress[index] = 0;
         $scope.errorMsg = null;
         console.log($scope.howToSend = 1);
@@ -1169,34 +1317,34 @@ phonecatControllers.controller('createSliderCtrl', function ($scope, TemplateSer
                 file: $scope.selectedFiles[index],
                 fileFormDataName: 'file'
             });
-            $scope.upload[index].then(function (response) {
-                $timeout(function () {
+            $scope.upload[index].then(function(response) {
+                $timeout(function() {
                     $scope.uploadResult.push(response.data);
                     imagejstupld = response.data;
                     if (imagejstupld != "") {
                         $scope.slider.image.push(imagejstupld.files[0].fd);
                     }
                 });
-            }, function (response) {
+            }, function(response) {
                 if (response.status > 0) $scope.errorMsg = response.status + ': ' + response.data;
-            }, function (evt) {
+            }, function(evt) {
                 $scope.progress[index] = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
             });
-            $scope.upload[index].xhr(function (xhr) {});
+            $scope.upload[index].xhr(function(xhr) {});
         } else {
             var fileReader = new FileReader();
-            fileReader.onload = function (e) {
+            fileReader.onload = function(e) {
                 $scope.upload[index] = $upload.http({
                     url: uploadUrl,
                     headers: {
                         'Content-Type': $scope.selectedFiles[index].type
                     },
                     data: e.target.result
-                }).then(function (response) {
+                }).then(function(response) {
                     $scope.uploadResult.push(response.data);
-                }, function (response) {
+                }, function(response) {
                     if (response.status > 0) $scope.errorMsg = response.status + ': ' + response.data;
-                }, function (evt) {
+                }, function(evt) {
                     $scope.progress[index] = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
                 });
             }
@@ -1204,7 +1352,7 @@ phonecatControllers.controller('createSliderCtrl', function ($scope, TemplateSer
         }
     };
 
-    $scope.dragOverClass = function ($event) {
+    $scope.dragOverClass = function($event) {
         var items = $event.dataTransfer.items;
         var hasFile = false;
         if (items != null) {
@@ -1220,8 +1368,8 @@ phonecatControllers.controller('createSliderCtrl', function ($scope, TemplateSer
         return hasFile ? "dragover" : "dragover-err";
     };
 
-    $scope.submitForm = function () {
-        NavigationService.saveSlider($scope.slider, function (data, status) {
+    $scope.submitForm = function() {
+        NavigationService.saveSlider($scope.slider, function(data, status) {
             $location.url('/slider');
         });
     };
@@ -1229,7 +1377,7 @@ phonecatControllers.controller('createSliderCtrl', function ($scope, TemplateSer
 });
 //createSlider Controller
 //editSlider Controller
-phonecatControllers.controller('editSliderCtrl', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog, $upload, $timeout) {
+phonecatControllers.controller('editSliderCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog, $upload, $timeout) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive('Slider');
     TemplateService.title = $scope.menutitle;
@@ -1239,7 +1387,7 @@ phonecatControllers.controller('editSliderCtrl', function ($scope, TemplateServi
     $scope.navigation = NavigationService.getnav();
     $scope.slider = {};
 
-    $scope.removeimage = function (i) {
+    $scope.removeimage = function(i) {
         $scope.slider.image.splice(i, 1);
     };
 
@@ -1247,20 +1395,20 @@ phonecatControllers.controller('editSliderCtrl', function ($scope, TemplateServi
     $scope.usingFlash = FileAPI && FileAPI.upload != null;
     $scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
     $scope.uploadRightAway = true;
-    $scope.changeAngularVersion = function () {
+    $scope.changeAngularVersion = function() {
         window.location.hash = $scope.angularVersion;
         window.location.reload(true);
     };
-    $scope.hasUploader = function (index) {
+    $scope.hasUploader = function(index) {
         return $scope.upload[index] != null;
     };
-    $scope.abort = function (index) {
+    $scope.abort = function(index) {
         $scope.upload[index].abort();
         $scope.upload[index] = null;
     };
     $scope.angularVersion = window.location.hash.length > 1 ? (window.location.hash.indexOf('/') === 1 ?
         window.location.hash.substring(2) : window.location.hash.substring(1)) : '1.2.20';
-    $scope.onFileSelect = function ($files) {
+    $scope.onFileSelect = function($files) {
         $scope.selectedFiles = [];
         $scope.progress = [];
         console.log($files);
@@ -1280,9 +1428,9 @@ phonecatControllers.controller('editSliderCtrl', function ($scope, TemplateServi
             if ($scope.fileReaderSupported && $file.type.indexOf('image') > -1) {
                 var fileReader = new FileReader();
                 fileReader.readAsDataURL($files[i]);
-                var loadFile = function (fileReader, index) {
-                    fileReader.onload = function (e) {
-                        $timeout(function () {
+                var loadFile = function(fileReader, index) {
+                    fileReader.onload = function(e) {
+                        $timeout(function() {
                             $scope.dataUrls[index] = e.target.result;
                         });
                     }
@@ -1295,7 +1443,7 @@ phonecatControllers.controller('editSliderCtrl', function ($scope, TemplateServi
         }
     };
 
-    $scope.start = function (index) {
+    $scope.start = function(index) {
         $scope.progress[index] = 0;
         $scope.errorMsg = null;
         console.log($scope.howToSend = 1);
@@ -1312,34 +1460,34 @@ phonecatControllers.controller('editSliderCtrl', function ($scope, TemplateServi
                 file: $scope.selectedFiles[index],
                 fileFormDataName: 'file'
             });
-            $scope.upload[index].then(function (response) {
-                $timeout(function () {
+            $scope.upload[index].then(function(response) {
+                $timeout(function() {
                     $scope.uploadResult.push(response.data);
                     imagejstupld = response.data;
                     if (imagejstupld != "") {
                         $scope.slider.image.push(imagejstupld.files[0].fd);
                     }
                 });
-            }, function (response) {
+            }, function(response) {
                 if (response.status > 0) $scope.errorMsg = response.status + ': ' + response.data;
-            }, function (evt) {
+            }, function(evt) {
                 $scope.progress[index] = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
             });
-            $scope.upload[index].xhr(function (xhr) {});
+            $scope.upload[index].xhr(function(xhr) {});
         } else {
             var fileReader = new FileReader();
-            fileReader.onload = function (e) {
+            fileReader.onload = function(e) {
                 $scope.upload[index] = $upload.http({
                     url: uploadUrl,
                     headers: {
                         'Content-Type': $scope.selectedFiles[index].type
                     },
                     data: e.target.result
-                }).then(function (response) {
+                }).then(function(response) {
                     $scope.uploadResult.push(response.data);
-                }, function (response) {
+                }, function(response) {
                     if (response.status > 0) $scope.errorMsg = response.status + ': ' + response.data;
-                }, function (evt) {
+                }, function(evt) {
                     $scope.progress[index] = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
                 });
             }
@@ -1347,7 +1495,7 @@ phonecatControllers.controller('editSliderCtrl', function ($scope, TemplateServi
         }
     };
 
-    $scope.dragOverClass = function ($event) {
+    $scope.dragOverClass = function($event) {
         var items = $event.dataTransfer.items;
         var hasFile = false;
         if (items != null) {
@@ -1363,20 +1511,19 @@ phonecatControllers.controller('editSliderCtrl', function ($scope, TemplateServi
         return hasFile ? "dragover" : "dragover-err";
     };
 
-    NavigationService.getOneSlider($routeParams.id, function (data, status) {
+    NavigationService.getOneSlider($routeParams.id, function(data, status) {
         $scope.slider = data; //Add More Array
     });
-    $scope.submitForm = function () {
+    $scope.submitForm = function() {
         $scope.slider._id = $routeParams.id;
-        NavigationService.saveSlider($scope.slider, function (data, status) {
+        NavigationService.saveSlider($scope.slider, function(data, status) {
             $location.url('/slider');
         });
     };
     //editSlider
 });
-phonecatControllers.controller('SponsorCtrl', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
+phonecatControllers.controller('SponsorCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
-    dialogShow();
     $scope.menutitle = NavigationService.makeactive('Sponsor');
     TemplateService.title = $scope.menutitle;
     TemplateService.submenu = '';
@@ -1389,9 +1536,9 @@ phonecatControllers.controller('SponsorCtrl', function ($scope, TemplateService,
     $scope.pagedata.limit = '20';
     $scope.pagedata.search = '';
     $scope.number = 100;
-    $scope.reload = function (pagedata) {
+    $scope.reload = function(pagedata) {
         $scope.pagedata = pagedata;
-        NavigationService.findLimitedSponsor($scope.pagedata, function (data, status) {
+        NavigationService.findLimitedSponsor($scope.pagedata, function(data, status) {
             $scope.sponsor = data;
             $scope.pages = [];
             var newclass = '';
@@ -1409,13 +1556,13 @@ phonecatControllers.controller('SponsorCtrl', function ($scope, TemplateService,
         });
     }
     $scope.reload($scope.pagedata);
-    $scope.confDelete = function () {
-        NavigationService.deleteSponsor(function (data, status) {
+    $scope.confDelete = function() {
+        NavigationService.deleteSponsor(function(data, status) {
             ngDialog.close();
             window.location.reload();
         });
     }
-    $scope.deletefun = function (id) {
+    $scope.deletefun = function(id) {
             $.jStorage.set('deletesponsor', id);
             ngDialog.open({
                 template: 'views/delete.html',
@@ -1428,7 +1575,7 @@ phonecatControllers.controller('SponsorCtrl', function ($scope, TemplateService,
 });
 //sponsors Controller
 //createSponsors Controller
-phonecatControllers.controller('createSponsorCtrl', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
+phonecatControllers.controller('createSponsorCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive('Sponsor');
     TemplateService.title = $scope.menutitle;
@@ -1437,8 +1584,8 @@ phonecatControllers.controller('createSponsorCtrl', function ($scope, TemplateSe
     TemplateService.list = 2;
     $scope.navigation = NavigationService.getnav();
     $scope.sponsor = {};
-    $scope.submitForm = function () {
-        NavigationService.saveSponsor($scope.sponsor, function (data, status) {
+    $scope.submitForm = function() {
+        NavigationService.saveSponsor($scope.sponsor, function(data, status) {
             $location.url('/sponsor');
         });
     };
@@ -1446,7 +1593,7 @@ phonecatControllers.controller('createSponsorCtrl', function ($scope, TemplateSe
 });
 //createSponsors Controller
 //editSponsors Controller
-phonecatControllers.controller('editSponsorCtrl', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
+phonecatControllers.controller('editSponsorCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive('Sponsor');
     TemplateService.title = $scope.menutitle;
@@ -1455,18 +1602,18 @@ phonecatControllers.controller('editSponsorCtrl', function ($scope, TemplateServ
     TemplateService.list = 2;
     $scope.navigation = NavigationService.getnav();
     $scope.sponsor = {};
-    NavigationService.getOneSponsor($routeParams.id, function (data, status) {
+    NavigationService.getOneSponsor($routeParams.id, function(data, status) {
         $scope.sponsor = data; //Add More Array
     });
-    $scope.submitForm = function () {
+    $scope.submitForm = function() {
         $scope.sponsor._id = $routeParams.id;
-        NavigationService.saveSponsor($scope.sponsor, function (data, status) {
+        NavigationService.saveSponsor($scope.sponsor, function(data, status) {
             $location.url('/sponsor');
         });
     };
     //editSponsors
 });
-phonecatControllers.controller('headerctrl', function ($scope, TemplateService, $location, $routeParams, NavigationService, ngDialog) {
+phonecatControllers.controller('headerctrl', function($scope, TemplateService, $location, $routeParams, NavigationService, ngDialog) {
     $scope.template = TemplateService;
     $scope.navigation = NavigationService.getnav();
     $scope.showaccess = $.jStorage.get("adminuser");
@@ -1474,11 +1621,11 @@ phonecatControllers.controller('headerctrl', function ($scope, TemplateService, 
         $location.url("/login");
     } else {
         if ($.jStorage.get("adminuser").accesslevel == "admin") {
-            _.each($scope.navigation, function (n) {
+            _.each($scope.navigation, function(n) {
                 n.visible = "yes";
             });
         } else {
-            _.each($scope.navigation, function (n) {
+            _.each($scope.navigation, function(n) {
                 if (n.name == "Donor" || n.name == "Dashboard") {
                     n.visible = "yes";
                 } else {
@@ -1487,31 +1634,6 @@ phonecatControllers.controller('headerctrl', function ($scope, TemplateService, 
             });
         }
         NavigationService.setnav($scope.navigation);
-    }
-    dialogShow = function () {
-        if ($.jStorage.get("adminuser") && !$.jStorage.get("adminuser").hospital) {
-            NavigationService.findallHospital(function (data, status) {
-                if (data.value == false) {
-                    ngDialog.open({
-                        template: 'views/createHosp.html',
-                        closeByEscape: false,
-                        closeByDocument: false,
-                        showClose: false,
-                    });
-                } else {
-                    $scope.ngDialogData = data;
-                    if ($scope.ngDialogData && $scope.ngDialogData[0]) {
-                        ngDialog.open({
-                            template: 'views/selecthospital.html',
-                            closeByEscape: false,
-                            closeByDocument: false,
-                            showClose: false,
-                            data: $scope.ngDialogData
-                        });
-                    }
-                }
-            });
-        }
     }
 });
 //editSlider Controller
