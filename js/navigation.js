@@ -171,41 +171,22 @@ var navigationservice = angular.module('navigationservice', [])
             }).success(callback);
         },
         findLimitedDonor: function(donor, callback) {
-            if (donor.campnumber == 'All') {
-                $http({
-                    url: adminurl + 'donor/findlimited',
-                    method: 'POST',
-                    data: {
-                        'donorid': donor.donorid,
-                        'campnumber': '',
-                        'camp': donor.camp,
-                        'name': donor.name,
-                        'firstname': donor.firstname,
-                        'middlename': donor.middlename,
-                        'lastname': donor.lastname,
-                        'search': donor.search,
-                        'pagesize': parseInt(donor.limit),
-                        'pagenumber': parseInt(donor.page)
-                    }
-                }).success(callback);
-            } else {
-                $http({
-                    url: adminurl + 'donor/findlimited',
-                    method: 'POST',
-                    data: {
-                        'donorid': donor.donorid,
-                        'campnumber': donor.campnumber,
-                        'camp': donor.camp,
-                        'name': donor.name,
-                        'firstname': donor.firstname,
-                        'middlename': donor.middlename,
-                        'lastname': donor.lastname,
-                        'search': donor.search,
-                        'pagesize': parseInt(donor.limit),
-                        'pagenumber': parseInt(donor.page)
-                    }
-                }).success(callback);
-            }
+            $http({
+                url: adminurl + 'donor/findlimited',
+                method: 'POST',
+                data: {
+                    'donorid': donor.donorid,
+                    'campnumber': donor.campnumber,
+                    'camp': donor.camp,
+                    'name': donor.name,
+                    'firstname': donor.firstname,
+                    'middlename': donor.middlename,
+                    'lastname': donor.lastname,
+                    'search': donor.search,
+                    'pagesize': parseInt(donor.limit),
+                    'pagenumber': parseInt(donor.page)
+                }
+            }).success(callback);
         },
         deleteDonor: function(callback) {
             $http({

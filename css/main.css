@@ -114,11 +114,13 @@ ul.socialicons li i:hover {
     font-size: 12px;
     color: #444;
 }
+
 .btn-primary {
     color: #fff;
     background-color: #e62739 !important;
     border-color: #e62739 !important;
 }
+
 .template.menu {
     /* background: #e62739; */
     padding: 3px;
@@ -571,6 +573,11 @@ h4.labeler {
 .selct-height {
     height: 45px;
 }
-.pdtb{
+
+.pdtb {
     padding: 0 15px;
+}
+
+.max > input {
+    max-width: 100%;
 }

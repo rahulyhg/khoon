@@ -10,22 +10,49 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-2">
-                                <div class="bot search-box">
-                                    <input type="search" name="search" ng-model="pagedata.search" placeholder="Search">
+                                <div class="search-box">
+                                    <input type="search" ng-model="pagedata.donorid" placeholder="Donor ID">
                                 </div>
                             </div>
-                            <div class="col-md-2 text-center"><a class="btn btn-primary" ng-click="getFilterResults('id');">Donor Id</a></div>
-                            <div class="col-md-2"><a class="btn btn-primary" ng-click="getFilterResults('name');">Full Name</a></div>
-                            <div class="col-md-2"><a class="btn btn-primary" ng-click="getFilterResults('fname');">First Name</a></div>
-                            <div class="col-md-2"><a class="btn btn-primary" ng-click="getFilterResults('mname');">Middle Name</a></div>
-                            <div class="col-md-2"><a class="btn btn-primary" ng-click="getFilterResults('lname');">Last Name</a></div>
+                            <div class="col-md-2 text-center">
+                                <a class="btn btn-primary" ng-click="getFilterResults('id');">Donor Id</a>
+                            </div>
+                            <div class="col-md-2"><a href="#/createdonor" class="right btn btn-primary all-btn create-btn" ng-if="access.accesslevel == 'entry'">New Donor</a></div>
                         </div>
                         <div class="row" style="margin-top:20px">
-                            <div class="col-md-3"><a href="#/createdonor" class="right btn btn-primary all-btn create-btn" ng-if="access.accesslevel == 'entry'">New Donor</a>
+                            <div class="col-md-2">
+                                <div class="search-box max">
+                                    <input type="search" ng-model="pagedata.name" placeholder="Full Name">
+                                </div>
                             </div>
+                            <div class="col-md-2">
+                                <div class="search-box max">
+                                    <input type="search" ng-model="pagedata.firstname" placeholder="First Name">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="search-box max">
+                                    <input type="search" ng-model="pagedata.middlename" placeholder="Middle Name">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="search-box max">
+                                    <input type="search" ng-model="pagedata.lastname" placeholder="Last Name">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="search-box max">
+                                    <input type="search" ng-model="pagedata.pincode" placeholder="Pincode">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <a class="btn btn-primary" style="margin-left:33px" ng-click="getFilterResults('search');">GO</a>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:20px">
                             <div class="col-md-3">
                                 <span style="margin-right: 5px;">Camp</span>
-                                <select style="min-width: 150px;height: 34px;" ng-model="pagedata.campnumber" ng-change="showVenues();" ng-options="camp.campnumber as camp.campnumber for camp in camps">
+                                <select style="min-width: 150px;height: 34px;" ng-model="pagedata.campnumber" ng-change="showVenues(); getFilterResults('number')" ng-options="camp.campnumber as camp.campnumber for camp in camps">
                                 </select>
                             </div>
                             <div class="col-md-3">
@@ -41,7 +68,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div style="margin-top:10px;">
+                        <div style="margin-top:20px;">
                             <table class="table table-bordered ">
                                 <thead>
                                     <tr class="bg-dark">

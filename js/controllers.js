@@ -342,7 +342,7 @@ phonecatControllers.controller('DonorCtrl', function($scope, TemplateService, Na
                     $scope.reload();
                     break;
                 }
-            case 'name':
+            case 'search':
                 {
                     $scope.pagedata.page = 1;
                     $scope.pagedata.donorid = '';
@@ -353,7 +353,7 @@ phonecatControllers.controller('DonorCtrl', function($scope, TemplateService, Na
                     $scope.reload();
                     break;
                 }
-            case 'fname':
+            case 'number':
                 {
                     $scope.pagedata.page = 1;
                     $scope.pagedata.donorid = '';
@@ -361,28 +361,6 @@ phonecatControllers.controller('DonorCtrl', function($scope, TemplateService, Na
                     $scope.pagedata.firstname = $scope.pagedata.search;
                     $scope.pagedata.middlename = '';
                     $scope.pagedata.lastname = '';
-                    $scope.reload();
-                    break;
-                }
-            case 'mname':
-                {
-                    $scope.pagedata.page = 1;
-                    $scope.pagedata.donorid = '';
-                    $scope.pagedata.name = '';
-                    $scope.pagedata.firstname = '';
-                    $scope.pagedata.middlename = $scope.pagedata.search;
-                    $scope.pagedata.lastname = '';
-                    $scope.reload();
-                    break;
-                }
-            case 'lname':
-                {
-                    $scope.pagedata.page = 1;
-                    $scope.pagedata.donorid = '';
-                    $scope.pagedata.name = '';
-                    $scope.pagedata.firstname = '';
-                    $scope.pagedata.middlename = '';
-                    $scope.pagedata.lastname = $scope.pagedata.search;
                     $scope.reload();
                     break;
                 }
