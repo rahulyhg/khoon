@@ -251,10 +251,6 @@ phonecatControllers.controller('DonorCtrl', function($scope, TemplateService, Na
     $scope.pagedata = {};
     $scope.pagedata.page = 1;
     $scope.pagedata.limit = '20';
-    $scope.pagedata.search = '';
-    // if ($scope.access.accesslevel != 'admin')
-    //     $scope.pagedata.camp = $scope.access.camp;
-    // else
     $scope.pagedata.camp = '';
     $scope.pagedata.campnumber = '';
     $scope.pagedata.donorid = '';
@@ -262,6 +258,7 @@ phonecatControllers.controller('DonorCtrl', function($scope, TemplateService, Na
     $scope.pagedata.firstname = '';
     $scope.pagedata.middlename = '';
     $scope.pagedata.lastname = '';
+    $scope.pagedata.pincode = '';
 
     $scope.venues = [{
         value: 'All'
@@ -334,11 +331,14 @@ phonecatControllers.controller('DonorCtrl', function($scope, TemplateService, Na
             case 'id':
                 {
                     $scope.pagedata.page = 1;
-                    $scope.pagedata.donorid = $scope.pagedata.search;
+                    $scope.pagedata.camp = '';
+                    $scope.pagedata.campnumber = '';
                     $scope.pagedata.name = '';
                     $scope.pagedata.firstname = '';
                     $scope.pagedata.middlename = '';
                     $scope.pagedata.lastname = '';
+                    $scope.pagedata.pincode = '';
+
                     $scope.reload();
                     break;
                 }
@@ -346,21 +346,6 @@ phonecatControllers.controller('DonorCtrl', function($scope, TemplateService, Na
                 {
                     $scope.pagedata.page = 1;
                     $scope.pagedata.donorid = '';
-                    $scope.pagedata.name = $scope.pagedata.search;
-                    $scope.pagedata.firstname = '';
-                    $scope.pagedata.middlename = '';
-                    $scope.pagedata.lastname = '';
-                    $scope.reload();
-                    break;
-                }
-            case 'number':
-                {
-                    $scope.pagedata.page = 1;
-                    $scope.pagedata.donorid = '';
-                    $scope.pagedata.name = '';
-                    $scope.pagedata.firstname = $scope.pagedata.search;
-                    $scope.pagedata.middlename = '';
-                    $scope.pagedata.lastname = '';
                     $scope.reload();
                     break;
                 }

@@ -182,7 +182,7 @@ var navigationservice = angular.module('navigationservice', [])
                     'firstname': donor.firstname,
                     'middlename': donor.middlename,
                     'lastname': donor.lastname,
-                    'search': donor.search,
+                    'pincode': donor.pincode,
                     'pagesize': parseInt(donor.limit),
                     'pagenumber': parseInt(donor.page)
                 }
