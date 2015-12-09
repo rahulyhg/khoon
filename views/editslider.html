@@ -17,7 +17,7 @@
                             <div class="scroll-x">
                                 <div class="img-box">
                                     <div ng-repeat="bill in slider.image" class="many-img">
-                                        <img src="{{bill | uploadpath}}" ng-if="slider.image.length!=0">
+                                        <img src="{{bill | uploadpath}}" width="200" height="150" ng-if="slider.image.length!=0">
                                         <button type="button" ng-click="removeimage(slider.image.indexOf(bill));" class="btn btn-danger close-btn" ng-if="slider.image.length!=0"><i class="glyphicon glyphicon-trash"></i>
                                         </button>
                                     </div>

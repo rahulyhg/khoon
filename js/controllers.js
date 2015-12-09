@@ -390,27 +390,44 @@ phonecatControllers.controller('createDonorCtrl', function($scope, TemplateServi
     $scope.donor = {};
     $scope.bottleExist = 1;
     $scope.showfail = 1;
+    $scope.showbottle = false;
     $scope.calculate = function() {
         var birth = new Date($scope.donor.birthdate);
         var curr = new Date();
         var diff = curr.getTime() - birth.getTime();
         $scope.donor.age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
     }
-    $scope.submitForm = function() {
-        $scope.donor.hospital = $.jStorage.get("adminuser").hospital;
-        $scope.donor.camp = $.jStorage.get("adminuser").camp;
-        $scope.donor.campnumber = $.jStorage.get("adminuser").campnumber;
-        NavigationService.saveDonor($scope.donor, function(data, status) {
-            if (data.value == true && data.comment == "Bottle already exists") {
-                $scope.bottleExist = 0;
-            } else if (data.value == false) {
-                $scope.showfail = 0;
-            } else {
-                $scope.showfail = 1;
-                $scope.bottleExist = 1;
-                $location.url('/donor');
-            }
-        });
+    if ($.jStorage.get("adminuser").accesslevel == "admin") {
+        $scope.showbottle = false;
+    } else {
+        $scope.showbottle = true;
+    }
+    $scope.savedonor = function() {
+        if ($.jStorage.get("adminuser").accesslevel == "admin") {
+            NavigationService.saveappDonor($scope.donor, function(data, status) {
+                if (data.value == false) {
+                    $scope.showfail = 0;
+                } else {
+                    $scope.showfail = 1;
+                    $location.url('/donor');
+                }
+            });
+        } else {
+            $scope.donor.hospital = $.jStorage.get("adminuser").hospital;
+            $scope.donor.camp = $.jStorage.get("adminuser").camp;
+            $scope.donor.campnumber = $.jStorage.get("adminuser").campnumber;
+            NavigationService.saveDonor($scope.donor, function(data, status) {
+                if (data.value == true && data.comment == "Bottle already exists") {
+                    $scope.bottleExist = 0;
+                } else if (data.value == false) {
+                    $scope.showfail = 0;
+                } else {
+                    $scope.showfail = 1;
+                    $scope.bottleExist = 1;
+                    $location.url('/donor');
+                }
+            });
+        }
     };
     $scope.donor.village = [];
     $scope.ismatchVillage = function(data, select) {
@@ -455,6 +472,12 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
     $scope.navigation = NavigationService.getnav();
     $scope.access = $.jStorage.get("adminuser");
     $scope.donor = {};
+    $scope.showbottle = false;
+    if ($.jStorage.get("adminuser").accesslevel == "admin") {
+        $scope.showbottle = false;
+    } else {
+        $scope.showbottle = true;
+    }
     NavigationService.getOneDonor($routeParams.id, function(data, status) {
         $scope.donor = data; //Add More Array
         if ($scope.donor.new) {
@@ -470,23 +493,34 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
     $scope.goback = function() {
         $location.url('/donor');
     }
-    $scope.submitForm = function() {
-        $scope.donor._id = $routeParams.id;
-        $scope.donor.hospital = $.jStorage.get("adminuser").hospital;
-        $scope.donor.camp = $.jStorage.get("adminuser").camp;
-        $scope.donor.campnumber = $.jStorage.get("adminuser").campnumber;
-        NavigationService.saveDonor($scope.donor, function(data, status) {
-            console.log(data);
-            if (data.value == true && data.comment == "Bottle already exists") {
-                $scope.bottleExist = 0;
-            } else if (data.value == true && data.comment == "Donor updated") {
-                $scope.showfail = 1;
-                $scope.bottleExist = 1;
-                $location.url('/donor');
-            } else {
-                $scope.showfail = 0;
-            }
-        });
+    $scope.savedonor = function() {
+        if ($.jStorage.get("adminuser").accesslevel == "admin") {
+            $scope.donor._id = $routeParams.id;
+            NavigationService.saveappDonor($scope.donor, function(data, status) {
+                if (data.value == false) {
+                    $scope.showfail = 0;
+                } else {
+                    $scope.showfail = 1;
+                    $location.url('/donor');
+                }
+            });
+        } else {
+            $scope.donor._id = $routeParams.id;
+            $scope.donor.hospital = $.jStorage.get("adminuser").hospital;
+            $scope.donor.camp = $.jStorage.get("adminuser").camp;
+            $scope.donor.campnumber = $.jStorage.get("adminuser").campnumber;
+            NavigationService.saveDonor($scope.donor, function(data, status) {
+                if (data.value == true && data.comment == "Bottle already exists") {
+                    $scope.bottleExist = 0;
+                } else if (data.value == false) {
+                    $scope.showfail = 0;
+                } else {
+                    $scope.showfail = 1;
+                    $scope.bottleExist = 1;
+                    $location.url('/donor');
+                }
+            });
+        }
     };
     $scope.donor.village = [];
     $scope.ismatchVillage = function(data, select) {
@@ -1431,7 +1465,10 @@ phonecatControllers.controller('createSliderCtrl', function($scope, TemplateServ
                     $scope.uploadResult.push(response.data);
                     imagejstupld = response.data;
                     if (imagejstupld != "") {
-                        $scope.slider.image.push(imagejstupld.files[0].fd);
+                        $scope.slider.image.push(imagejstupld.fileid);
+                        console.log(imagejstupld.fileid);
+                        console.log($scope.slider.image);
+                        imagejstupld = "";
                     }
                 });
             }, function(response) {
@@ -1574,7 +1611,8 @@ phonecatControllers.controller('editSliderCtrl', function($scope, TemplateServic
                     $scope.uploadResult.push(response.data);
                     imagejstupld = response.data;
                     if (imagejstupld != "") {
-                        $scope.slider.image.push(imagejstupld.files[0].fd);
+                        $scope.slider.image.push(imagejstupld.fileid);
+                        imagejstupld = "";
                     }
                 });
             }, function(response) {

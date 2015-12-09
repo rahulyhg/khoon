@@ -1,5 +1,5 @@
 // var adminurl = "http://localhost:1337/";
-var adminurl = "http://192.168.0.119:1337/";
+var adminurl = "http://192.168.0.125:1337/";
 var adminlogin = {
     "username": "admin@admin.com",
     "password": "admin123"
@@ -200,6 +200,13 @@ var navigationservice = angular.module('navigationservice', [])
         saveDonor: function(data, callback) {
             $http({
                 url: adminurl + 'donor/save',
+                method: 'POST',
+                data: data
+            }).success(callback);
+        },
+        saveappDonor: function(data, callback) {
+            $http({
+                url: adminurl + 'donor/saveforapp',
                 method: 'POST',
                 data: data
             }).success(callback);
