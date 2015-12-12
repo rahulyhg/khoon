@@ -1,0 +1,17 @@
+<div class="">
+<span class="ngdialog-close close"></span>
+    <table class="table table-bordered ">
+        <thead>
+            <tr class="bg-dark">
+                <th class="text-center">Camp Number</th>
+                <th class="text-center">Camp Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="value in ngDialogData.history">
+                <td class="text-center">{{value.campnumber}}</td>
+                <td class="text-center">{{value.date | date : 'mediumDate' }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

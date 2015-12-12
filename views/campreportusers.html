@@ -59,18 +59,6 @@
                                 <a class="btn btn-primary" ng-click="getFilterResults('search');">GO</a>
                             </div>
                         </div>
-                        <div class="row" style="margin-top:20px">
-                            <div class="col-md-3" ng-if="access.accesslevel=='admin'">
-                                <span style="margin-right: 5px;">Camp</span>
-                                <select style="min-width: 150px;height: 34px;" ng-model="pagedata.campnumber" ng-change="showVenues();" ng-options="camp.campnumber as camp.campnumber for camp in camps">
-                                </select>
-                            </div>
-                            <div class="col-md-3" ng-if="access.accesslevel=='admin'">
-                                <span style="margin-right: 5px;">Venue</span>
-                                <select style="min-width: 150px;height: 34px;" ng-model="pagedata.camp" ng-change="getFilterResults('venue')" ng-options="venue.value as venue.value for venue in venues">
-                                </select>
-                            </div>
-                        </div>
                         <div style="margin-top:20px;">
                             <table class="table table-bordered ">
                                 <thead>
@@ -78,7 +66,7 @@
                                         <th class="text-center">Donor Id</th>
                                         <th class="text-center">Donor Name</th>
                                         <th class="text-center">Donor Pincode</th>
-                                        <th class="text-center" colspan="2" ng-if="access.accesslevel == 'entry' || access.accesslevel == 'admin'">Operations</th>
+                                        <!-- <th class="text-center" colspan="2" ng-if="access.accesslevel == 'entry' || access.accesslevel == 'admin'">Operations</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -86,13 +74,13 @@
                                         <td class="text-center">{{value.donorid}}</td>
                                         <td class="text-center">{{value.name}}</td>
                                         <td class="text-center">{{value.pincode}}</td>
-                                        <td class="text-center" ng-if="access.accesslevel == 'entry' || access.accesslevel == 'admin'"><a ng-click="deletefun(value._id)" class="btn btn-primary all-btn"><i class="fa fa-times"></i></a>
+                                        <!-- <td class="text-center" ng-if="access.accesslevel == 'entry' || access.accesslevel == 'admin'"><a ng-click="deletefun(value._id)" class="btn btn-primary all-btn"><i class="fa fa-times"></i></a>
                                         </td>
                                         <td class="text-center">
                                             <a href="#/editdonor/{{value._id}}" class="btn btn-primary all-btn">
                                                 <i class="fa fa-pencil-square-o"></i>
                                             </a>
-                                        </td>
+                                        </td> -->
                                     </tr>
                                 </tbody>
                             </table>

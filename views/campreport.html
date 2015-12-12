@@ -1,0 +1,153 @@
+<div>
+    <h2 class="title">
+</h2>
+    <div class="page">
+        <div class="row">
+            <div class="col-md-12">
+                <section class="panel panel-default" style="border-radius:0px;">
+                    <div class="panel-heading panel-hdr"><span class="glyphicon glyphicon-th mr5"></span>{{menutitle}}
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class='form-group'>
+                                    <label>Camp Number</label>
+                                    <select ng-model='report.campnumber' class='form-control' ng-options="camp.campnumber as camp.campnumber for camp in camps" ng-change="changeVenues(report.campnumber);">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class='form-group'>
+                                    <label>Camp Location</label>
+                                    <select ng-model='report.camp' class='form-control' ng-options="venue.value as venue.value for venue in venues" ng-change="changeCounts();">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <a href="#/donor">
+                                    <div class="box">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="icon"><i class="fa fa-users"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="text">
+                                                    <h3 class="text-center">{{allusers}}</h3>
+                                                    <p class="text-center">Total Donors</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-md-4" ng-click="getDonorLevels('entry');">
+                                <div class="box">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="icon"><i class="fa fa-pencil-square-o"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="text">
+                                                <h3 class="text-center" ng-if="levelCounts.entry">{{levelCounts.entry}}</h3>
+                                                <h3 class="text-center" ng-if="!levelCounts.entry">0</h3>
+                                                <p class="text-center">Total Entries</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" ng-click="getDonorLevels('verify');">
+                                <div class="box">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="icon"><i class="fa fa-check"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="text">
+                                                <h3 class="text-center" ng-if="levelCounts.verify">{{levelCounts.verify}}</h3>
+                                                <h3 class="text-center" ng-if="!levelCounts.verify">0</h3>
+                                                <p class="text-center">Total Acknowledged</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:20px">
+                            <div class="col-md-4" ng-click="getDonorLevels('verify');">
+                                <div class="box">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="icon"><i class="fa fa-times"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="text">
+                                                <h3 class="text-center" ng-if="levelCounts.verify && levelCounts.entry">{{levelCounts.entry-levelCounts.verify}}</h3>
+                                                <h3 class="text-center" ng-if="!levelCounts.verify || !levelCounts.entry">0</h3>
+                                                <p class="text-center">Pending Acknowledged</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" ng-click="getDonorLevels('gift');">
+                                <div class="box">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="icon"><i class="fa fa-gift"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="text">
+                                                <h3 class="text-center" ng-if="levelCounts.gift">{{levelCounts.gift}}</h3>
+                                                <h3 class="text-center" ng-if="!levelCounts.gift">0</h3>
+                                                <p class="text-center">Total Gifted</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" ng-click="getDonorLevels('verify');">
+                                <div class="box">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="icon"><i class="fa fa-times"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="text">
+                                                <h3 class="text-center" ng-if="levelCounts.verify && levelCounts.gift">{{levelCounts.verify-levelCounts.gift}}</h3>
+                                                <h3 class="text-center" ng-if="!levelCounts.verify || !levelCounts.gift">0</h3>
+                                                <p class="text-center">Pending Gifted</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="row" style="margin-top:15px">
+                            <div class="col-md-4">
+                                <div class="box">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="text">
+                                                <h4 class="text-center">KEM</h4>
+                                                <h4 class="text-center">2000</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>

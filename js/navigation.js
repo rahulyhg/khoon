@@ -46,6 +46,12 @@ var navigationservice = angular.module('navigationservice', [])
             subnav: [],
             visible: "yes"
         }, {
+            name: 'Camp Report',
+            active: '',
+            link: '#/campreport',
+            subnav: [],
+            visible: "yes"
+        }, {
             name: 'Sponsor',
             active: '',
             link: '#/sponsor',
@@ -120,9 +126,29 @@ var navigationservice = angular.module('navigationservice', [])
                 data: data
             }).success(callback);
         },
-        countUser: function(data, callback) {
+        countUser: function(callback) {
             $http({
                 url: adminurl + "donor/countdonor",
+                method: "POST"
+            }).success(callback);
+        },
+        countEntry: function(data, callback) {
+            $http({
+                url: adminurl + "donor/countentry",
+                method: "POST",
+                data: data
+            }).success(callback);
+        },
+        countVerified: function(data, callback) {
+            $http({
+                url: adminurl + "donor/countverified",
+                method: "POST",
+                data: data
+            }).success(callback);
+        },
+        countGifted: function(data, callback) {
+            $http({
+                url: adminurl + "donor/countgifted",
                 method: "POST",
                 data: data
             }).success(callback);
@@ -157,6 +183,7 @@ var navigationservice = angular.module('navigationservice', [])
             }).success(callback);
         },
         acksave: function(data, callback) {
+            delete data.hospital;
             $http({
                 url: adminurl + 'donor/acksave',
                 method: 'POST',
@@ -164,6 +191,7 @@ var navigationservice = angular.module('navigationservice', [])
             }).success(callback);
         },
         giftsave: function(data, callback) {
+            delete data.hospital;
             $http({
                 url: adminurl + 'donor/giftsave',
                 method: 'POST',
@@ -184,7 +212,8 @@ var navigationservice = angular.module('navigationservice', [])
                     'lastname': donor.lastname,
                     'pincode': donor.pincode,
                     'pagesize': parseInt(donor.limit),
-                    'pagenumber': parseInt(donor.page)
+                    'pagenumber': parseInt(donor.page),
+                    'accesslevel': donor.accesslevel
                 }
             }).success(callback);
         },
@@ -502,6 +531,89 @@ var navigationservice = angular.module('navigationservice', [])
                     "hospital": hospitalId,
                     "camp": $.jStorage.get("adminuser").camp,
                     "campnumber": $.jStorage.get("adminuser").campnumber
+                }
+            }).success(callback);
+        },
+        findEntry: function(donor, callback) {
+            $http({
+                url: adminurl + 'donor/findEntry',
+                method: 'POST',
+                data: {
+                    'donorid': donor.donorid,
+                    'campnumber': donor.campnumber,
+                    'camp': donor.camp,
+                    'name': donor.name,
+                    'firstname': donor.firstname,
+                    'middlename': donor.middlename,
+                    'lastname': donor.lastname,
+                    'pincode': donor.pincode,
+                    'pagesize': parseInt(donor.limit),
+                    'pagenumber': parseInt(donor.page),
+                    'accesslevel': donor.accesslevel
+                }
+            }).success(callback);
+        },
+        findVerified: function(donor, callback) {
+            $http({
+                url: adminurl + 'donor/findVerified',
+                method: 'POST',
+                data: {
+                    'donorid': donor.donorid,
+                    'campnumber': donor.campnumber,
+                    'camp': donor.camp,
+                    'name': donor.name,
+                    'firstname': donor.firstname,
+                    'middlename': donor.middlename,
+                    'lastname': donor.lastname,
+                    'pincode': donor.pincode,
+                    'pagesize': parseInt(donor.limit),
+                    'pagenumber': parseInt(donor.page),
+                    'accesslevel': donor.accesslevel
+                }
+            }).success(callback);
+        },
+        findGifted: function(donor, callback) {
+            $http({
+                url: adminurl + 'donor/findGifted',
+                method: 'POST',
+                data: {
+                    'donorid': donor.donorid,
+                    'campnumber': donor.campnumber,
+                    'camp': donor.camp,
+                    'name': donor.name,
+                    'firstname': donor.firstname,
+                    'middlename': donor.middlename,
+                    'lastname': donor.lastname,
+                    'pincode': donor.pincode,
+                    'pagesize': parseInt(donor.limit),
+                    'pagenumber': parseInt(donor.page),
+                    'accesslevel': donor.accesslevel
+                }
+            }).success(callback);
+        },
+        countLevels: function(data, callback) {
+            $http({
+                url: adminurl + 'camp/countlevels',
+                method: 'POST',
+                data: data
+            }).success(callback);
+        },
+        donorLevels: function(data, callback) {
+            $http({
+                url: adminurl + 'camp/donorlevels',
+                method: 'POST',
+                data: {
+                    'donorid': data.donorid,
+                    'campnumber': data.campnumber,
+                    'camp': data.camp,
+                    'name': data.name,
+                    'firstname': data.firstname,
+                    'middlename': data.middlename,
+                    'lastname': data.lastname,
+                    'pincode': data.pincode,
+                    'pagesize': parseInt(data.limit),
+                    'pagenumber': parseInt(data.page),
+                    'accesslevel': data.accesslevel
                 }
             }).success(callback);
         },

@@ -12,21 +12,34 @@ phonecatControllers.controller('home', function($scope, TemplateService, Navigat
     $scope.myhosp = "";
     $scope.hospital = "";
     $scope.access = $.jStorage.get("adminuser");
+    if ($scope.access) {
+        $scope.hospitalid = $scope.access.hospital;
+    }
     $scope.navigation = NavigationService.getnav();
-    NavigationService.countUser($.jStorage.get("adminuser"), function(data, status) {
+
+    NavigationService.countEntry($.jStorage.get("adminuser"), function(data, status) {
         $scope.user = data;
     });
+
+    NavigationService.countVerified($.jStorage.get("adminuser"), function(data, status) {
+        $scope.verified = data;
+    });
+
+    NavigationService.countGifted($.jStorage.get("adminuser"), function(data, status) {
+        $scope.gifted = data;
+    });
+
     NavigationService.getBlood(function(data, status) {
         if (data.value == false) {} else {
             $scope.blood = data;
         }
     });
 
-    NavigationService.countUser('', function(data, status) {
+    NavigationService.countUser(function(data, status) {
         $scope.allusers = data;
     });
 
-    if ($.jStorage.get("adminuser").accesslevel != "admin") {
+    if ($.jStorage.get("adminuser").accesslevel == "entry") {
         if (!$.jStorage.get("adminuser").hospital) {
             NavigationService.findallHospital(function(data, status) {
                 if (data.value != false) {
@@ -58,6 +71,18 @@ phonecatControllers.controller('home', function($scope, TemplateService, Navigat
         $scope.newdata.hospital = hospid;
         $.jStorage.set("adminuser", $scope.newdata);
         window.location.reload();
+    }
+
+    $scope.goToFindEntry = function() {
+        $location.url("/findentry");
+    }
+
+    $scope.goToFindVerify = function() {
+        $location.url("/findverify");
+    }
+
+    $scope.goToFindGift = function() {
+        $location.url("/findgift");
     }
 
 });
@@ -99,12 +124,14 @@ phonecatControllers.controller('login', function($scope, TemplateService, Naviga
     $scope.locations = [{
         value: "Select Location"
     }];
+    $scope.showDrop = true;
+
     NavigationService.getCamp(function(data, status) {
         if (data.value != false) {
             $scope.camp = data;
-            $scope.camp.unshift({
-                campnumber: "All"
-            });
+            // $scope.camp.unshift({
+            //     campnumber: "All"
+            // });
             $scope.camp.unshift({
                 campnumber: "Select Camp Number"
             });
@@ -112,9 +139,9 @@ phonecatControllers.controller('login', function($scope, TemplateService, Naviga
             $scope.login.camp = "Select Location";
         } else {
             $scope.camp = [];
-            $scope.camp.unshift({
-                campnumber: "All"
-            });
+            // $scope.camp.unshift({
+            //     campnumber: "All"
+            // });
             $scope.camp.unshift({
                 campnumber: "Select Camp Number"
             });
@@ -125,15 +152,19 @@ phonecatControllers.controller('login', function($scope, TemplateService, Naviga
     $scope.changedrop = function() {
         if ($scope.login.accesslevel == "admin") {
             $scope.login.campnumber = "All";
-            document.getElementById("mydrop").disabled = true;
-            document.getElementById("campdrop").disabled = true;
+            $scope.login.camp = "All";
+            $scope.showDrop = false;
+            // document.getElementById("mydrop").disabled = true;
+            // document.getElementById("campdrop").disabled = true;
         } else {
+            $scope.showDrop = true;
             $scope.login.camp = "";
             $scope.login.campnumber = "";
-            document.getElementById("mydrop").disabled = false;
-            document.getElementById("campdrop").disabled = false;
+            $scope.changeloc();
+            // document.getElementById("mydrop").disabled = false;
+            // document.getElementById("campdrop").disabled = false;
         }
-        $scope.changeloc();
+
     }
     $scope.changeloc = function() {
         var foundIndex = _.findIndex($scope.camp, {
@@ -143,9 +174,9 @@ phonecatControllers.controller('login', function($scope, TemplateService, Naviga
             if ($scope.login.campnumber != 'All' && $scope.login.campnumber != '') {
                 if ($scope.login.campnumber != "Select Camp Number") {
                     $scope.locations = $scope.camp[foundIndex].venues;
-                    $scope.locations.unshift({
-                        value: "All"
-                    });
+                    // $scope.locations.unshift({
+                    //     value: "All"
+                    // });
                     $scope.locations.unshift({
                         value: "Select Location"
                     });
@@ -187,6 +218,7 @@ phonecatControllers.controller('login', function($scope, TemplateService, Naviga
         if ($scope.login.camp == "Select Location") {
             $scope.login.camp = "";
         }
+        console.log($scope.login);
         if ($scope.login.email != "" && $scope.login.password != "" && $scope.login.accesslevel != "" && $scope.login.camp != "" && $scope.login.campnumber != "") {
             NavigationService.adminLogin($scope.login, function(data, status) {
                 if (data.value == false) {
@@ -259,6 +291,7 @@ phonecatControllers.controller('DonorCtrl', function($scope, TemplateService, Na
     $scope.pagedata.middlename = '';
     $scope.pagedata.lastname = '';
     $scope.pagedata.pincode = '';
+    $scope.pagedata.accesslevel = $scope.access.accesslevel;
 
     $scope.venues = [{
         value: 'All'
@@ -283,7 +316,7 @@ phonecatControllers.controller('DonorCtrl', function($scope, TemplateService, Na
         });
     }
 
-    $scope.reload();
+    // $scope.reload();
 
     $scope.confDelete = function() {
         NavigationService.deleteDonor(function(data, status) {
@@ -370,12 +403,11 @@ phonecatControllers.controller('DonorCtrl', function($scope, TemplateService, Na
     }
 
     $scope.changePage = function(pageno) {
-        console.log(pageno);
-        $scope.pagedata.page = pageno.pageno;
-        $scope.reload();
-    }
-
-    //End Donor
+            console.log(pageno);
+            $scope.pagedata.page = pageno.pageno;
+            $scope.reload();
+        }
+        //End Donor
 });
 //donor Controller
 //createDonor Controller
@@ -473,26 +505,49 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
     $scope.access = $.jStorage.get("adminuser");
     $scope.donor = {};
     $scope.showbottle = false;
+
     if ($.jStorage.get("adminuser").accesslevel == "admin") {
         $scope.showbottle = false;
     } else {
         $scope.showbottle = true;
     }
+
+    $scope.calculate = function() {
+        var birth = new Date($scope.donor.birthdate);
+        var curr = new Date();
+        var diff = curr.getTime() - birth.getTime();
+        $scope.donor.age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+    }
+
     NavigationService.getOneDonor($routeParams.id, function(data, status) {
-        $scope.donor = data; //Add More Array
+        console.log(data);
+        $scope.donor = data;
+        $scope.calculate(); //Add More Array
         if ($scope.donor.new) {
             document.getElementById("bottle").disabled = true;
         } else {
             document.getElementById("bottle").disabled = false;
         }
         $scope.donor.birthdate = new Date($scope.donor.birthdate);
+        $scope.donor.hospital = $.jStorage.get("adminuser").hospital;
+        // console.log($scope.donor);
     });
+
+    // NavigationService.findallHospital(function(data, status) {
+    //     $scope.hospital = data;
+    // });
+
     NavigationService.findallHospital(function(data, status) {
-        $scope.hospital = data;
+        console.log(data);
+        if (data.value != false) {
+            $scope.hospitals = data;
+        }
     });
+
     $scope.goback = function() {
         $location.url('/donor');
     }
+
     $scope.savedonor = function() {
         if ($.jStorage.get("adminuser").accesslevel == "admin") {
             $scope.donor._id = $routeParams.id;
@@ -506,7 +561,6 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
             });
         } else {
             $scope.donor._id = $routeParams.id;
-            $scope.donor.hospital = $.jStorage.get("adminuser").hospital;
             $scope.donor.camp = $.jStorage.get("adminuser").camp;
             $scope.donor.campnumber = $.jStorage.get("adminuser").campnumber;
             NavigationService.saveDonor($scope.donor, function(data, status) {
@@ -551,7 +605,16 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
             });
         }
     };
-    //editDonor
+
+    $scope.openHistory = function() {
+            $scope.ngDialogData = $scope.donor;
+            ngDialog.open({
+                template: 'views/history.html',
+                controller: 'editDonorCtrl',
+                data: $scope.ngDialogData
+            });
+        }
+        //editDonor
 });
 //editDonor Controller
 phonecatControllers.controller('oldDonorCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog, $timeout) {
@@ -573,34 +636,194 @@ phonecatControllers.controller('oldDonorCtrl', function($scope, TemplateService,
     $scope.editdonor.verified = false;
     $scope.editdonor.giftdone = false;
 
-    $scope.submitForm1 = function() {
-        $scope.searchdonor.camp = $.jStorage.get("adminuser").camp;
-        $scope.searchdonor.campnumber = $.jStorage.get("adminuser").campnumber;
-        $scope.searchdonor.hospital = $.jStorage.get("adminuser").hospital;
-        NavigationService.getDonorbyid($scope.searchdonor, function(data, status) {
-            if (data.value == false) {
-                $scope.searchdonor = {};
-                $scope.isValidLogin = 0;
+    $scope.pagedata = {};
+    $scope.pagedata.page = 1;
+    $scope.pagedata.limit = '20';
+    $scope.pagedata.donorid = '';
+    $scope.pagedata.name = '';
+    $scope.pagedata.firstname = '';
+    $scope.pagedata.middlename = '';
+    $scope.pagedata.lastname = '';
+    $scope.pagedata.pincode = '';
+    $scope.pagedata.camp = $.jStorage.get("adminuser").camp;
+    $scope.pagedata.campnumber = $.jStorage.get("adminuser").campnumber;
+    $scope.pagedata.accesslevel = $.jStorage.get("adminuser").accesslevel;
+    // $scope.pagedata.hospital = $.jStorage.get("adminuser").hospital;
+
+
+    $scope.reload1 = function() {
+        NavigationService.findEntry($scope.pagedata, function(data, status) {
+            console.log(data);
+            if (data.value != false) {
+                $scope.donorEntry = data;
+                $scope.pages = [];
+                var newclass = '';
+                for (var i = 1; i <= data.totalpages; i++) {
+                    if ($scope.pagedata.page == i) {
+                        newclass = 'active';
+                    } else {
+                        newclass = '';
+                    }
+                    $scope.pages.push({
+                        pageno: i,
+                        class: newclass
+                    });
+                }
             } else {
-                $scope.donor = data;
-                $scope.isValidLogin = 2;
+                $scope.donorEntry = [];
             }
         });
     }
-    $scope.submitForm2 = function() {
-        $scope.searchdonor.camp = $.jStorage.get("adminuser").camp;
-        $scope.searchdonor.campnumber = $.jStorage.get("adminuser").campnumber;
-        $scope.searchdonor.hospital = $.jStorage.get("adminuser").hospital;
-        NavigationService.getverified($scope.searchdonor, function(data, status) {
-            if (data.value == false) {
-                $scope.searchdonor = {};
-                $scope.isValidLogin = 0;
-            } else {
+
+    $scope.reload1();
+
+    $scope.getFilterResults1 = function(val) {
+        switch (val) {
+            case 'id':
+                {
+                    $scope.pagedata.page = 1;
+                    $scope.pagedata.camp = '';
+                    $scope.pagedata.campnumber = '';
+                    $scope.pagedata.name = '';
+                    $scope.pagedata.firstname = '';
+                    $scope.pagedata.middlename = '';
+                    $scope.pagedata.lastname = '';
+                    $scope.pagedata.pincode = '';
+                    $scope.reload1();
+                    break;
+                }
+            case 'search':
+                {
+                    $scope.pagedata.page = 1;
+                    $scope.pagedata.donorid = '';
+                    $scope.reload1();
+                    break;
+                }
+            case 'venue':
+                {
+                    $scope.pagedata.page = 1;
+                    $scope.reload1();
+                    break;
+                }
+            case 'limit':
+                {
+                    $scope.pagedata.page = 1;
+                    $scope.reload1();
+                    break;
+                }
+            default:
+                {
+                    $scope.reload1();
+                    break;
+                }
+        }
+    }
+
+    $scope.changePage1 = function(pageno) {
+        console.log(pageno);
+        $scope.pagedata.page = pageno.pageno;
+        $scope.reload1();
+    }
+
+    $scope.reload2 = function() {
+        NavigationService.findVerified($scope.pagedata, function(data, status) {
+            if (data.value != false) {
                 $scope.donor = data;
-                $scope.isValidLogin = 2;
+                $scope.pages = [];
+                var newclass = '';
+                for (var i = 1; i <= data.totalpages; i++) {
+                    if ($scope.pagedata.page == i) {
+                        newclass = 'active';
+                    } else {
+                        newclass = '';
+                    }
+                    $scope.pages.push({
+                        pageno: i,
+                        class: newclass
+                    });
+                }
             }
         });
     }
+
+    $scope.reload2();
+
+    $scope.getFilterResults2 = function(val) {
+        switch (val) {
+            case 'id':
+                {
+                    $scope.pagedata.page = 1;
+                    $scope.pagedata.camp = '';
+                    $scope.pagedata.campnumber = '';
+                    $scope.pagedata.name = '';
+                    $scope.pagedata.firstname = '';
+                    $scope.pagedata.middlename = '';
+                    $scope.pagedata.lastname = '';
+                    $scope.pagedata.pincode = '';
+                    $scope.reload2();
+                    break;
+                }
+            case 'search':
+                {
+                    $scope.pagedata.page = 1;
+                    $scope.pagedata.donorid = '';
+                    $scope.reload2();
+                    break;
+                }
+            case 'venue':
+                {
+                    $scope.pagedata.page = 1;
+                    $scope.reload2();
+                    break;
+                }
+            case 'limit':
+                {
+                    $scope.pagedata.page = 1;
+                    $scope.reload2();
+                    break;
+                }
+            default:
+                {
+                    $scope.reload2();
+                    break;
+                }
+        }
+    }
+
+    $scope.changePage2 = function(pageno) {
+        console.log(pageno);
+        $scope.pagedata.page = pageno.pageno;
+        $scope.reload2();
+    }
+
+    // $scope.submitForm1 = function() {
+    //     $scope.searchdonor.camp = $.jStorage.get("adminuser").camp;
+    //     $scope.searchdonor.campnumber = $.jStorage.get("adminuser").campnumber;
+    //     $scope.searchdonor.hospital = $.jStorage.get("adminuser").hospital;
+    //     NavigationService.getDonorbyid($scope.searchdonor, function(data, status) {
+    //         if (data.value == false) {
+    //             $scope.searchdonor = {};
+    //             $scope.isValidLogin = 0;
+    //         } else {
+    //             $scope.donor = data;
+    //             $scope.isValidLogin = 2;
+    //         }
+    //     });
+    // }
+    // $scope.submitForm2 = function() {
+    //     $scope.searchdonor.camp = $.jStorage.get("adminuser").camp;
+    //     $scope.searchdonor.campnumber = $.jStorage.get("adminuser").campnumber;
+    //     $scope.searchdonor.hospital = $.jStorage.get("adminuser").hospital;
+    //     NavigationService.getverified($scope.searchdonor, function(data, status) {
+    //         if (data.value == false) {
+    //             $scope.searchdonor = {};
+    //             $scope.isValidLogin = 0;
+    //         } else {
+    //             $scope.donor = data;
+    //             $scope.isValidLogin = 2;
+    //         }
+    //     });
+    // }
     $scope.openverify = function(value) {
         $scope.editdonor = value;
         $scope.editdonor.verified = false;
@@ -629,6 +852,7 @@ phonecatControllers.controller('oldDonorCtrl', function($scope, TemplateService,
                     $scope.donor = {};
                     $scope.searchdonor = {};
                     $scope.isValidLogin = 2;
+                    $scope.reload1();
                 }
             });
         } else {
@@ -664,6 +888,7 @@ phonecatControllers.controller('oldDonorCtrl', function($scope, TemplateService,
                     $scope.donor = {};
                     $scope.searchdonor = {};
                     $scope.isValidLogin = 2;
+                    $scope.reload2();
                 }
             });
         } else {
@@ -716,15 +941,16 @@ phonecatControllers.controller('FamilyCtrl', function($scope, TemplateService, N
         });
     }
     $scope.deletefun = function(id) {
-            $.jStorage.set('deletefamily', id);
-            ngDialog.open({
-                template: 'views/delete.html',
-                closeByEscape: false,
-                controller: 'FamilyCtrl',
-                closeByDocument: false
-            });
-        }
-        //End Family
+        $.jStorage.set('deletefamily', id);
+        ngDialog.open({
+            template: 'views/delete.html',
+            closeByEscape: false,
+            controller: 'FamilyCtrl',
+            closeByDocument: false
+        });
+    }
+
+    //End Family
 });
 //family Controller
 //createFamily Controller
@@ -923,6 +1149,7 @@ phonecatControllers.controller('editCampCtrl', function($scope, TemplateService,
     TemplateService.list = 2;
     $scope.navigation = NavigationService.getnav();
     $scope.camp = {};
+    $scope.disableCampClose = 'no';
     $scope.add = function(camp) {
         if (!camp.venues) {
             camp.venues = [{
@@ -940,6 +1167,7 @@ phonecatControllers.controller('editCampCtrl', function($scope, TemplateService,
     NavigationService.getOneCamp($routeParams.id, function(data, status) {
         $scope.camp = data;
         $scope.camp.date = new Date($scope.camp.date);
+        $scope.disableCampClose = $scope.camp.status;
         // if (!$scope.camp.donation) {
         //     $scope.camp.donation = [];
         // }
@@ -1064,6 +1292,16 @@ phonecatControllers.controller('createAdminCtrl', function($scope, TemplateServi
             $location.url('/admin');
         });
     };
+
+    $scope.changeVenues = function(val) {
+        console.log(val);
+        var foundIndex = _.findIndex($scope.camp, {
+            'campnumber': val
+        });
+        $scope.venues = $scope.camp[foundIndex].venues;
+        $scope.venues = _.uniq($scope.venues, 'value');
+    }
+
     //createCamp
 });
 //createCamp Controller
@@ -1797,4 +2035,588 @@ phonecatControllers.controller('headerctrl', function($scope, TemplateService, $
     }
 });
 //editSlider Controller
+//findEntry Controller
+phonecatControllers.controller('findEntryCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
+    $scope.template = TemplateService;
+    // $scope.menutitle = NavigationService.makeactive('Donor');
+    TemplateService.title = $scope.menutitle;
+    TemplateService.submenu = '';
+    TemplateService.content = 'views/findentry.html';
+    TemplateService.list = 2;
+
+    $scope.navigation = NavigationService.getnav();
+    $scope.Donor = [];
+    $scope.access = $.jStorage.get('adminuser');
+    $scope.number = 100;
+    $scope.pagedata = {};
+    $scope.pagedata.page = 1;
+    $scope.pagedata.limit = '20';
+    $scope.pagedata.camp = '';
+    $scope.pagedata.campnumber = '';
+    $scope.pagedata.donorid = '';
+    $scope.pagedata.name = '';
+    $scope.pagedata.firstname = '';
+    $scope.pagedata.middlename = '';
+    $scope.pagedata.lastname = '';
+    $scope.pagedata.pincode = '';
+
+    $scope.venues = [{
+        value: 'All'
+    }];
+
+    $scope.reload = function() {
+        NavigationService.findEntry($scope.pagedata, function(data, status) {
+            console.log(data);
+            $scope.donor = data;
+            $scope.pages = [];
+            var newclass = '';
+            for (var i = 1; i <= data.totalpages; i++) {
+                if ($scope.pagedata.page == i) {
+                    newclass = 'active';
+                } else {
+                    newclass = '';
+                }
+                $scope.pages.push({
+                    pageno: i,
+                    class: newclass
+                });
+            }
+        });
+    }
+
+    $scope.reload();
+
+    $scope.confDelete = function() {
+        NavigationService.deleteDonor(function(data, status) {
+            ngDialog.close();
+            window.location.reload();
+        });
+    }
+
+    $scope.deletefun = function(id) {
+        $.jStorage.set('deletedonor', id);
+        ngDialog.open({
+            template: 'views/delete.html',
+            closeByEscape: false,
+            controller: 'findEntryCtrl',
+            closeByDocument: false
+        });
+    }
+
+    NavigationService.getCamp(function(data) {
+        console.log(data);
+        $scope.camps = data;
+        $scope.camps.unshift({
+            campnumber: 'All',
+            venues: [{
+                value: "All"
+            }]
+        });
+    })
+
+    $scope.showVenues = function() {
+        console.log($scope.pagedata.campnumber);
+        var foundIndex = _.findIndex($scope.camps, {
+            'campnumber': $scope.pagedata.campnumber
+        });
+        if (foundIndex != -1) {
+            $scope.venues = $scope.camps[foundIndex].venues;
+        }
+        $scope.pagedata.camp = '';
+        $scope.pagedata.page = 1;
+        $scope.reload();
+    }
+
+    $scope.getFilterResults = function(val) {
+        switch (val) {
+            case 'id':
+                {
+                    $scope.pagedata.page = 1;
+                    $scope.pagedata.camp = '';
+                    $scope.pagedata.campnumber = '';
+                    $scope.pagedata.name = '';
+                    $scope.pagedata.firstname = '';
+                    $scope.pagedata.middlename = '';
+                    $scope.pagedata.lastname = '';
+                    $scope.pagedata.pincode = '';
+
+                    $scope.reload();
+                    break;
+                }
+            case 'search':
+                {
+                    $scope.pagedata.page = 1;
+                    $scope.pagedata.donorid = '';
+                    $scope.reload();
+                    break;
+                }
+            case 'venue':
+                {
+                    $scope.pagedata.page = 1;
+                    $scope.reload();
+                    break;
+                }
+            case 'limit':
+                {
+                    $scope.pagedata.page = 1;
+                    $scope.reload();
+                    break;
+                }
+            default:
+                {
+                    $scope.reload();
+                    break;
+                }
+        }
+    }
+
+    $scope.changePage = function(pageno) {
+        console.log(pageno);
+        $scope.pagedata.page = pageno.pageno;
+        $scope.reload();
+    }
+
+    //End Donor
+});
+//findEntry Controller
+phonecatControllers.controller('findVerifyCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog, $timeout) {
+    $scope.template = TemplateService;
+    TemplateService.title = $scope.menutitle;
+    TemplateService.submenu = '';
+    TemplateService.content = 'views/findverify.html';
+    TemplateService.list = 2;
+    $scope.navigation = NavigationService.getnav();
+    $scope.donor = {};
+    $scope.editdonor = {};
+    $scope.searchdonor = {};
+    $scope.access = $.jStorage.get('adminuser').accesslevel;
+    $scope.isValidLogin = 2;
+    $scope.showerror = 1;
+    $scope.showerror2 = false;
+    $scope.showtrue = false;
+    $scope.editdonor.verified = false;
+    $scope.editdonor.giftdone = false;
+
+    $scope.pagedata = {};
+    $scope.pagedata.page = 1;
+    $scope.pagedata.limit = '20';
+    $scope.pagedata.donorid = '';
+    $scope.pagedata.name = '';
+    $scope.pagedata.firstname = '';
+    $scope.pagedata.middlename = '';
+    $scope.pagedata.lastname = '';
+    $scope.pagedata.pincode = '';
+    $scope.pagedata.camp = $.jStorage.get("adminuser").camp;
+    $scope.pagedata.campnumber = $.jStorage.get("adminuser").campnumber;
+    $scope.pagedata.accesslevel = $.jStorage.get("adminuser").accesslevel;
+    // $scope.pagedata.hospital = $.jStorage.get("adminuser").hospital;
+
+
+    $scope.reload1 = function() {
+        NavigationService.findVerified($scope.pagedata, function(data, status) {
+            console.log(data);
+            if (data.value != false) {
+                $scope.donor = data;
+                $scope.pages = [];
+                var newclass = '';
+                for (var i = 1; i <= data.totalpages; i++) {
+                    if ($scope.pagedata.page == i) {
+                        newclass = 'active';
+                    } else {
+                        newclass = '';
+                    }
+                    $scope.pages.push({
+                        pageno: i,
+                        class: newclass
+                    });
+                }
+            }
+        });
+    }
+
+    $scope.reload1();
+
+    $scope.getFilterResults1 = function(val) {
+        switch (val) {
+            case 'id':
+                {
+                    $scope.pagedata.page = 1;
+                    $scope.pagedata.camp = '';
+                    $scope.pagedata.campnumber = '';
+                    $scope.pagedata.name = '';
+                    $scope.pagedata.firstname = '';
+                    $scope.pagedata.middlename = '';
+                    $scope.pagedata.lastname = '';
+                    $scope.pagedata.pincode = '';
+                    $scope.reload1();
+                    break;
+                }
+            case 'search':
+                {
+                    $scope.pagedata.page = 1;
+                    $scope.pagedata.donorid = '';
+                    $scope.reload1();
+                    break;
+                }
+            case 'venue':
+                {
+                    $scope.pagedata.page = 1;
+                    $scope.reload1();
+                    break;
+                }
+            case 'limit':
+                {
+                    $scope.pagedata.page = 1;
+                    $scope.reload1();
+                    break;
+                }
+            default:
+                {
+                    $scope.reload1();
+                    break;
+                }
+        }
+    }
+
+    $scope.changePage1 = function(pageno) {
+        console.log(pageno);
+        $scope.pagedata.page = pageno.pageno;
+        $scope.reload1();
+    }
+
+    $scope.openverify = function(value) {
+        $scope.editdonor = value;
+        $scope.editdonor.verified = false;
+        $scope.isValidLogin = 1;
+    }
+    $scope.verify = function() {
+        if ($scope.editdonor.verified == true) {
+            $scope.showerror = 1;
+            NavigationService.acksave($scope.editdonor, function(data, status) {
+                if (data.value == false && data.comment == "No data found") {
+                    $scope.showerror2 = true;
+                    $timeout(function() {
+                        $scope.showerror2 = false;
+                    }, 2500);
+                    $scope.editdonor = {};
+                    $scope.donor = {};
+                    $scope.searchdonor = {};
+                    $scope.isValidLogin = 2;
+                } else {
+                    $scope.showtrue = true;
+                    $timeout(function() {
+                        $scope.showtrue = false;
+                    }, 2500);
+                    $scope.showerror2 = false;
+                    $scope.editdonor = {};
+                    $scope.donor = {};
+                    $scope.searchdonor = {};
+                    $scope.isValidLogin = 2;
+                    $scope.reload1();
+                }
+            });
+        } else {
+            $scope.showerror = 0;
+        }
+    };
+
+});
+
+phonecatControllers.controller('findGiftCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog, $timeout) {
+    $scope.template = TemplateService;
+    TemplateService.title = $scope.menutitle;
+    TemplateService.submenu = '';
+    TemplateService.content = 'views/findgift.html';
+    TemplateService.list = 2;
+    $scope.navigation = NavigationService.getnav();
+    $scope.donor = {};
+    $scope.editdonor = {};
+    $scope.searchdonor = {};
+    $scope.access = $.jStorage.get('adminuser').accesslevel;
+    $scope.isValidLogin = 2;
+    $scope.showerror = 1;
+    $scope.showerror2 = false;
+    $scope.showtrue = false;
+    $scope.editdonor.verified = false;
+    $scope.editdonor.giftdone = false;
+
+    $scope.pagedata = {};
+    $scope.pagedata.page = 1;
+    $scope.pagedata.limit = '20';
+    $scope.pagedata.donorid = '';
+    $scope.pagedata.name = '';
+    $scope.pagedata.firstname = '';
+    $scope.pagedata.middlename = '';
+    $scope.pagedata.lastname = '';
+    $scope.pagedata.pincode = '';
+    $scope.pagedata.camp = $.jStorage.get("adminuser").camp;
+    $scope.pagedata.campnumber = $.jStorage.get("adminuser").campnumber;
+    $scope.pagedata.accesslevel = $.jStorage.get("adminuser").accesslevel;
+    // $scope.pagedata.hospital = $.jStorage.get("adminuser").hospital;
+
+    $scope.reload2 = function() {
+        NavigationService.findGifted($scope.pagedata, function(data, status) {
+            if (data.value != false) {
+                $scope.donor = data;
+                $scope.pages = [];
+                var newclass = '';
+                for (var i = 1; i <= data.totalpages; i++) {
+                    if ($scope.pagedata.page == i) {
+                        newclass = 'active';
+                    } else {
+                        newclass = '';
+                    }
+                    $scope.pages.push({
+                        pageno: i,
+                        class: newclass
+                    });
+                }
+            }
+        });
+    }
+
+    $scope.reload2();
+
+    $scope.getFilterResults2 = function(val) {
+        switch (val) {
+            case 'id':
+                {
+                    $scope.pagedata.page = 1;
+                    $scope.pagedata.camp = '';
+                    $scope.pagedata.campnumber = '';
+                    $scope.pagedata.name = '';
+                    $scope.pagedata.firstname = '';
+                    $scope.pagedata.middlename = '';
+                    $scope.pagedata.lastname = '';
+                    $scope.pagedata.pincode = '';
+                    $scope.reload2();
+                    break;
+                }
+            case 'search':
+                {
+                    $scope.pagedata.page = 1;
+                    $scope.pagedata.donorid = '';
+                    $scope.reload2();
+                    break;
+                }
+            case 'venue':
+                {
+                    $scope.pagedata.page = 1;
+                    $scope.reload2();
+                    break;
+                }
+            case 'limit':
+                {
+                    $scope.pagedata.page = 1;
+                    $scope.reload2();
+                    break;
+                }
+            default:
+                {
+                    $scope.reload2();
+                    break;
+                }
+        }
+    }
+
+    $scope.changePage2 = function(pageno) {
+        console.log(pageno);
+        $scope.pagedata.page = pageno.pageno;
+        $scope.reload2();
+    }
+
+    $scope.opengift = function(value) {
+        $scope.editdonor = value;
+        $scope.editdonor.giftdone = false;
+        $scope.isValidLogin = 1;
+    }
+    $scope.gift = function() {
+        if ($scope.editdonor.giftdone == true) {
+            $scope.showerror = 1;
+            delete $scope.editdonor.donationcount;
+            NavigationService.giftsave($scope.editdonor, function(data, status) {
+                if (data.value == false && data.comment == "No data found") {
+                    $scope.showerror2 = true;
+                    $timeout(function() {
+                        $scope.showerror2 = false;
+                    }, 2500);
+                    $scope.editdonor = {};
+                    $scope.donor = {};
+                    $scope.searchdonor = {};
+                    $scope.isValidLogin = 2;
+                } else {
+                    $scope.showtrue = true;
+                    $timeout(function() {
+                        $scope.showtrue = false;
+                    }, 2500);
+                    $scope.showerror2 = false;
+                    $scope.editdonor = {};
+                    $scope.donor = {};
+                    $scope.searchdonor = {};
+                    $scope.isValidLogin = 2;
+                    $scope.reload2();
+                }
+            });
+        } else {
+            $scope.showerror = 0;
+        }
+    };
+
+    //editDonor
+});
+
+phonecatControllers.controller('campReportCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog, $timeout) {
+    $scope.template = TemplateService;
+    $scope.menutitle = NavigationService.makeactive('Camp Report');
+    TemplateService.title = $scope.menutitle;
+    TemplateService.submenu = '';
+    TemplateService.content = 'views/campreport.html';
+    TemplateService.list = 2;
+    $scope.navigation = NavigationService.getnav();
+
+    $scope.report = {};
+
+    NavigationService.getCamp(function(data) {
+        console.log(data);
+        $scope.camps = data;
+        $scope.report.campnumber = $scope.camps[$scope.camps.length - 1].campnumber;
+        $scope.venues = $scope.camps[$scope.camps.length - 1].venues;
+        $scope.venues.unshift({
+            value: 'All'
+        });
+        $scope.report.camp = 'All';
+        getCounts();
+    })
+
+    $scope.changeVenues = function(val) {
+        console.log(val);
+        var foundIndex = _.findIndex($scope.camps, {
+            'campnumber': val
+        });
+        $scope.venues = $scope.camps[foundIndex].venues;
+        $scope.venues.unshift({
+            value: 'All'
+        });
+        $scope.venues = _.uniq($scope.venues, 'value');
+        $scope.report.camp = 'All';
+        getCounts();
+    }
+
+    $scope.changeCounts = function() {
+        getCounts();
+    }
+
+    NavigationService.countUser(function(data, status) {
+        $scope.allusers = data;
+    });
+
+    function getCounts() {
+        NavigationService.countLevels($scope.report, function(data) {
+            console.log(data);
+            $scope.levelCounts = data;
+        })
+    }
+
+    $scope.getDonorLevels = function(accesslevel) {
+        $location.url("/campreportusers/" + $scope.report.campnumber + "/" + $scope.report.camp + "/" + accesslevel);
+    }
+
+});
+
+phonecatControllers.controller('campReportUsersCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog, $routeParams) {
+    $scope.template = TemplateService;
+    $scope.menutitle = NavigationService.makeactive('Donor');
+    TemplateService.title = $scope.menutitle;
+    TemplateService.submenu = '';
+    TemplateService.content = 'views/campreportusers.html';
+    // TemplateService.content = 'views/olddonor.html';
+    TemplateService.list = 2;
+    $scope.navigation = NavigationService.getnav();
+    $scope.Donor = [];
+    // $scope.access = $.jStorage.get('adminuser');
+    $scope.number = 100;
+    $scope.pagedata = {};
+    $scope.pagedata.page = 1;
+    $scope.pagedata.limit = '20';
+    $scope.pagedata.camp = $routeParams.camp;
+    $scope.pagedata.campnumber = $routeParams.campnumber;
+    $scope.pagedata.accesslevel = $routeParams.accesslevel;
+    $scope.pagedata.donorid = '';
+    $scope.pagedata.name = '';
+    $scope.pagedata.firstname = '';
+    $scope.pagedata.middlename = '';
+    $scope.pagedata.lastname = '';
+    $scope.pagedata.pincode = '';
+
+    $scope.reload = function() {
+        NavigationService.donorLevels($scope.pagedata, function(data, status) {
+            console.log(data);
+            $scope.donor = data;
+            $scope.pages = [];
+            var newclass = '';
+            for (var i = 1; i <= data.totalpages; i++) {
+                if ($scope.pagedata.page == i) {
+                    newclass = 'active';
+                } else {
+                    newclass = '';
+                }
+                $scope.pages.push({
+                    pageno: i,
+                    class: newclass
+                });
+            }
+        });
+    }
+
+    $scope.reload();
+
+    $scope.getFilterResults = function(val) {
+        switch (val) {
+            case 'id':
+                {
+                    $scope.pagedata.page = 1;
+                    $scope.pagedata.name = '';
+                    $scope.pagedata.firstname = '';
+                    $scope.pagedata.middlename = '';
+                    $scope.pagedata.lastname = '';
+                    $scope.pagedata.pincode = '';
+
+                    $scope.reload();
+                    break;
+                }
+            case 'search':
+                {
+                    $scope.pagedata.page = 1;
+                    $scope.pagedata.donorid = '';
+                    $scope.reload();
+                    break;
+                }
+            case 'venue':
+                {
+                    $scope.pagedata.page = 1;
+                    $scope.reload();
+                    break;
+                }
+            case 'limit':
+                {
+                    $scope.pagedata.page = 1;
+                    $scope.reload();
+                    break;
+                }
+            default:
+                {
+                    $scope.reload();
+                    break;
+                }
+        }
+    }
+
+    $scope.changePage = function(pageno) {
+        console.log(pageno);
+        $scope.pagedata.page = pageno.pageno;
+        $scope.reload();
+    }
+
+    //End Donor
+});
 //Add New Controller

@@ -49,7 +49,19 @@
                             <input type='text' class='form-control' ng-model='camp.timestart' placeholder='Time Start'> </div>
                         <div class='form-group'>
                             <label>Time End</label>
-                            <input type='text' class='form-control' ng-model='camp.timeend' placeholder='Time End'> </div>
+                            <input type='text' class='form-control' ng-model='camp.timeend' placeholder='Time End'>
+                        </div>
+                        <div class='form-group'>
+                            <label>Close Camp</label>
+                            <select ng-model='camp.status' class='form-control' ng-if="disableCampClose=='no'">
+                                <option value='no'>No</option>
+                                <option value='yes'>Yes</option>
+                            </select>
+                            <select ng-model='camp.status' class='form-control' ng-if="disableCampClose=='yes'" disabled>
+                                <option value='no'>No</option>
+                                <option value='yes'>Yes</option>
+                            </select>
+                        </div>
                         <!--Add New Tags-->
                         <div class="text-center" style="padding-bottom:20px;">
                             <button type="submit" class="btn btn-primary all-btn">Submit</button>

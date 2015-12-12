@@ -46,10 +46,10 @@
                                 <option value='gift'>Gift Level</option>
                             </select>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" ng-show="showDrop">
                             <select id="campdrop" class="form-control selct-height" ng-model="login.campnumber" ng-options="cmp.campnumber as cmp.campnumber for cmp in camp" ng-change="changeloc();"></select>
                         </div>
-                        <div class='form-group'>
+                        <div class='form-group' ng-show="showDrop">
                             <!-- <label>Camp</label> -->
                             <select id="mydrop" class="form-control selct-height" ng-model="login.camp" ng-options="loc.value as loc.value for loc in locations"></select>
                         </div>

@@ -7,6 +7,12 @@
                 <div class="panel-heading panel-hdr"><span class="glyphicon glyphicon-th mr5"></span>Edit Donor
                 </div>
                 <div class="panel-body">
+                    <div class="form-group" ng-if="access.accesslevel == 'admin'">
+                        <label>Donation Count</label>
+                        <input type='text'style="margin-left: 10px;" ng-model='donor.donationcount' placeholder='Donation Count' disabled>
+                        <button type="button" class="btn btn-primary all-btn pull-right" ng-click="openHistory();">View History
+                        </button>
+                    </div>
                     <div class='form-group'>
                         <label>Donor Id</label>
                         <input type='text' class='form-control' ng-model='donor.donorid' placeholder='Donor Id' required disabled> </div>
@@ -38,17 +44,10 @@
                         <input type='text' class='form-control' ng-model='donor.bloodgroup' placeholder='Blood Group' disabled> </div>
                     <div class='form-group'>
                         <label>Birth date</label>
-                        <input type='date' class='form-control' ng-model='donor.birthdate' placeholder='Birth date'> </div>
+                        <input type='date' class='form-control' ng-model='donor.birthdate' placeholder='Birth date' ng-change="calculate();" required> </div>
                     <div class='form-group'>
                         <label>Age</label>
-                        <input type='text' class='form-control' ng-model='donor.age' placeholder='Age' readonly> </div>
-                    <div class='form-group'>
-                        <label>Weight (in kgs.)</label>
-                        <input type='text' class='form-control' ng-model='donor.weight' placeholder='Weight (in kgs.)'>
-                    </div>
-                    <div class='form-group' ng-show="showbottle">
-                        <label>Bottle Number</label>
-                        <input id="bottle" type='text' class='form-control' ng-model='donor.bottle' placeholder='Bottle Number' required>
+                        <input type='text' class='form-control' ng-model='donor.age' placeholder='Age' readonly>
                     </div>
                     <div class='form-group ui-selecter'>
                         <label for='exampleInputEmail1'>Select Village</label>
@@ -79,7 +78,21 @@
                         <input type='text' class='form-control' ng-model='donor.pincode' placeholder='Pincode' required> </div>
                     <div class='form-group'>
                         <label>Mobile no</label>
-                        <input type='text' class='form-control' ng-model='donor.mobileno' placeholder='Mobile no'> </div>
+                        <input type='text' class='form-control' ng-model='donor.mobileno' placeholder='Mobile no'>
+                    </div>
+                    <div class="form-group" ng-if="access.accesslevel == 'entry'">
+                        <label>Hospital</label>
+                        <select class='form-control' ng-model="donor.hospital" ng-options="hospital._id as hospital.name for hospital in hospitals">
+                        </select>
+                    </div>
+                    <div class='form-group'>
+                        <label>Weight (in kgs.)</label>
+                        <input type='text' class='form-control' ng-model='donor.weight' placeholder='Weight (in kgs.)'>
+                    </div>
+                    <div class='form-group' ng-show="showbottle">
+                        <label>Bottle Number</label>
+                        <input id="bottle" type='text' class='form-control' ng-model='donor.bottle' placeholder='Bottle Number' required>
+                    </div>
                     <div class="form-group text-center">
                         <span ng-if="bottleExist==0" style="color:red;"><b>Bottle Number Already Exists. Please Change Bottle Number.</b></span>
                     </div>
@@ -88,7 +101,8 @@
                     </div>
                     <!--Add New Tags-->
                     <div class="text-center" style="padding-bottom:20px;" ng-if="access.accesslevel == 'admin' || access.accesslevel == 'entry'">
-                        <button type="button" class="btn btn-primary all-btn" ng-click="savedonor();">Submit</button>
+                        <button type="button" class="btn btn-primary all-btn" ng-click="savedonor();">Submit
+                        </button>
                     </div>
                 </div>
             </section>

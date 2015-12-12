@@ -50,14 +50,6 @@
                     <div class='form-group'>
                         <label>Age</label>
                         <input type='text' class='form-control' ng-model='donor.age' placeholder='Age' readonly> </div>
-                    <div class='form-group'>
-                        <label>Weight (in kgs.)</label>
-                        <input type='text' class='form-control' ng-model='donor.weight' placeholder='Weight (in kgs.)'>
-                    </div>
-                    <div class='form-group' ng-show="showbottle">
-                        <label>Bottle Number</label>
-                        <input type='text' class='form-control' ng-model='donor.bottle' placeholder='Bottle Number' required>
-                    </div>
                     <div class='form-group ui-selecter'>
                         <label for='exampleInputEmail1'>Select Village</label>
                         <div class='form-group'>
@@ -73,8 +65,16 @@
                         <label>Previous Name</label>
                         <input type='text' class='form-control' ng-model='donor.previousname' placeholder='Previous Name' capitalize-first> </div>
                     <div class='form-group'>
-                        <label for='exampleInputEmail1'>Address</label>
-                        <textarea class='form-control' ng-model='donor.address' placeholder='Address' capitalize-first></textarea>
+                        <label>Address Line 1</label>
+                        <input type="text" class='form-control' ng-model='donor.address1' placeholder='Address Line 1' capitalize-first required>
+                    </div>
+                    <div class='form-group'>
+                        <label>Address Line 2</label>
+                        <input type="text" class='form-control' ng-model='donor.address2' placeholder='Address Line 2' capitalize-first>
+                    </div>
+                    <div class='form-group'>
+                        <label>Address Line 3</label>
+                        <input type="text" class='form-control' ng-model='donor.address3' placeholder='Address Line 3' capitalize-first>
                     </div>
                     <div class='form-group'>
                         <label>Area</label>
@@ -88,6 +88,14 @@
                     <div class='form-group'>
                         <label>Mobile no</label>
                         <input type='text' class='form-control' ng-model='donor.mobileno' placeholder='Mobile no'>
+                    </div>
+                    <div class='form-group'>
+                        <label>Weight (in kgs.)</label>
+                        <input type='text' class='form-control' ng-model='donor.weight' placeholder='Weight (in kgs.)'>
+                    </div>
+                    <div class='form-group' ng-show="showbottle">
+                        <label>Bottle Number</label>
+                        <input type='text' class='form-control' ng-model='donor.bottle' placeholder='Bottle Number' required>
                     </div>
                     <div class="form-group text-center">
                         <span ng-if="bottleExist == 0"><b>Bottle Number Already Exists. Please Change Bottle Number.</b></span>

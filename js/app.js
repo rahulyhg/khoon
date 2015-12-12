@@ -95,6 +95,21 @@ firstapp.config(
             }).when('/edithospital/:id', {
                 templateUrl: 'views/template.html',
                 controller: 'editHospitalCtrl'
+            }).when('/findentry', {
+                templateUrl: 'views/template.html',
+                controller: 'findEntryCtrl'
+            }).when('/findverify', {
+                templateUrl: 'views/template.html',
+                controller: 'findVerifyCtrl'
+            }).when('/findgift', {
+                templateUrl: 'views/template.html',
+                controller: 'findGiftCtrl'
+            }).when('/campreport', {
+                templateUrl: 'views/template.html',
+                controller: 'campReportCtrl'
+            }).when('/campreportusers/:campnumber/:camp/:accesslevel', {
+                templateUrl: 'views/template.html',
+                controller: 'campReportUsersCtrl'
             }). //Add New Path
 
         otherwise({
@@ -169,8 +184,8 @@ firstapp.directive('capitalizeFirst', function($parse) {
                 if (inputValue === undefined) {
                     inputValue = '';
                 }
-                var capitalized = inputValue.charAt(0).toUpperCase() +
-                    inputValue.substring(1);
+                // var capitalized = inputValue.charAt(0).toUpperCase() + inputValue.substring(1);
+                var capitalized = inputValue.toUpperCase();
                 if (capitalized !== inputValue) {
                     modelCtrl.$setViewValue(capitalized);
                     modelCtrl.$render();
