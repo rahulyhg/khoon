@@ -14,11 +14,11 @@
                         <div class='form-group'>
                             <label>Password</label>
                             <input type='password' class='form-control' ng-model='admin.password' placeholder='Password' required> </div>
-                        <div class='form-group'>
+                        <div class='form-group' ng-if="admin.accesslevel != 'admin'">
                             <label>Camp Number</label>
-                            <select class="form-control" ng-model="admin.campnumber" ng-options="cmp.campnumber as cmp.campnumber for cmp in camp"></select>
+                            <select class="form-control" ng-model="admin.campnumber" ng-options="cmp.campnumber as cmp.campnumber for cmp in camp" ng-change="changeVenues(admin.campnumber);"></select>
                         </div>
-                        <div class='form-group'>
+                        <div class='form-group' ng-if="admin.accesslevel != 'admin'">
                             <label>Accesslevel</label>
                             <select ng-model='admin.accesslevel' class='form-control' required>
                                 <option value=''>Select Accesslevel</option>
@@ -27,16 +27,17 @@
                                 <option value='gift'>Gift Level</option>
                             </select>
                         </div>
-                        <div class='form-group'>
+                        <div class='form-group' ng-if="admin.accesslevel != 'admin'">
                             <label>Camp</label>
-                            <select ng-model='admin.camp' class='form-control' required>
-                                <option value='' selected>Select Location</option>
-                                <option value='Mulund'>Mulund</option>
-                                <option value='Thane'>Thane</option>
-                                <option value='Dombivli'>Dombivli</option>
+                            <select ng-model='admin.camp' class='form-control' ng-options="venue.value as venue.value for venue in venues" required></select>
+                        </div>
+                        <div class='form-group' ng-if="admin.accesslevel != 'admin'">
+                            <label>Status</label>
+                            <select ng-model='admin.status' class='form-control' required>
+                                <option value='enable'>Enable</option>
+                                <option value='disable'>Disable</option>
                             </select>
                         </div>
-                        <!--Add New Tags-->
                         <div class="text-center" style="padding-bottom:20px;">
                             <button type="submit" class="btn btn-primary all-btn">Submit</button>
                         </div>

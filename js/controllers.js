@@ -1315,16 +1315,18 @@ phonecatControllers.controller('editAdminCtrl', function($scope, TemplateService
     TemplateService.list = 2;
     $scope.navigation = NavigationService.getnav();
     $scope.admin = {};
-    NavigationService.getCamp(function(data, status) {
-        console.log(data);
-        if (data.value != false) {
-            $scope.camp = data;
-        } else {
-            $scope.camp = [];
-        }
-    });
+
+    $scope.changeVenues = function(val) {
+        console.log(val);
+        var foundIndex = _.findIndex($scope.camp, {
+            'campnumber': val
+        });
+        $scope.venues = $scope.camp[foundIndex].venues;
+        $scope.venues = _.uniq($scope.venues, 'value');
+    }
     NavigationService.getOneAdmin($routeParams.id, function(data, status) {
         $scope.admin = data;
+        generateDrop();
         // if (!$scope.camp.donation) {
         //     $scope.camp.donation = [];
         // }
@@ -1335,6 +1337,24 @@ phonecatControllers.controller('editAdminCtrl', function($scope, TemplateService
         //     $scope.camp.bottle = [];
         // } //Add More Array
     });
+
+    function generateDrop() {
+        if ($scope.admin.accesslevel != 'admin') {
+            NavigationService.getCamp(function(data, status) {
+                if (data.value != false) {
+                    $scope.camp = data;
+                    var foundIndex = _.findIndex($scope.camp, {
+                        'campnumber': $scope.admin.campnumber
+                    });
+                    $scope.venues = $scope.camp[foundIndex].venues;
+                    $scope.venues = _.uniq($scope.venues, 'value');
+                } else {
+                    $scope.camp = [];
+                }
+            });
+        }
+    }
+
     $scope.submitForm = function() {
         $scope.admin._id = $routeParams.id;
         NavigationService.saveAdmin($scope.admin, function(data, status) {
