@@ -99,6 +99,9 @@
                     <div class="form-group text-center">
                         <span ng-if="showfail == 1"><b>Some error. Please submit again.</b></span>
                     </div>
+                    <div class="form-group text-center" ng-show="showAgeError">
+                        <span><b>Your age should be between 18 and 70</b></span>
+                    </div>
                     <!--Add New Tags-->
                     <div class="text-center" style="padding-bottom:20px;" ng-if="access.accesslevel == 'admin' || access.accesslevel == 'entry'">
                         <button type="button" class="btn btn-primary all-btn" ng-click="savedonor();">Submit

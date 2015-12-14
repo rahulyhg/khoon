@@ -435,30 +435,33 @@ phonecatControllers.controller('createDonorCtrl', function($scope, TemplateServi
         $scope.showbottle = true;
     }
     $scope.savedonor = function() {
-        if ($.jStorage.get("adminuser").accesslevel == "admin") {
-            NavigationService.saveappDonor($scope.donor, function(data, status) {
-                if (data.value == false) {
-                    $scope.showfail = 0;
-                } else {
-                    $scope.showfail = 1;
-                    $location.url('/donor');
-                }
-            });
-        } else {
-            $scope.donor.hospital = $.jStorage.get("adminuser").hospital;
-            $scope.donor.camp = $.jStorage.get("adminuser").camp;
-            $scope.donor.campnumber = $.jStorage.get("adminuser").campnumber;
-            NavigationService.saveDonor($scope.donor, function(data, status) {
-                if (data.value == true && data.comment == "Bottle already exists") {
-                    $scope.bottleExist = 0;
-                } else if (data.value == false) {
-                    $scope.showfail = 0;
-                } else {
-                    $scope.showfail = 1;
-                    $scope.bottleExist = 1;
-                    $location.url('/donor');
-                }
-            });
+        console.log($scope.donor);
+        if ($scope.donor.age >= 18 && $scope.donor.age <= 70) {
+            if ($.jStorage.get("adminuser").accesslevel == "admin") {
+                NavigationService.saveappDonor($scope.donor, function(data, status) {
+                    if (data.value == false) {
+                        $scope.showfail = 0;
+                    } else {
+                        $scope.showfail = 1;
+                        $location.url('/donor');
+                    }
+                });
+            } else {
+                $scope.donor.hospital = $.jStorage.get("adminuser").hospital;
+                $scope.donor.camp = $.jStorage.get("adminuser").camp;
+                $scope.donor.campnumber = $.jStorage.get("adminuser").campnumber;
+                NavigationService.saveDonor($scope.donor, function(data, status) {
+                    if (data.value == true && data.comment == "Bottle already exists") {
+                        $scope.bottleExist = 0;
+                    } else if (data.value == false) {
+                        $scope.showfail = 0;
+                    } else {
+                        $scope.showfail = 1;
+                        $scope.bottleExist = 1;
+                        $location.url('/donor');
+                    }
+                });
+            }
         }
     };
     $scope.donor.village = [];
@@ -549,31 +552,37 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
     }
 
     $scope.savedonor = function() {
-        if ($.jStorage.get("adminuser").accesslevel == "admin") {
-            $scope.donor._id = $routeParams.id;
-            NavigationService.saveappDonor($scope.donor, function(data, status) {
-                if (data.value == false) {
-                    $scope.showfail = 0;
-                } else {
-                    $scope.showfail = 1;
-                    $location.url('/donor');
-                }
-            });
+        console.log($scope.donor);
+        if ($scope.donor.age >= 18 && $scope.donor.age <= 70) {
+            $scope.showAgeError = false;
+            if ($.jStorage.get("adminuser").accesslevel == "admin") {
+                $scope.donor._id = $routeParams.id;
+                NavigationService.saveappDonor($scope.donor, function(data, status) {
+                    if (data.value == false) {
+                        $scope.showfail = 0;
+                    } else {
+                        $scope.showfail = 1;
+                        $location.url('/donor');
+                    }
+                });
+            } else {
+                $scope.donor._id = $routeParams.id;
+                $scope.donor.camp = $.jStorage.get("adminuser").camp;
+                $scope.donor.campnumber = $.jStorage.get("adminuser").campnumber;
+                NavigationService.saveDonor($scope.donor, function(data, status) {
+                    if (data.value == true && data.comment == "Bottle already exists") {
+                        $scope.bottleExist = 0;
+                    } else if (data.value == false) {
+                        $scope.showfail = 0;
+                    } else {
+                        $scope.showfail = 1;
+                        $scope.bottleExist = 1;
+                        $location.url('/donor');
+                    }
+                });
+            }
         } else {
-            $scope.donor._id = $routeParams.id;
-            $scope.donor.camp = $.jStorage.get("adminuser").camp;
-            $scope.donor.campnumber = $.jStorage.get("adminuser").campnumber;
-            NavigationService.saveDonor($scope.donor, function(data, status) {
-                if (data.value == true && data.comment == "Bottle already exists") {
-                    $scope.bottleExist = 0;
-                } else if (data.value == false) {
-                    $scope.showfail = 0;
-                } else {
-                    $scope.showfail = 1;
-                    $scope.bottleExist = 1;
-                    $location.url('/donor');
-                }
-            });
+            $scope.showAgeError = true;
         }
     };
     $scope.donor.village = [];
