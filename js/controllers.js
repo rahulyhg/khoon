@@ -2088,6 +2088,7 @@ phonecatControllers.controller('findEntryCtrl', function($scope, TemplateService
     $scope.pagedata.middlename = '';
     $scope.pagedata.lastname = '';
     $scope.pagedata.pincode = '';
+    $scope.pagedata.accesslevel = $scope.access.accesslevel;
 
     $scope.venues = [{
         value: 'All'
