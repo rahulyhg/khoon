@@ -45,7 +45,9 @@ p {
     animation: 0.5s rollIn;
 }
 
-
+.mtop{
+        margin-top: 20px;
+}
 /*
  The ng-enter-active and ng-move-active
  are where the transition destination properties
