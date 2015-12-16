@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="lib/css/ngDialog-theme-plain.css" />
     <link rel="stylesheet" type="text.css" href="lib/css/ngDialog.css" />
     <link rel="stylesheet" type="text/css" href="css/main.css" />
+    <link rel="stylesheet" type="text/css" href="css/mobile.css" />
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script src="lib/js/jquery-1.11.1.min.js"></script>

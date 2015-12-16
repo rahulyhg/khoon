@@ -14,13 +14,13 @@
                                 </div>
                             </div>
                             <div class="col-md-2 text-center">
-                                <a class="btn btn-primary" ng-click="getFilterResults1('id');">Donor Id</a>
+                                <a class="btn btn-primary margtp" ng-click="getFilterResults1('id');">Donor Id</a>
                             </div>
                             <div class="col-md-2">
                                 <a href="#/createdonor" class="right btn btn-primary all-btn create-btn" ng-if="access.accesslevel == 'admin' || access.accesslevel == 'entry'">New Donor
                                 </a>
                             </div>
-                            <div class="pull-right" style="margin-right: 17px;">
+                            <div class="marright" >
                                 <select ng-model="pagedata.limit" class="form-control" ng-change="getFilterResults1('limit');">
                                     <option value="20" selected>20</option>
                                     <option value="50">50</option>
@@ -30,32 +30,32 @@
                         </div>
                         <div class="row" style="margin-top:20px" ng-if="isValidLogin==2">
                             <div class="col-md-2">
-                                <div class="search-box max">
+                                <div class="search-box max margtp">
                                     <input type="search" ng-model="pagedata.name" placeholder="Full Name">
                                 </div>
                             </div>
                             <div class="col-md-2">
-                                <div class="search-box max">
+                                <div class="search-box max margtp">
                                     <input type="search" ng-model="pagedata.firstname" placeholder="First Name">
                                 </div>
                             </div>
                             <div class="col-md-2">
-                                <div class="search-box max">
+                                <div class="search-box max margtp">
                                     <input type="search" ng-model="pagedata.middlename" placeholder="Middle Name">
                                 </div>
                             </div>
                             <div class="col-md-2">
-                                <div class="search-box max">
+                                <div class="search-box max margtp">
                                     <input type="search" ng-model="pagedata.lastname" placeholder="Last Name">
                                 </div>
                             </div>
                             <div class="col-md-2">
-                                <div class="search-box max">
+                                <div class="search-box max margtp">
                                     <input type="search" ng-model="pagedata.pincode" placeholder="Pincode">
                                 </div>
                             </div>
-                            <div class="col-md-2">
-                                <a class="btn btn-primary" ng-click="getFilterResults1('search');">GO</a>
+                            <div class="col-md-2 logo">
+                                <a class="btn btn-primary margtp" ng-click="getFilterResults1('search');">GO</a>
                             </div>
                         </div>
                         <div style="margin-top:10px;" ng-if="isValidLogin==2">

@@ -596,3 +596,21 @@ background-color: #fff !important;
 padding: 30px !important;
 border-radius: 0 !important;
 }
+.navbar-default {
+    background-color: transparent;
+    border-color: rgba(231, 231, 231, 0);
+}
+    .margright{
+        margin-right: 8px;
+    }
+.navbar {
+    margin-bottom: 0px;
+    border: 1px solid transparent;
+}
+.navbar-default .navbar-collapse, .navbar-default .navbar-form {
+    border-color: transparent;
+}
+.marright{
+    margin-right: 17px;
+    text-align: right;
+}
