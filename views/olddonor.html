@@ -97,14 +97,14 @@
                         </div>
                         <div class="bot search-box" ng-if="isValidLogin==1">
                             <div class="form-group text-center">
-                                <span ng-if="showerror==0"><b>Please select Done.</b></span>
+                                <span ng-if="showerror==0"><b>Please Check Donated Blood.</b></span>
                             </div>
                             <div class='form-group'>
                                 <label>Donor ID</label>
                                 <input type="text" class="form-control" ng-model="editdonor.donorid" placeholder="Donor ID" disabled/>
                             </div>
                             <div class='form-group'>
-                                <input type="checkbox" ng-model="editdonor.verified">Done
+                                <input type="checkbox" ng-model="editdonor.verified">Donated Blood
                             </div>
                             <button type="button" class="btn btn-primary all-btn" ng-click="verify();">Submit</button>
                         </div>
@@ -212,7 +212,7 @@
                         </div>
                         <div class="bot search-box" ng-if="isValidLogin==1">
                             <div class="form-group text-center">
-                                <span ng-if="showerror==0"><b>Please select Done.</b></span>
+                                <span ng-if="showerror==0"><b>Please Check Gift Given.</b></span>
                             </div>
                             <div class='form-group'>
                                 <label>Donor ID</label>
@@ -223,7 +223,7 @@
                                 <input type="text" ng-model="editdonor.donationcount" placeholder="Donation Count" disabled/>
                             </div>
                             <div class='form-group'>
-                                <input type="checkbox" ng-model="editdonor.giftdone">Done
+                                <input type="checkbox" ng-model="editdonor.giftdone">Gift Given
                             </div>
                             <button type="button" class="btn btn-primary all-btn" ng-click="gift();">Submit</button>
                         </div>

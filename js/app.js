@@ -204,7 +204,7 @@ firstapp.filter('touppercase', function() {
         return firstletter.toUpperCase() + remaining;
     };
 });
-firstapp.directive('numbersOnly', function() {
+firstapp.directive('onlyDigits', function() {
     return {
         require: 'ngModel',
         link: function(scope, element, attr, ngModelCtrl) {

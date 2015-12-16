@@ -44,20 +44,22 @@
                                 </div>
                             </div>
                             <div class="col-md-4" ng-if="access.accesslevel =='verify'">
-                                <div class="box">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="icon"><i class="fa fa-users"></i>
+                                <a href="#/donor">
+                                    <div class="box">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="icon"><i class="fa fa-users"></i>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="text">
-                                                <h3 class="text-center">{{user}}</h3>
-                                                <p class="text-center">Total Donors For Your Camp</p>
+                                            <div class="col-md-6">
+                                                <div class="text">
+                                                    <h3 class="text-center">{{user}}</h3>
+                                                    <p class="text-center">Total Donors For Your Camp</p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </a>
                             </div>
                             <div class="col-md-4" ng-if="access.accesslevel =='verify'" ng-click="goToFindVerify();">
                                 <div class="box">
@@ -128,7 +130,7 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="row" style="margin-top:20px" ng-if="access.accesslevel =='entry'">
+                        <div class="row" style="margin-top:20px" ng-if="access.accesslevel !='admin'">
                             <div class="col-md-4">
                                 <span style="margin-right: 5px;">Hospital</span>
                                 <select style="min-width: 150px;height: 34px;" ng-model="hospitalid" ng-change="storeHospital(hospitalid);" ng-options="hospital._id as hospital.name for hospital in hospitals">

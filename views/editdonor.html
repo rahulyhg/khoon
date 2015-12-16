@@ -8,8 +8,8 @@
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group" ng-if="access.accesslevel == 'admin'">
+                        <div class="col-md-4" ng-if="access.accesslevel == 'admin'">
+                            <div class="form-group">
                                 <label>Donation Count</label>
                                 <input type='text' style="margin-left: 10px;" ng-model='donor.donationcount' placeholder='Donation Count' disabled>
                                 <button type="button" class="btn btn-primary all-btn pull-right" ng-click="openHistory();">View History
@@ -102,17 +102,31 @@
                         </div>
                         <div class="col-md-4">
                             <div class='form-group'>
-                                <label for='exampleInputEmail1'>Address</label>
-                                <textarea class='form-control' ng-model='donor.address' placeholder='Address' capitalize-first></textarea>
+                                <label>Address 1</label>
+                                <input type="text" class='form-control' ng-model='donor.address1' placeholder='Address 1' capitalize-first required>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Address 2</label>
+                                <input type="text" class='form-control' ng-model='donor.address2' placeholder='Address 2' capitalize-first>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Address 3</label>
+                                <input type="text" class='form-control' ng-model='donor.address3' placeholder='Address 3' capitalize-first>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
                             <div class='form-group'>
                                 <label>Area</label>
                                 <input type='text' class='form-control' ng-model='donor.area' placeholder='Area' capitalize-first> </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-4">
                             <div class='form-group'>
                                 <label>City</label>
@@ -121,16 +135,16 @@
                         <div class="col-md-4">
                             <div class='form-group'>
                                 <label>Pincode</label>
-                                <input type='text' class='form-control' ng-model='donor.pincode' placeholder='Pincode' required> </div>
+                                <input type='text' class='form-control' ng-model='donor.pincode' placeholder='Pincode' required only-digits ng-trim="false" maxlength="6"> </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-md-4">
                             <div class='form-group'>
                                 <label>Mobile no</label>
-                                <input type='text' class='form-control' ng-model='donor.mobileno' placeholder='Mobile no'>
+                                <input type='text' class='form-control' ng-model='donor.mobileno' placeholder='Mobile no' only-digits ng-trim="false" maxlength="10">
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-4">
                             <div class="form-group" ng-if="access.accesslevel == 'entry'">
                                 <label>Hospital</label>
@@ -144,14 +158,14 @@
                                 <input type='text' class='form-control' ng-model='donor.weight' placeholder='Weight (in kgs.)'>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-md-4">
                             <div class='form-group' ng-show="showbottle">
                                 <label>Bottle Number</label>
                                 <input id="bottle" type='text' class='form-control' ng-model='donor.bottle' placeholder='Bottle Number' required>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-4">
                             <div class="form-group text-center">
                                 <span ng-if="bottleExist==0" style="color:red;"><b>Bottle Number Already Exists. Please Change Bottle Number.</b></span>
@@ -163,18 +177,20 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-
-                            <div class="form-group text-center" ng-show="showAgeError">
+                    <div class="row" ng-show="showAgeError">
+                        <div class="col-md-12">
+                            <div class="form-group text-center">
                                 <span><b>Your age should be between 18 and 70</b></span>
                             </div>
                         </div>
-
                     </div>
-
-
+                    <div class="row" ng-show="showPinError">
+                        <div class="col-md-12">
+                            <div class="form-group text-center">
+                                <span><b>Invalid Pincode</b></span>
+                            </div>
+                        </div>
+                    </div>
                     <!--Add New Tags-->
                     <div class="text-center" style="padding-bottom:20px;" ng-if="access.accesslevel == 'admin' || access.accesslevel == 'entry'">
                         <button type="button" class="btn btn-primary all-btn" ng-click="savedonor();">Submit

@@ -8,7 +8,6 @@
                     <span class="glyphicon glyphicon-th mr5"></span>Create Donor
                 </div>
                 <div class="panel-body">
-
                     <div class="row">
                         <div class="col-md-4">
                             <div class='form-group'>
@@ -26,7 +25,6 @@
                                 <input type='text' class='form-control' ng-model='donor.middlename' placeholder='Middle Name' required capitalize-first> </div>
                         </div>
                     </div>
-
                     <div class="row">
                         <div class="col-md-4">
                             <div class='form-group'>
@@ -35,7 +33,6 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-
                             <div class='form-group'>
                                 <label>Gender</label>
                                 <input type='radio' name='gender' ng-model='donor.gender' value='Male'> Male
@@ -65,12 +62,10 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-
                             <div class='form-group'>
                                 <label>Age</label>
                                 <input type='text' class='form-control' ng-model='donor.age' placeholder='Age' readonly>
                             </div>
-
                         </div>
                         <div class="col-md-4">
                             <div class='form-group ui-selecter'>
@@ -91,15 +86,12 @@
                             <div class='form-group'>
                                 <label>Previous Name</label>
                                 <input type='text' class='form-control' ng-model='donor.previousname' placeholder='Previous Name' capitalize-first> </div>
-
                         </div>
                         <div class="col-md-4">
-
                             <div class='form-group'>
                                 <label>Address Line 1</label>
                                 <input type="text" class='form-control' ng-model='donor.address1' placeholder='Address Line 1' capitalize-first required>
                             </div>
-
                         </div>
                         <div class="col-md-4">
                             <div class='form-group'>
@@ -110,19 +102,16 @@
                     </div>
                     <div class="row">
                         <div class="col-md-4">
-
                             <div class='form-group'>
                                 <label>Address Line 3</label>
                                 <input type="text" class='form-control' ng-model='donor.address3' placeholder='Address Line 3' capitalize-first>
                             </div>
                         </div>
                         <div class="col-md-4">
-
                             <div class='form-group'>
                                 <label>Area</label>
                                 <input type='text' class='form-control' ng-model='donor.area' placeholder='Area' capitalize-first>
                             </div>
-
                         </div>
                         <div class="col-md-4">
                             <div class='form-group'>
@@ -133,64 +122,62 @@
                     </div>
                     <div class="row">
                         <div class="col-md-4">
-
                             <div class='form-group'>
                                 <label>Pincode</label>
-                                <input type='text' class='form-control' ng-model='donor.pincode' placeholder='Pincode' required>
+                                <input type='text' class='form-control' ng-model='donor.pincode' placeholder='Pincode' required only-digits ng-trim="false" maxlength="6">
                             </div>
                         </div>
                         <div class="col-md-4">
-
                             <div class='form-group'>
                                 <label>Mobile no</label>
-                                <input type='text' class='form-control' ng-model='donor.mobileno' placeholder='Mobile no'>
+                                <input type='text' class='form-control' ng-model='donor.mobileno' placeholder='Mobile no' only-digits ng-trim="false" maxlength="10">
                             </div>
-
                         </div>
                         <div class="col-md-4">
-
                             <div class='form-group'>
                                 <label>Weight (in kgs.)</label>
                                 <input type='text' class='form-control' ng-model='donor.weight' placeholder='Weight (in kgs.)'>
                             </div>
-
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-4">
-
                             <div class='form-group' ng-show="showbottle">
                                 <label>Bottle Number</label>
                                 <input type='text' class='form-control' ng-model='donor.bottle' placeholder='Bottle Number' required>
                             </div>
                         </div>
                         <div class="col-md-4">
-
                             <div class="form-group text-center">
                                 <span ng-if="bottleExist == 0"><b>Bottle Number Already Exists. Please Change Bottle Number.</b></span>
                             </div>
-
-
                         </div>
                         <div class="col-md-4">
-
-
                             <div class="form-group text-center">
                                 <span ng-if="showfail == 0"><b>Some error. Please submit again.</b></span>
                             </div>
-
                         </div>
                     </div>
-
-
-
+                    <div class="row" ng-show="showAgeError">
+                        <div class="col-md-12">
+                            <div class="form-group text-center">
+                                <span><b>Your age should be between 18 and 70</b></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" ng-show="showPinError">
+                        <div class="col-md-12">
+                            <div class="form-group text-center">
+                                <span><b>Invalid Pincode</b></span>
+                            </div>
+                        </div>
+                    </div>
                     <!-- <div class='form-group'>
                             <label>Donor Id</label>
                             <input type='text' class='form-control' ng-model='donor.donorid' placeholder='Donor Id' required> </div>
                         <div class='form-group'>
                             <label>Family Id</label>
                             <input type='text' class='form-control' ng-model='donor.familyid' placeholder='Family Id'> </div> -->
-
                     <!--Add New Tags-->
                     <div class="text-center" style="padding-bottom:20px;">
                         <button type="submit" class="btn btn-primary all-btn" ng-click="savedonor();">Submit</button>

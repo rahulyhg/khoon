@@ -39,7 +39,7 @@ phonecatControllers.controller('home', function($scope, TemplateService, Navigat
         $scope.allusers = data;
     });
 
-    if ($.jStorage.get("adminuser").accesslevel == "entry") {
+    if ($.jStorage.get("adminuser").accesslevel != "admin") {
         if (!$.jStorage.get("adminuser").hospital) {
             NavigationService.findallHospital(function(data, status) {
                 if (data.value != false) {
@@ -436,7 +436,7 @@ phonecatControllers.controller('createDonorCtrl', function($scope, TemplateServi
     }
     $scope.savedonor = function() {
         console.log($scope.donor);
-        if ($scope.donor.age >= 18 && $scope.donor.age <= 70) {
+        if ($scope.donor.age >= 18 && $scope.donor.age <= 70 && $scope.donor.pincode.toString().length == 6) {
             if ($.jStorage.get("adminuser").accesslevel == "admin") {
                 NavigationService.saveappDonor($scope.donor, function(data, status) {
                     if (data.value == false) {
@@ -461,6 +461,14 @@ phonecatControllers.controller('createDonorCtrl', function($scope, TemplateServi
                         $location.url('/donor');
                     }
                 });
+            }
+        } else {
+            if ($scope.donor.age < 18 || $scope.donor.age > 70) {
+                $scope.showAgeError = true;
+                $scope.showPinError = false;
+            } else if ($scope.donor.pincode.toString().length != 6) {
+                $scope.showAgeError = false;
+                $scope.showPinError = true;
             }
         }
     };
@@ -553,7 +561,7 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
 
     $scope.savedonor = function() {
         console.log($scope.donor);
-        if ($scope.donor.age >= 18 && $scope.donor.age <= 70) {
+        if ($scope.donor.age >= 18 && $scope.donor.age <= 70 && $scope.donor.pincode.toString().length == 6) {
             $scope.showAgeError = false;
             if ($.jStorage.get("adminuser").accesslevel == "admin") {
                 $scope.donor._id = $routeParams.id;
@@ -582,7 +590,13 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
                 });
             }
         } else {
-            $scope.showAgeError = true;
+            if ($scope.donor.age < 18 || $scope.donor.age > 70) {
+                $scope.showAgeError = true;
+                $scope.showPinError = false;
+            } else if ($scope.donor.pincode.toString().length != 6) {
+                $scope.showAgeError = false;
+                $scope.showPinError = true;
+            }
         }
     };
     $scope.donor.village = [];
