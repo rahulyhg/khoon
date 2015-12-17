@@ -8,12 +8,16 @@
                 </div>
                 <div class="panel-body">
                     <div class="row">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-primary all-btn pull-right" ng-click="openHistory();">View History
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-4" ng-if="access.accesslevel == 'admin'">
                             <div class="form-group">
                                 <label>Donation Count</label>
-                                <input type='text' style="margin-left: 10px;" ng-model='donor.donationcount' placeholder='Donation Count' disabled>
-                                <button type="button" class="btn btn-primary all-btn pull-right" ng-click="openHistory();">View History
-                                </button>
+                                <input type='text' class='form-control' ng-model='donor.donationcount' placeholder='Donation Count' disabled>
                             </div>
                         </div>
                         <div class="col-md-4">

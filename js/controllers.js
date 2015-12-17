@@ -2549,18 +2549,26 @@ phonecatControllers.controller('campReportCtrl', function($scope, TemplateServic
         NavigationService.countLevels($scope.report, function(data) {
             console.log(data);
             $scope.levelCounts = data;
-        })
+        });
+        NavigationService.countHospital($scope.report, function(data) {
+            console.log(data);
+            $scope.hospitalCounts = _.chunk(data, 3);
+        });
     }
 
     $scope.getDonorLevels = function(accesslevel) {
         $location.url("/campreportusers/" + $scope.report.campnumber + "/" + $scope.report.camp + "/" + accesslevel);
     }
 
+    $scope.getHospUsers = function(hospid) {
+        $location.url("/campreporthospusers/" + $scope.report.campnumber + "/" + $scope.report.camp + "/" + hospid);
+    }
+
 });
 
 phonecatControllers.controller('campReportUsersCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog, $routeParams) {
     $scope.template = TemplateService;
-    $scope.menutitle = NavigationService.makeactive('Donor');
+    $scope.menutitle = NavigationService.makeactive('Camp Report');
     TemplateService.title = $scope.menutitle;
     TemplateService.submenu = '';
     TemplateService.content = 'views/campreportusers.html';
@@ -2576,6 +2584,100 @@ phonecatControllers.controller('campReportUsersCtrl', function($scope, TemplateS
     $scope.pagedata.camp = $routeParams.camp;
     $scope.pagedata.campnumber = $routeParams.campnumber;
     $scope.pagedata.accesslevel = $routeParams.accesslevel;
+    $scope.pagedata.name = '';
+    $scope.pagedata.firstname = '';
+    $scope.pagedata.middlename = '';
+    $scope.pagedata.lastname = '';
+
+    $scope.reload = function() {
+        NavigationService.donorLevels($scope.pagedata, function(data, status) {
+            console.log(data);
+            $scope.donor = data;
+            $scope.pages = [];
+            var newclass = '';
+            for (var i = 1; i <= data.totalpages; i++) {
+                if ($scope.pagedata.page == i) {
+                    newclass = 'active';
+                } else {
+                    newclass = '';
+                }
+                $scope.pages.push({
+                    pageno: i,
+                    class: newclass
+                });
+            }
+        });
+    }
+
+    $scope.reload();
+
+    $scope.getFilterResults = function(val) {
+        switch (val) {
+            case 'id':
+                {
+                    $scope.pagedata.page = 1;
+                    $scope.pagedata.name = '';
+                    $scope.pagedata.firstname = '';
+                    $scope.pagedata.middlename = '';
+                    $scope.pagedata.lastname = '';
+                    $scope.pagedata.pincode = '';
+
+                    $scope.reload();
+                    break;
+                }
+            case 'search':
+                {
+                    $scope.pagedata.page = 1;
+                    $scope.pagedata.donorid = '';
+                    $scope.reload();
+                    break;
+                }
+            case 'venue':
+                {
+                    $scope.pagedata.page = 1;
+                    $scope.reload();
+                    break;
+                }
+            case 'limit':
+                {
+                    $scope.pagedata.page = 1;
+                    $scope.reload();
+                    break;
+                }
+            default:
+                {
+                    $scope.reload();
+                    break;
+                }
+        }
+    }
+
+    $scope.changePage = function(pageno) {
+        console.log(pageno);
+        $scope.pagedata.page = pageno.pageno;
+        $scope.reload();
+    }
+
+    //End Donor
+});
+phonecatControllers.controller('campReportHospUsersCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog, $routeParams) {
+    $scope.template = TemplateService;
+    $scope.menutitle = NavigationService.makeactive('Camp Report');
+    TemplateService.title = $scope.menutitle;
+    TemplateService.submenu = '';
+    TemplateService.content = 'views/campreporthospusers.html';
+    // TemplateService.content = 'views/olddonor.html';
+    TemplateService.list = 2;
+    $scope.navigation = NavigationService.getnav();
+    $scope.Donor = [];
+    // $scope.access = $.jStorage.get('adminuser');
+    $scope.number = 100;
+    $scope.pagedata = {};
+    $scope.pagedata.page = 1;
+    $scope.pagedata.limit = '20';
+    $scope.pagedata.camp = $routeParams.camp;
+    $scope.pagedata.campnumber = $routeParams.campnumber;
+    $scope.pagedata.hospital = $routeParams.hospital;
     $scope.pagedata.donorid = '';
     $scope.pagedata.name = '';
     $scope.pagedata.firstname = '';
@@ -2584,7 +2686,7 @@ phonecatControllers.controller('campReportUsersCtrl', function($scope, TemplateS
     $scope.pagedata.pincode = '';
 
     $scope.reload = function() {
-        NavigationService.donorLevels($scope.pagedata, function(data, status) {
+        NavigationService.hospDonors($scope.pagedata, function(data, status) {
             console.log(data);
             $scope.donor = data;
             $scope.pages = [];

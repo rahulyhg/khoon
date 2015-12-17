@@ -110,6 +110,9 @@ firstapp.config(
             }).when('/campreportusers/:campnumber/:camp/:accesslevel', {
                 templateUrl: 'views/template.html',
                 controller: 'campReportUsersCtrl'
+            }).when('/campreporthospusers/:campnumber/:camp/:hospital', {
+                templateUrl: 'views/template.html',
+                controller: 'campReportHospUsersCtrl'
             }). //Add New Path
 
         otherwise({

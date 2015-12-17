@@ -153,6 +153,13 @@ var navigationservice = angular.module('navigationservice', [])
                 data: data
             }).success(callback);
         },
+        countHospital: function(data, callback) {
+            $http({
+                url: adminurl + "camp/countforHosp",
+                method: "POST",
+                data: data
+            }).success(callback);
+        },
         getOneDonor: function(id, callback) {
             $http({
                 url: adminurl + 'donor/findone',
@@ -616,6 +623,23 @@ var navigationservice = angular.module('navigationservice', [])
                     'pagesize': parseInt(data.limit),
                     'pagenumber': parseInt(data.page),
                     'accesslevel': data.accesslevel
+                }
+            }).success(callback);
+        },
+        hospDonors: function(data, callback) {
+            $http({
+                url: adminurl + 'camp/hospDonors',
+                method: 'POST',
+                data: {
+                    'campnumber': data.campnumber,
+                    'camp': data.camp,
+                    'name': data.name,
+                    'firstname': data.firstname,
+                    'middlename': data.middlename,
+                    'lastname': data.lastname,
+                    'pagesize': parseInt(data.limit),
+                    'pagenumber': parseInt(data.page),
+                    'hospital': data.hospital
                 }
             }).success(callback);
         },
