@@ -549,7 +549,8 @@ var navigationservice = angular.module('navigationservice', [])
                     'pincode': donor.pincode,
                     'pagesize': parseInt(donor.limit),
                     'pagenumber': parseInt(donor.page),
-                    'accesslevel': donor.accesslevel
+                    'accesslevel': donor.accesslevel,
+                    "hospital": donor.hospital
                 }
             }).success(callback);
         },
@@ -568,7 +569,8 @@ var navigationservice = angular.module('navigationservice', [])
                     'pincode': donor.pincode,
                     'pagesize': parseInt(donor.limit),
                     'pagenumber': parseInt(donor.page),
-                    'accesslevel': donor.accesslevel
+                    'accesslevel': donor.accesslevel,
+                    "hospital": donor.hospital
                 }
             }).success(callback);
         },

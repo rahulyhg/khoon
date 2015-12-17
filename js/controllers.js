@@ -671,8 +671,14 @@ phonecatControllers.controller('oldDonorCtrl', function($scope, TemplateService,
     $scope.pagedata.camp = $.jStorage.get("adminuser").camp;
     $scope.pagedata.campnumber = $.jStorage.get("adminuser").campnumber;
     $scope.pagedata.accesslevel = $.jStorage.get("adminuser").accesslevel;
-    // $scope.pagedata.hospital = $.jStorage.get("adminuser").hospital;
+    $scope.pagedata.hospital = $.jStorage.get("adminuser").hospital;
 
+    NavigationService.findallHospital(function(data, status) {
+        console.log(data);
+        if (data.value != false) {
+            $scope.hospitals = data;
+        }
+    });
 
     $scope.reload1 = function() {
         NavigationService.findEntry($scope.pagedata, function(data, status) {
@@ -819,34 +825,6 @@ phonecatControllers.controller('oldDonorCtrl', function($scope, TemplateService,
         $scope.reload2();
     }
 
-    // $scope.submitForm1 = function() {
-    //     $scope.searchdonor.camp = $.jStorage.get("adminuser").camp;
-    //     $scope.searchdonor.campnumber = $.jStorage.get("adminuser").campnumber;
-    //     $scope.searchdonor.hospital = $.jStorage.get("adminuser").hospital;
-    //     NavigationService.getDonorbyid($scope.searchdonor, function(data, status) {
-    //         if (data.value == false) {
-    //             $scope.searchdonor = {};
-    //             $scope.isValidLogin = 0;
-    //         } else {
-    //             $scope.donor = data;
-    //             $scope.isValidLogin = 2;
-    //         }
-    //     });
-    // }
-    // $scope.submitForm2 = function() {
-    //     $scope.searchdonor.camp = $.jStorage.get("adminuser").camp;
-    //     $scope.searchdonor.campnumber = $.jStorage.get("adminuser").campnumber;
-    //     $scope.searchdonor.hospital = $.jStorage.get("adminuser").hospital;
-    //     NavigationService.getverified($scope.searchdonor, function(data, status) {
-    //         if (data.value == false) {
-    //             $scope.searchdonor = {};
-    //             $scope.isValidLogin = 0;
-    //         } else {
-    //             $scope.donor = data;
-    //             $scope.isValidLogin = 2;
-    //         }
-    //     });
-    // }
     $scope.openverify = function(value) {
         $scope.editdonor = value;
         $scope.editdonor.verified = false;
@@ -2253,8 +2231,14 @@ phonecatControllers.controller('findVerifyCtrl', function($scope, TemplateServic
     $scope.pagedata.camp = $.jStorage.get("adminuser").camp;
     $scope.pagedata.campnumber = $.jStorage.get("adminuser").campnumber;
     $scope.pagedata.accesslevel = $.jStorage.get("adminuser").accesslevel;
-    // $scope.pagedata.hospital = $.jStorage.get("adminuser").hospital;
+    $scope.pagedata.hospital = $.jStorage.get("adminuser").hospital;
 
+    NavigationService.findallHospital(function(data, status) {
+        console.log(data);
+        if (data.value != false) {
+            $scope.hospitals = data;
+        }
+    });
 
     $scope.reload1 = function() {
         NavigationService.findVerified($scope.pagedata, function(data, status) {
@@ -2396,7 +2380,14 @@ phonecatControllers.controller('findGiftCtrl', function($scope, TemplateService,
     $scope.pagedata.camp = $.jStorage.get("adminuser").camp;
     $scope.pagedata.campnumber = $.jStorage.get("adminuser").campnumber;
     $scope.pagedata.accesslevel = $.jStorage.get("adminuser").accesslevel;
-    // $scope.pagedata.hospital = $.jStorage.get("adminuser").hospital;
+    $scope.pagedata.hospital = $.jStorage.get("adminuser").hospital;
+
+    NavigationService.findallHospital(function(data, status) {
+        console.log(data);
+        if (data.value != false) {
+            $scope.hospitals = data;
+        }
+    });
 
     $scope.reload2 = function() {
         NavigationService.findGifted($scope.pagedata, function(data, status) {

@@ -20,7 +20,12 @@
                                 <a href="#/createdonor" class="right btn btn-primary all-btn create-btn" ng-if="access.accesslevel == 'admin' || access.accesslevel == 'entry'">New Donor
                                 </a>
                             </div>
-                            <div class="marright" >
+                            <div class="col-md-4">
+                                <span style="margin-right: 5px;">Hospital</span>
+                                <select style="min-width: 150px;height: 34px;" ng-model="pagedata.hospital" ng-change="getFilterResults1('hospital');" ng-options="hospital._id as hospital.name for hospital in hospitals">
+                                </select>
+                            </div>
+                            <div class="pull-right" style="margin-right: 17px;">
                                 <select ng-model="pagedata.limit" class="form-control" ng-change="getFilterResults1('limit');">
                                     <option value="20" selected>20</option>
                                     <option value="50">50</option>
