@@ -292,6 +292,7 @@ phonecatControllers.controller('DonorCtrl', function($scope, TemplateService, Na
     $scope.pagedata.lastname = '';
     $scope.pagedata.pincode = '';
     $scope.pagedata.accesslevel = $scope.access.accesslevel;
+    $scope.deleteReason = '';
 
     $scope.venues = [{
         value: 'All'
@@ -325,14 +326,33 @@ phonecatControllers.controller('DonorCtrl', function($scope, TemplateService, Na
         });
     }
 
+    $scope.confDeleteForEntry = function() {
+        console.log($scope.deleteReason);
+        // NavigationService.deleteDonor(function(data, status) {
+        //     ngDialog.close();
+        //     window.location.reload();
+        // });
+    }
+
     $scope.deletefun = function(id) {
         $.jStorage.set('deletedonor', id);
-        ngDialog.open({
-            template: 'views/delete.html',
-            closeByEscape: false,
-            controller: 'DonorCtrl',
-            closeByDocument: false
-        });
+        if ($scope.access.accesslevel == 'entry') {
+            ngDialog.open({
+                template: 'views/deleteforentry.html',
+                closeByEscape: false,
+                closeByDocument: false,
+                showClose: false,
+                scope: $scope
+            });
+        } else {
+            ngDialog.open({
+                template: 'views/delete.html',
+                closeByEscape: false,
+                controller: 'DonorCtrl',
+                closeByDocument: false,
+                scope: $scope
+            });
+        }
     }
 
     NavigationService.getCamp(function(data) {
