@@ -1,5 +1,6 @@
 // var adminurl = "http://localhost:1337/";
 var adminurl = "http://192.168.0.125:81/";
+var adminurl = "http://104.197.50.51/";
 var adminlogin = {
     "username": "admin@admin.com",
     "password": "admin123"
@@ -230,6 +231,16 @@ var navigationservice = angular.module('navigationservice', [])
                 method: 'POST',
                 data: {
                     '_id': $.jStorage.get('deletedonor')
+                }
+            }).success(callback);
+        },
+        deleteDonorReason: function(reason, callback) {
+            $http({
+                url: adminurl + 'donor/delete',
+                method: 'POST',
+                data: {
+                    '_id': $.jStorage.get('deletedonor'),
+                    'reason': reason
                 }
             }).success(callback);
         },

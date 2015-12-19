@@ -328,10 +328,10 @@ phonecatControllers.controller('DonorCtrl', function($scope, TemplateService, Na
 
     $scope.confDeleteForEntry = function() {
         console.log($scope.deleteReason);
-        // NavigationService.deleteDonor(function(data, status) {
-        //     ngDialog.close();
-        //     window.location.reload();
-        // });
+        NavigationService.deleteDonorReason($scope.deleteReason, function(data, status) {
+            ngDialog.close();
+            window.location.reload();
+        });
     }
 
     $scope.deletefun = function(id) {
