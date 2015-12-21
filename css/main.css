@@ -594,7 +594,9 @@ h4.labeler {
     -moz-transform: translate(-50%,-50%);
 }
 .ngdialog-content {
-background-color: #fff !important;
+/*background-color: #fff !important;*/
+width: 100% !important;
+background-color: transparent !important;
 padding: 30px !important;
 border-radius: 0 !important;
 }
@@ -615,4 +617,11 @@ border-radius: 0 !important;
 .marright{
     margin-right: 17px;
     text-align: right;
+}
+.white-bg {
+    padding: 30px;
+    background-color: #fff;
+}
+.ngdialog-close {
+    display: none;
 }

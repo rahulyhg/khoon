@@ -1,0 +1,101 @@
+<!-- <div class="">
+    <span class="ngdialog-close close"></span>
+    <div class="row">
+        <div class="col-md-3">
+            <p>Donor Id : {{ngDialogData.donorid}}</p>
+        </div>
+        <div class="col-md-4">
+            <p>Name : {{ngDialogData.name}}</p>
+        </div>
+    </div>
+</div> -->
+<div class="print">
+    <div class="row">
+        <div class="col-md-offset-1 col-md-10">
+            <div class="white-bg">
+                <span class="ngdialog-close close"></span>
+                <div class="" id="printableArea">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <p>Donor Id: {{ngDialogData.donorid}}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p>Name: {{ngDialogData.name}}</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p>Donation Count: {{ngDialogData.donationcount}}</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p>Gender: {{ngDialogData.gender}}</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p>Blood Group: {{ngDialogData.bloodgroup}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <p>Bith Date: {{ngDialogData.birthdate | date : 'dd-MMM-yyyy'}}</p>
+                        </div>
+                        <div class="col-md-1">
+                            <p>Age: {{ngDialogData.age}}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p>Hospital: {{ngDialogData.hospital}}</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p>Weight: {{ngDialogData.weight}}</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p>Bottle Number: {{ngDialogData.bottle}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p>Address 1: {{ngDialogData.address1}}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p>Address 2: {{ngDialogData.address2}}</p>
+                        </div>
+                    </div>
+                    <div class="row" ng-if="ngDialogData.address3">
+                        <div class="col-md-12">
+                            <p>Address 3: {{ngDialogData.address3}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3" ng-if="ngDialogData.area">
+                            <p>Area: {{ngDialogData.area}}</p>
+                        </div>
+                        <div class="col-md-3" ng-if="ngDialogData.city">
+                            <p>City: {{ngDialogData.city}}</p>
+                        </div>
+                        <div class="col-md-3" ng-if="ngDialogData.pincode">
+                            <p>Pincode: {{ngDialogData.pincode}}</p>
+                        </div>
+                        <div class="col-md-3" ng-if="ngDialogData.mobile">
+                            <p>Mobile No: {{ngDialogData.mobile}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="text-center">
+                        <button class="btn btn-primary all-btn" onclick="printDiv('printableArea')">Print</button>
+                        <button class="btn btn-primary all-btn">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+function printDiv(divName) {
+    var printContents = document.getElementById(divName).innerHTML;
+    var originalContents = document.body.innerHTML;
+    console.log(originalContents);
+    document.body.innerHTML = printContents;
+
+    window.print(printContents);
+
+    document.body.innerHTML = originalContents;
+}
+</script>

@@ -536,6 +536,7 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
     $scope.access = $.jStorage.get("adminuser");
     $scope.donor = {};
     $scope.showbottle = false;
+    $scope.showPrintBtn = false;
 
     if ($.jStorage.get("adminuser").accesslevel == "admin") {
         $scope.showbottle = false;
@@ -587,10 +588,11 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
                 $scope.donor._id = $routeParams.id;
                 NavigationService.saveappDonor($scope.donor, function(data, status) {
                     if (data.value == false) {
-                        $scope.showfail = 0;
-                    } else {
                         $scope.showfail = 1;
-                        $location.url('/donor');
+                    } else {
+                        $scope.showfail = 0;
+                        $scope.showPrintBtn = true;
+                        // $location.url('/donor');
                     }
                 });
             } else {
@@ -601,11 +603,12 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
                     if (data.value == true && data.comment == "Bottle already exists") {
                         $scope.bottleExist = 0;
                     } else if (data.value == false) {
-                        $scope.showfail = 0;
-                    } else {
                         $scope.showfail = 1;
+                    } else {
+                        $scope.showfail = 0;
                         $scope.bottleExist = 1;
-                        $location.url('/donor');
+                        $scope.showPrintBtn = true;
+                        // $location.url('/donor');
                     }
                 });
             }
@@ -650,14 +653,27 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
     };
 
     $scope.openHistory = function() {
-            $scope.ngDialogData = $scope.donor;
+        $scope.ngDialogData = $scope.donor;
+        ngDialog.open({
+            template: 'views/history.html',
+            controller: 'editDonorCtrl',
+            data: $scope.ngDialogData
+        });
+    }
+
+    $scope.openPrintView = function() {
+        NavigationService.getOneDonor($routeParams.id, function(data, status) {
+            console.log(data);
+            $scope.ngDialogData = data;
             ngDialog.open({
-                template: 'views/history.html',
+                template: 'views/donorprint.html',
                 controller: 'editDonorCtrl',
                 data: $scope.ngDialogData
             });
-        }
-        //editDonor
+        });
+    }
+
+    //editDonor
 });
 //editDonor Controller
 phonecatControllers.controller('oldDonorCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog, $timeout) {
