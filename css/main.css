@@ -637,6 +637,9 @@ h4.labeler {
 .ngdialog-close {
     display: none;
 }
+.align {
+    text-align: center;
+}
 
 
 /*loading bar start*/

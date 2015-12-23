@@ -15,17 +15,19 @@
                                         <input type="search" ng-model="pagedata.donorid" placeholder="Donor ID">
                                     </div>
                                 </div>
-                                <div class="col-md-2 text-center">
-                                    <button type="submit" class="btn btn-primary margtp">Donor Id</button>
+                                <div class="col-md-2 col-sm-4 col-xs-4 ">
+                                   <div class="align">
+                                         <button type="submit" class="btn btn-primary margtp btn-size">Donor Id</button>
+                                    </div>
                                 </div>
                             </form>
-                            <div class="col-md-2 logo" ng-if="access.accesslevel == 'admin' || access.accesslevel == 'entry'">
-                                <a href="#/createdonor" class="right btn btn-primary all-btn create-btn margtp">New Donor
+                            <div class="col-md-2 col-sm-4 col-xs-4 logo" ng-if="access.accesslevel == 'admin' || access.accesslevel == 'entry'">
+                                <a href="#/createdonor" class="right btn btn-primary all-btn create-btn margtp btn-size">New Donor
                                 </a>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-2 col-sm-4 col-xs-4">
                                 <div class="marright">
-                                    <select ng-model="pagedata.limit" class="form-control" ng-change="getFilterResults('limit');">
+                                    <select ng-model="pagedata.limit" class="form-control select-size" ng-change="getFilterResults('limit');">
                                         <option value="20" selected>20</option>
                                         <option value="50">50</option>
                                         <option value="100">100</option>
@@ -61,7 +63,9 @@
                                     </div>
                                 </div>
                                 <div class="col-md-2">
-                                    <button type="submit" class="btn btn-primary margtp">GO</button>
+                                  <div class="text-center">
+                                          <button type="submit" class="btn btn-primary margtp btn-size ">GO</button>
+                                    </div>
                                 </div>
                             </form>
                         </div>

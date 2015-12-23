@@ -1,64 +1,73 @@
-@media only screen and (max-width: 768px){
-    
+@media only screen and (max-width: 768px) {
     .templatemain.menu {
- 
-     min-height: 0px; 
-}
-    .logo{
+        min-height: 0px;
+    }
+    .logo {
         text-align: center;
     }
-  .logout {
-    padding: 3px 20px;
-    margin-bottom: 10px;
-}
-    .search-box{
+    .logout {
+        padding: 3px 20px;
+        margin-bottom: 10px;
+    }
+    .search-box {
         text-align: center;
     }
-    .margtp{
+    .margtp {
         margin-top: 14px;
     }
-    .search-box input{
-            width: 100%;
+    .search-box input {
+        width: 100%;
     }
     .marright {
-    margin: 14px;
-   
-}
+        margin: 14px;
+    }
     tr.bg-dark th {
-    font-size: 12px;
-}
-    .margright{
+        font-size: 12px;
+    }
+    .margright {
         margin-right: 8px;
     }
+    .align {
+        text-align: left;
+    }
+    .btn-size {
+        font-size: 11px;
+    }
+   .panel-body .select-size {
+        height: 29px;
+       font-size: 11px;
+       margin: 14px 0;
+       padding: 0;
+    }
 }
-@media only screen and (min-width: 768px) and (max-width: 998px){
-    
+
+@media only screen and (min-width: 768px) and (max-width: 998px) {
     .templatemain.menu {
- 
-     min-height: 0px; 
-}
-    .logo{
+        min-height: 0px;
+    }
+    .logo {
         text-align: center;
     }
-  .logout {
-    padding: 3px 20px;
-    margin-bottom: 10px;
-}
-    .search-box{
+    .logout {
+        padding: 3px 20px;
+        margin-bottom: 10px;
+    }
+    .search-box {
         text-align: center;
     }
-    .margtp{
+    .margtp {
         margin-top: 14px;
     }
-    .search-box input{
-            width: 100%;
+    .search-box input {
+        width: 100%;
     }
     .marright {
-    margin: 14px;
-   
-}
-     .margright{
+        margin: 14px;
+    }
+    .margright {
         margin-right: 8px;
     }
-  
+    .align {
+        text-align: left;
+    }
 }
