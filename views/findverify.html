@@ -22,17 +22,21 @@
                                 <a href="#/createdonor" class="right btn btn-primary all-btn create-btn" ng-if="access.accesslevel == 'admin' || access.accesslevel == 'entry'">New Donor
                                 </a>
                             </div>
-                            <div class="col-md-4">
-                                <span style="margin-right: 5px;">Hospital</span>
-                                <select style="min-width: 150px;height: 34px;" ng-model="pagedata.hospital" ng-change="getFilterResults1('hospital');" ng-options="hospital._id as hospital.name for hospital in hospitals">
-                                </select>
+                            <div class="col-md-4 ">
+                                <div class="martb">
+                                    <span style="margin-right: 5px;">Hospital</span>
+                                    <select style="min-width: 150px;height: 34px;" ng-model="pagedata.hospital" ng-change="getFilterResults1('hospital');" ng-options="hospital._id as hospital.name for hospital in hospitals">
+                                    </select>
+                                </div>
                             </div>
-                            <div class="pull-right" style="margin-right: 17px;">
-                                <select ng-model="pagedata.limit" class="form-control" ng-change="getFilterResults1('limit');">
-                                    <option value="20" selected>20</option>
-                                    <option value="50">50</option>
-                                    <option value="100">100</option>
-                                </select>
+                            <div class="col-md-2 col-xs-offset-3 col-xs-6">
+                                <div class="fixme" style="margin-right: 17px;">
+                                    <select ng-model="pagedata.limit" class="form-control" ng-change="getFilterResults1('limit');">
+                                        <option value="20" selected>20</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                         <div class="row" style="margin-top:20px" ng-if="isValidLogin==2">

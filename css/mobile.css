@@ -33,11 +33,19 @@
     .btn-size {
         font-size: 11px;
     }
-   .panel-body .select-size {
+    .panel-body .select-size {
         height: 29px;
-       font-size: 11px;
-       margin: 14px 0;
-       padding: 0;
+        font-size: 11px;
+        margin: 14px 0;
+        padding: 0;
+    }
+    .martb {
+        margin: 16px 0;
+        text-align: center;
+    }
+    .fixme {
+        text-align: center;
+        margin: 10px 0;
     }
 }
 
@@ -69,5 +77,14 @@
     }
     .align {
         text-align: left;
+    }
+    .martb {
+        margin: 14px 0;
+        text-align: center;
+    }
+    .fixme {
+        float: none !important;
+        text-align: center;
+        margin: 10px 0;
     }
 }
