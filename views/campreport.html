@@ -133,6 +133,26 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row" style="margin-top:20px">
+                            <!-- <div class="col-md-4" ng-click="getDonorLevels('verify');"> -->
+                            <div class="col-md-4">
+                                <div class="box">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="icon"><i class="fa fa-times"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="text">
+                                                <h3 class="text-center" ng-if="donorDeleted">{{donorDeleted}}</h3>
+                                                <h3 class="text-center" ng-if="!donorDeleted">0</h3>
+                                                <p class="text-center">Donors Rejected</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row" style="margin-top:15px" ng-repeat="hospitals in hospitalCounts">
                             <div class="col-md-4" ng-repeat="hospital in hospitals">
                                 <div class="box" ng-click="getHospUsers(hospital.id);">

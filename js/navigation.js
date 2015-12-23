@@ -27,7 +27,7 @@ var navigationservice = angular.module('navigationservice', [])
             subnav: [],
             visible: "yes"
         }, {
-            name: 'Admin',
+            name: 'User',
             active: '',
             link: '#/admin',
             subnav: [],
@@ -157,6 +157,13 @@ var navigationservice = angular.module('navigationservice', [])
         countHospital: function(data, callback) {
             $http({
                 url: adminurl + "camp/countforHosp",
+                method: "POST",
+                data: data
+            }).success(callback);
+        },
+        countDeleted: function(data, callback) {
+            $http({
+                url: adminurl + "donor/countdeleted",
                 method: "POST",
                 data: data
             }).success(callback);
@@ -607,7 +614,8 @@ var navigationservice = angular.module('navigationservice', [])
                     'pincode': donor.pincode,
                     'pagesize': parseInt(donor.limit),
                     'pagenumber': parseInt(donor.page),
-                    'accesslevel': donor.accesslevel
+                    'accesslevel': donor.accesslevel,
+                    'hospital': donor.hospital
                 }
             }).success(callback);
         },

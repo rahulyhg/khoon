@@ -2636,6 +2636,10 @@ phonecatControllers.controller('campReportCtrl', function($scope, TemplateServic
             console.log(data);
             $scope.hospitalCounts = _.chunk(data, 3);
         });
+        NavigationService.countDeleted($scope.report, function(data) {
+            console.log(data);
+            $scope.donorDeleted = data;
+        })
     }
 
     $scope.getDonorLevels = function(accesslevel) {
