@@ -102,8 +102,7 @@
                             </div>
                         </div>
                         <div class="row" style="margin-top:20px">
-
-                            <div class="col-md-4">
+                            <div class="col-md-4" ng-click="getDonorLevels('rejected');">
                                 <div class="box">
                                     <div class="row">
                                         <div class="col-md-6">
@@ -120,7 +119,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4" ng-click="getDonorLevels('verify');">
+                            <div class="col-md-4" ng-click="getDonorLevels('pendingV');">
                                 <div class="box">
                                     <div class="row">
                                         <div class="col-md-6">
@@ -129,7 +128,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="text">
-                                                <h3 class="text-center" ng-if="levelCounts.verify && levelCounts.entry">{{levelCounts.entry-levelCounts.verify}}</h3>
+                                                <h3 class="text-center" ng-if="levelCounts.verify && levelCounts.entry && donorDeleted">{{levelCounts.entry-levelCounts.verify-donorDeleted}}</h3>
                                                 <h3 class="text-center" ng-if="!levelCounts.verify && !levelCounts.entry">0</h3>
                                                 <h3 class="text-center" ng-if="!levelCounts.verify && levelCounts.entry">{{levelCounts.entry}}</h3>
                                                 <p class="text-center">Pending Acknowledged</p>
@@ -138,8 +137,7 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="col-md-4" ng-click="getDonorLevels('verify');">
+                            <div class="col-md-4" ng-click="getDonorLevels('pendingG');">
                                 <div class="box">
                                     <div class="row">
                                         <div class="col-md-6">
