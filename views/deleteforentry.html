@@ -1,8 +1,16 @@
-<div class="more-text text-center" ng-controller="DonorCtrl">
-    <toaster-container></toaster-container>
-    <p style="color:#FF5A60;text-transform: uppercase;">Delete?</p>
-    <div class="signup-forms">
-        <input type="text" class="form-control" placeholder="Reason" style="margin-bottom:10px;" ng-model="deleteReason">
-        <a class="btn btn-primary mrr all-btn" href="" ng-click="confDeleteForEntry()">Confirm Delete</a>
+<div class="print">
+    <div class="row">
+        <div class="col-md-offset-4 col-md-4">
+            <div class="white-bg">
+                <div class="more-text text-center" ng-controller="findEntryCtrl">
+                    <toaster-container></toaster-container>
+                    <p style="color:#FF5A60;text-transform: uppercase;">Delete?</p>
+                    <div class="signup-forms">
+                        <input type="text" class="form-control" placeholder="Reason" style="margin-bottom:10px;" ng-model="deleteReason">
+                        <a class="btn btn-primary mrr all-btn" href="" ng-click="confDeleteForEntry()">Confirm Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

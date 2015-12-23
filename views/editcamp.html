@@ -25,13 +25,17 @@
                                     <thead>
                                         <tr>
                                             <td>Venue</td>
+                                            <td>Venue Address</td>
                                             <td>Action</td>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="venue in camp.venues">
                                             <td>
-                                                <input type="text" ng-model="venue.value" class="form-control" capitalize-first>
+                                                <input type="text" ng-model="venue.value" placeholder="Venue" class="form-control" capitalize-first>
+                                            </td>
+                                            <td>
+                                                <input type="text" ng-model="venue.address" placeholder="Venue Address" class="form-control" capitalize-first>
                                             </td>
                                             <td>
                                                 <input class="bt btn-danger" type="button" ng-click="remove(camp.venues.indexOf(venue),camp.venues);" value="Delete Venue">

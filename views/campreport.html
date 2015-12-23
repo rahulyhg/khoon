@@ -89,7 +89,8 @@
                                         <div class="col-md-6">
                                             <div class="text">
                                                 <h3 class="text-center" ng-if="levelCounts.verify && levelCounts.entry">{{levelCounts.entry-levelCounts.verify}}</h3>
-                                                <h3 class="text-center" ng-if="!levelCounts.verify || !levelCounts.entry">0</h3>
+                                                <h3 class="text-center" ng-if="!levelCounts.verify && !levelCounts.entry">0</h3>
+                                                <h3 class="text-center" ng-if="!levelCounts.verify && levelCounts.entry">{{levelCounts.entry}}</h3>
                                                 <p class="text-center">Pending Acknowledged</p>
                                             </div>
                                         </div>
@@ -123,7 +124,8 @@
                                         <div class="col-md-6">
                                             <div class="text">
                                                 <h3 class="text-center" ng-if="levelCounts.verify && levelCounts.gift">{{levelCounts.verify-levelCounts.gift}}</h3>
-                                                <h3 class="text-center" ng-if="!levelCounts.verify || !levelCounts.gift">0</h3>
+                                                <h3 class="text-center" ng-if="!levelCounts.verify && !levelCounts.gift">0</h3>
+                                                <h3 class="text-center" ng-if="levelCounts.verify && !levelCounts.gift">{{levelCounts.verify}}</h3>
                                                 <p class="text-center">Pending Gifted</p>
                                             </div>
                                         </div>

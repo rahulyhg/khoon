@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="lib/css/ngDialog-theme-default.css" />
     <link rel="stylesheet" type="text/css" href="lib/css/ngDialog-theme-plain.css" />
     <link rel="stylesheet" type="text.css" href="lib/css/ngDialog.css" />
+    <link rel="stylesheet" type="text.css" href="bower_components/angular-loading-bar/src/loading-bar.css" />
     <link rel="stylesheet" type="text/css" href="css/main.css" />
     <link rel="stylesheet" type="text/css" href="css/mobile.css" />
 
@@ -27,6 +28,7 @@
     <script src="lib/js/bootstrap.min.js"></script>
     <script src="lib/js/lodash.min.js"></script>
     <script src="bower_components/angular-ui-select/dist/select.js"></script>
+    <script src="bower_components/angular-loading-bar/src/loading-bar.js"></script>
 
 
 

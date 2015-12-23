@@ -9,14 +9,16 @@
                     </div>
                     <div class="panel-body">
                         <div class="row">
-                            <div class="col-md-2">
-                                <div class="search-box">
-                                    <input type="search" ng-model="pagedata.donorid" placeholder="Donor ID">
+                            <form ng-submit="getFilterResults('id');">
+                                <div class="col-md-2">
+                                    <div class="search-box">
+                                        <input type="search" ng-model="pagedata.donorid" placeholder="Donor ID">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-2 text-center">
-                                <a class="btn btn-primary margtp" ng-click="getFilterResults('id');">Donor Id</a>
-                            </div>
+                                <div class="col-md-2 text-center">
+                                    <button type="submit" class="btn btn-primary margtp">Donor Id</button>
+                                </div>
+                            </form>
                             <div class="col-md-2 logo" ng-if="access.accesslevel == 'admin' || access.accesslevel == 'entry'">
                                 <a href="#/createdonor" class="right btn btn-primary all-btn create-btn margtp">New Donor
                                 </a>
@@ -32,34 +34,36 @@
                             </div>
                         </div>
                         <div class="row" style="margin-top:20px">
-                            <div class="col-md-2">
-                                <div class="search-box max margtp">
-                                    <input type="search" ng-model="pagedata.name" placeholder="Full Name">
+                            <form ng-submit="getFilterResults('search');">
+                                <div class="col-md-2">
+                                    <div class="search-box max margtp">
+                                        <input type="search" ng-model="pagedata.name" placeholder="Full Name">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="search-box max margtp">
-                                    <input type="search" ng-model="pagedata.firstname" placeholder="First Name">
+                                <div class="col-md-2">
+                                    <div class="search-box max margtp">
+                                        <input type="search" ng-model="pagedata.firstname" placeholder="First Name">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="search-box max margtp">
-                                    <input type="search" ng-model="pagedata.middlename" placeholder="Middle Name">
+                                <div class="col-md-2">
+                                    <div class="search-box max margtp">
+                                        <input type="search" ng-model="pagedata.middlename" placeholder="Middle Name">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="search-box max margtp">
-                                    <input type="search" ng-model="pagedata.lastname" placeholder="Last Name">
+                                <div class="col-md-2">
+                                    <div class="search-box max margtp">
+                                        <input type="search" ng-model="pagedata.lastname" placeholder="Last Name">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="search-box max margtp">
-                                    <input type="search" ng-model="pagedata.pincode" placeholder="Pincode">
+                                <div class="col-md-2">
+                                    <div class="search-box max margtp">
+                                        <input type="search" ng-model="pagedata.pincode" placeholder="Pincode">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-2">
-                                <a class="btn btn-primary margtp" ng-click="getFilterResults('search');">GO</a>
-                            </div>
+                                <div class="col-md-2">
+                                    <button type="submit" class="btn btn-primary margtp">GO</button>
+                                </div>
+                            </form>
                         </div>
                         <div class="row margtp mtop">
                             <div class="col-md-3 margtp" ng-if="access.accesslevel=='admin'">

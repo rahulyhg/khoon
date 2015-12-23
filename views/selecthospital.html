@@ -1,9 +1,17 @@
-<div class="more-text text-center" ng-controller="closeDialog">
-    <toaster-container></toaster-container>
-    <p style="color:#FF5A60;text-transform: uppercase;">Select Hospital</p>
-    <div class="signup-forms">
-        <select class="form-control" ng-model="myhosp" ng-options="hosp._id as hosp.name for hosp in ngDialogData"></select>
-        <br>
-        <a class="btn btn-primary mrr all-btn" href="" ng-click="select();">Submit</a>
+<div class="print">
+    <div class="row">
+        <div class="col-md-offset-3 col-md-6">
+            <div class="white-bg">
+                <div class="more-text text-center" ng-controller="closeDialog">
+                    <toaster-container></toaster-container>
+                    <p style="color:#FF5A60;text-transform: uppercase;">Select Hospital</p>
+                    <div class="signup-forms">
+                        <select class="form-control" ng-model="myhosp" ng-options="hosp._id as hosp.name for hosp in ngDialogData"></select>
+                        <br>
+                        <a class="btn btn-primary mrr all-btn" href="" ng-click="select();">Submit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

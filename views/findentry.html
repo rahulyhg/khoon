@@ -17,6 +17,11 @@
                             <div class="col-md-2 text-center">
                                 <a class="btn btn-primary" ng-click="getFilterResults('id');">Donor Id</a>
                             </div>
+                            <div class="col-md-4">
+                                <span style="margin-right: 5px;">Hospital</span>
+                                <select style="min-width: 150px;height: 34px;" ng-model="pagedata.hospital" ng-change="getFilterResults('hospital');" ng-options="hospital._id as hospital.name for hospital in hospitals">
+                                </select>
+                            </div>
                             <div class="pull-right" style="margin-right: 17px;">
                                 <select ng-model="pagedata.limit" class="form-control" ng-change="getFilterResults('limit');">
                                     <option value="20" selected>20</option>

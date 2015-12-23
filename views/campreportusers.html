@@ -65,7 +65,8 @@
                                     <tr class="bg-dark">
                                         <th class="text-center">Donor Id</th>
                                         <th class="text-center">Donor Name</th>
-                                        <th class="text-center">Donor Pincode</th>
+                                        <th class="text-center">Bottle Number</th>
+                                        <th class="text-center">Hospital</th>
                                         <!-- <th class="text-center" colspan="2" ng-if="access.accesslevel == 'entry' || access.accesslevel == 'admin'">Operations</th> -->
                                     </tr>
                                 </thead>
@@ -73,7 +74,8 @@
                                     <tr ng-repeat="value in donor.data">
                                         <td class="text-center">{{value.donorid}}</td>
                                         <td class="text-center">{{value.name}}</td>
-                                        <td class="text-center">{{value.pincode}}</td>
+                                        <td class="text-center">{{value.oldbottle.bottle}}</td>
+                                        <td class="text-center">{{value.oldbottle.hospitalname}}</td>
                                         <!-- <td class="text-center" ng-if="access.accesslevel == 'entry' || access.accesslevel == 'admin'"><a ng-click="deletefun(value._id)" class="btn btn-primary all-btn"><i class="fa fa-times"></i></a>
                                         </td>
                                         <td class="text-center">

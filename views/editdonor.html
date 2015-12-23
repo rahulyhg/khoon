@@ -6,203 +6,226 @@
             <section class="panel panel-default" style="border-radius:0px;">
                 <div class="panel-heading panel-hdr"><span class="glyphicon glyphicon-th mr5"></span>Edit Donor
                 </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <button type="button" class="btn btn-primary all-btn pull-right" ng-click="openHistory();">View History
-                            </button>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4" ng-if="access.accesslevel == 'admin'">
-                            <div class="form-group">
-                                <label>Donation Count</label>
-                                <input type='text' class='form-control' ng-model='donor.donationcount' placeholder='Donation Count' disabled>
+                <form ng-submit="savedonor();">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-primary all-btn pull-right" ng-click="openHistory();">View History
+                                </button>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class='form-group'>
-                                <label>Donor Id</label>
-                                <input type='text' class='form-control' ng-model='donor.donorid' placeholder='Donor Id' required disabled> </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class='form-group'>
-                                <label>Family Id</label>
-                                <input type='text' class='form-control' ng-model='donor.familyid' placeholder='Family Id' disabled>
+                        <div class="row">
+                            <div class="col-md-4" ng-if="access.accesslevel == 'admin'">
+                                <div class="form-group">
+                                    <label>Donation Count</label>
+                                    <input type='text' class='form-control' ng-model='donor.donationcount' placeholder='Donation Count' disabled>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class='form-group'>
-                                <label>Last Name</label>
-                                <input type='text' class='form-control' ng-model='donor.lastname' placeholder='Last Name' required capitalize-first> </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class='form-group'>
-                                <label>First Name</label>
-                                <input type='text' class='form-control' ng-model='donor.firstname' placeholder='First Name' required capitalize-first> </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class='form-group'>
-                                <label>Middle Name</label>
-                                <input type='text' class='form-control' ng-model='donor.middlename' placeholder='Middle Name' required capitalize-first> </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class='form-group'>
-                                <label>Email</label>
-                                <input type='email' class='form-control' ng-model='donor.email' placeholder='Email' required> </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class='form-group'>
-                                <label>Donation Count</label>
-                                <input type='text' class='form-control' ng-model='donor.donationcount' placeholder='Donation Count' readonly> </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class='form-group'>
-                                <label>Gender</label>
-                                <input type='radio' name='gender' ng-model='donor.gender' value='Male'> Male
-                                <input type='radio' name='gender' ng-model='donor.gender' value='Female'> Female</div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class='form-group'>
-                                <label>Blood Group</label>
-                                <input type='text' class='form-control' ng-model='donor.bloodgroup' placeholder='Blood Group' disabled> </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class='form-group'>
-                                <label>Birth date</label>
-                                <input type='date' class='form-control' ng-model='donor.birthdate' placeholder='Birth date' ng-change="calculate();" required> </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class='form-group'>
-                                <label>Age</label>
-                                <input type='text' class='form-control' ng-model='donor.age' placeholder='Age' readonly>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class='form-group ui-selecter'>
-                                <label for='exampleInputEmail1'>Select Village</label>
+                            <div class="col-md-4">
                                 <div class='form-group'>
-                                    <ui-select multiple tagging tagging-label='false' ng-model='donor.village' on-select='ismatchVillage(donor.village,$select);'>
-                                        <ui-select-match placeholder='Select Village'>{{$item.name}}</ui-select-match>
-                                        <ui-select-choices repeat='person in village track by person._id' refresh='refreshVillage($select.search,$select.selected)' refresh-delay='0'>
-                                            <div ng-bind-html='person.name'></div>
-                                        </ui-select-choices>
-                                    </ui-select>
+                                    <label>Donor Id</label>
+                                    <input type='text' class='form-control' ng-model='donor.donorid' placeholder='Donor Id' required disabled> </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class='form-group'>
+                                    <label>Family Id</label>
+                                    <input type='text' class='form-control' ng-model='donor.familyid' placeholder='Family Id' disabled>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class='form-group'>
-                                <label>Previous Name</label>
-                                <input type='text' class='form-control' ng-model='donor.previousname' placeholder='Previous Name' capitalize-first> </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class='form-group'>
-                                <label>Address 1</label>
-                                <input type="text" class='form-control' ng-model='donor.address1' placeholder='Address 1' capitalize-first required>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class='form-group'>
+                                    <label>Last Name</label>
+                                    <input type='text' class='form-control' ng-model='donor.lastname' placeholder='Last Name' required capitalize-first> </div>
                             </div>
+                            <div class="col-md-4">
+                                <div class='form-group'>
+                                    <label>First Name</label>
+                                    <input type='text' class='form-control' ng-model='donor.firstname' placeholder='First Name' required capitalize-first> </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class='form-group'>
+                                    <label>Middle Name</label>
+                                    <input type='text' class='form-control' ng-model='donor.middlename' placeholder='Middle Name' required capitalize-first> </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class='form-group'>
+                                    <label>Email</label>
+                                    <input type='email' class='form-control' ng-model='donor.email' placeholder='Email'> </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class='form-group'>
+                                    <label>Donation Count</label>
+                                    <input type='text' class='form-control' ng-model='donor.donationcount' placeholder='Donation Count' readonly> </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class='form-group'>
+                                    <label>Gender</label>
+                                    <input type='radio' name='gender' ng-model='donor.gender' value='Male'> Male
+                                    <input type='radio' name='gender' ng-model='donor.gender' value='Female'> Female</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class='form-group'>
+                                    <label>Blood Group</label>
+                                    <input type='text' class='form-control' ng-model='donor.bloodgroup' placeholder='Blood Group' disabled> </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class='form-group'>
+                                    <label>Birth date</label>
+                                    <input type='date' class='form-control' ng-model='donor.birthdate' placeholder='Birth date' ng-change="calculate();" required> </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class='form-group'>
+                                    <label>Age</label>
+                                    <input type='text' class='form-control' ng-model='donor.age' placeholder='Age' readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class='form-group ui-selecter'>
+                                    <label for='exampleInputEmail1'>Select Village</label>
+                                    <div class='form-group'>
+                                        <ui-select multiple tagging tagging-label='false' ng-model='donor.village' on-select='ismatchVillage(donor.village,$select);'>
+                                            <ui-select-match placeholder='Select Village'>{{$item.name}}</ui-select-match>
+                                            <ui-select-choices repeat='person in village track by person._id' refresh='refreshVillage($select.search,$select.selected)' refresh-delay='0'>
+                                                <div ng-bind-html='person.name'></div>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class='form-group'>
+                                    <label>Previous Name</label>
+                                    <input type='text' class='form-control' ng-model='donor.previousname' placeholder='Previous Name' capitalize-first> </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class='form-group'>
+                                    <label>Address 1</label>
+                                    <input type="text" class='form-control' ng-model='donor.address1' placeholder='Address 1' capitalize-first required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Address 2</label>
+                                    <input type="text" class='form-control' ng-model='donor.address2' placeholder='Address 2' capitalize-first>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Address 3</label>
+                                    <input type="text" class='form-control' ng-model='donor.address3' placeholder='Address 3' capitalize-first>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class='form-group'>
+                                    <label>Area</label>
+                                    <input type='text' class='form-control' ng-model='donor.area' placeholder='Area' capitalize-first> </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class='form-group'>
+                                    <label>City</label>
+                                    <input type='text' class='form-control' ng-model='donor.city' placeholder='City' capitalize-first> </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class='form-group'>
+                                    <label>Pincode</label>
+                                    <input type='text' class='form-control' ng-model='donor.pincode' placeholder='Pincode' required only-digits ng-trim="false" maxlength="6"> </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class='form-group'>
+                                    <label>Mobile no</label>
+                                    <input type='text' class='form-control' ng-model='donor.mobileno' placeholder='Mobile no' only-digits ng-trim="false" maxlength="10">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group" ng-if="access.accesslevel == 'entry'">
+                                    <label>Hospital</label>
+                                    <select class='form-control' ng-model="donor.hospital" ng-options="hospital._id as hospital.name for hospital in hospitals">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class='form-group'>
+                                    <label>Weight (in kgs.)</label>
+                                    <input id="txtWeight" type='text' class='form-control' ng-model='donor.weight' placeholder='Weight (in kgs.)'>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class='form-group' ng-if="showbottle">
+                                    <label>Bottle Number</label>
+                                    <input id="bottle" type='text' class='form-control' ng-model='donor.bottle' placeholder='Bottle Number' required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Landline 1</label>
+                                    <input type="text" class='form-control' ng-model='donor.tel1' placeholder='Landline 1' only-digits>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Landline 2</label>
+                                    <input type="text" class='form-control' ng-model='donor.tel2' placeholder='Landline 2' only-digits>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group text-center">
+                                    <span ng-if="bottleExist==0" style="color:red;"><b>Bottle Number Already Exists. Please Change Bottle Number.</b></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group text-center">
+                                    <span ng-if="showfail == 1"><b>Some error. Please submit again.</b></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="showAgeError">
+                            <div class="col-md-12">
+                                <div class="form-group text-center">
+                                    <span><b>Your age should be between 18 and 70</b></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="showPinError">
+                            <div class="col-md-12">
+                                <div class="form-group text-center">
+                                    <span><b>Invalid Pincode</b></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="showSaved">
+                            <div class="col-md-12">
+                                <div class="form-group text-center">
+                                    <span><b>Updated Successfully !</b></span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Add New Tags-->
+                        <div class="text-center" style="padding-bottom:20px;" ng-if="access.accesslevel == 'admin' || access.accesslevel == 'entry'">
+                            <button type="submit" class="btn btn-primary all-btn">Submit
+                            </button>
+                            <!-- <button type="button" class="btn btn-primary all-btn" ng-click="openPrintView();">Show Print View
+                            </button> -->
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Address 2</label>
-                                <input type="text" class='form-control' ng-model='donor.address2' placeholder='Address 2' capitalize-first>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Address 3</label>
-                                <input type="text" class='form-control' ng-model='donor.address3' placeholder='Address 3' capitalize-first>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class='form-group'>
-                                <label>Area</label>
-                                <input type='text' class='form-control' ng-model='donor.area' placeholder='Area' capitalize-first> </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class='form-group'>
-                                <label>City</label>
-                                <input type='text' class='form-control' ng-model='donor.city' placeholder='City' capitalize-first> </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class='form-group'>
-                                <label>Pincode</label>
-                                <input type='text' class='form-control' ng-model='donor.pincode' placeholder='Pincode' required only-digits ng-trim="false" maxlength="6"> </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class='form-group'>
-                                <label>Mobile no</label>
-                                <input type='text' class='form-control' ng-model='donor.mobileno' placeholder='Mobile no' only-digits ng-trim="false" maxlength="10">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group" ng-if="access.accesslevel == 'entry'">
-                                <label>Hospital</label>
-                                <select class='form-control' ng-model="donor.hospital" ng-options="hospital._id as hospital.name for hospital in hospitals">
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class='form-group'>
-                                <label>Weight (in kgs.)</label>
-                                <input id="txtWeight" type='text' class='form-control' ng-model='donor.weight' placeholder='Weight (in kgs.)'>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class='form-group' ng-show="showbottle">
-                                <label>Bottle Number</label>
-                                <input id="bottle" type='text' class='form-control' ng-model='donor.bottle' placeholder='Bottle Number' required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group text-center">
-                                <span ng-if="bottleExist==0" style="color:red;"><b>Bottle Number Already Exists. Please Change Bottle Number.</b></span>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group text-center">
-                                <span ng-if="showfail == 1"><b>Some error. Please submit again.</b></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row" ng-show="showAgeError">
-                        <div class="col-md-12">
-                            <div class="form-group text-center">
-                                <span><b>Your age should be between 18 and 70</b></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row" ng-show="showPinError">
-                        <div class="col-md-12">
-                            <div class="form-group text-center">
-                                <span><b>Invalid Pincode</b></span>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Add New Tags-->
-                    <div class="text-center" style="padding-bottom:20px;" ng-if="access.accesslevel == 'admin' || access.accesslevel == 'entry'">
-                        <button type="button" class="btn btn-primary all-btn" ng-click="savedonor();">Submit
-                        </button>
-                        <button type="button" class="btn btn-primary all-btn" ng-click="openPrintView();">Show Print View
-                        </button>
-                    </div>
-                </div>
+                </form>
             </section>
         </div>
     </div>

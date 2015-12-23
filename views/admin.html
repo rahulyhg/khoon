@@ -5,12 +5,12 @@
         <div class="row">
             <div class="col-md-12">
                 <section class="panel panel-default" style="border-radius:0px;">
-                    <div class="panel-heading panel-hdr"><span class="glyphicon glyphicon-th mr5"></span>Show Admin
+                    <div class="panel-heading panel-hdr"><span class="glyphicon glyphicon-th mr5"></span>Show User
                     </div>
                     <div class="panel-body">
                         <div class="bot search-box">
                             <input type="search" name="search" ng-model="pagedata.search" placeholder="Search" ng-change="reload(pagedata);" />
-                            <a href="#/createadmin" class="right btn btn-primary all-btn create-btn">Create Admin</a>
+                            <a href="#/createadmin" class="right btn btn-primary all-btn create-btn">Create User</a>
                             <div class="pull-right">
                                 <select ng-model="pagedata.limit" class="form-control" ng-change="reload({page:'1',limit:pagedata.limit,search:pagedata.search})">
                                     <option value="20" selected>20</option>
