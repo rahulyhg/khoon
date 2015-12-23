@@ -247,7 +247,8 @@ var navigationservice = angular.module('navigationservice', [])
                 method: 'POST',
                 data: {
                     '_id': $.jStorage.get('deletedonor'),
-                    'reason': reason
+                    'reason': reason,
+                    'campnumber': $.jStorage.get('adminuser').campnumber
                 }
             }).success(callback);
         },

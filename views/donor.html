@@ -16,8 +16,8 @@
                                     </div>
                                 </div>
                                 <div class="col-md-2 col-sm-4 col-xs-4 ">
-                                   <div class="align">
-                                         <button type="submit" class="btn btn-primary margtp btn-size">Donor Id</button>
+                                    <div class="align">
+                                        <button type="submit" class="btn btn-primary margtp btn-size">Donor Id</button>
                                     </div>
                                 </div>
                             </form>
@@ -63,8 +63,8 @@
                                     </div>
                                 </div>
                                 <div class="col-md-2">
-                                  <div class="text-center">
-                                          <button type="submit" class="btn btn-primary margtp btn-size ">GO</button>
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-primary margtp btn-size ">GO</button>
                                     </div>
                                 </div>
                             </form>
@@ -81,7 +81,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div style="margin-top:20px;">
+                        <div style="margin-top:20px;" ng-hide="showNoResult">
                             <table class="table table-bordered ">
                                 <thead>
                                     <tr class="bg-dark">
@@ -112,6 +112,9 @@
                                     </li>
                                 </ul>
                             </nav>
+                        </div>
+                        <div class="text-center row mtop" ng-show="showNoResult">
+                            <h4>No results found</h4>
                         </div>
                     </div>
                 </section>

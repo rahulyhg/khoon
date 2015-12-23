@@ -293,6 +293,7 @@ phonecatControllers.controller('DonorCtrl', function($scope, TemplateService, Na
     $scope.pagedata.pincode = '';
     $scope.pagedata.accesslevel = $scope.access.accesslevel;
     $scope.deleteReason = '';
+    $scope.showNoResult = false;
 
     $scope.venues = [{
         value: 'All'
@@ -301,20 +302,26 @@ phonecatControllers.controller('DonorCtrl', function($scope, TemplateService, Na
     $scope.reload = function() {
         cfpLoadingBar.start();
         NavigationService.findLimitedDonor($scope.pagedata, function(data, status) {
+            console.log(data);
             // cfpLoadingBar.complete();
-            $scope.donor = data;
-            $scope.pages = [];
-            var newclass = '';
-            for (var i = 1; i <= data.totalpages; i++) {
-                if ($scope.pagedata.page == i) {
-                    newclass = 'active';
-                } else {
-                    newclass = '';
+            if (data.value != false) {
+                $scope.showNoResult = false;
+                $scope.donor = data;
+                $scope.pages = [];
+                var newclass = '';
+                for (var i = 1; i <= data.totalpages; i++) {
+                    if ($scope.pagedata.page == i) {
+                        newclass = 'active';
+                    } else {
+                        newclass = '';
+                    }
+                    $scope.pages.push({
+                        pageno: i,
+                        class: newclass
+                    });
                 }
-                $scope.pages.push({
-                    pageno: i,
-                    class: newclass
-                });
+            } else {
+                $scope.showNoResult = true;
             }
         });
     }
@@ -450,8 +457,8 @@ phonecatControllers.controller('createDonorCtrl', function($scope, TemplateServi
                     } else {
                         $scope.showfail = 1;
                         $scope.showSaved = true;
-                        // $location.url('/donor');
-                        $scope.openPrintView();
+                        $location.url('/donor');
+                        // $scope.openPrintView();
                     }
                 });
             } else {
@@ -468,8 +475,8 @@ phonecatControllers.controller('createDonorCtrl', function($scope, TemplateServi
                         $scope.showfail = 1;
                         $scope.bottleExist = 1;
                         $scope.showSaved = true;
-                        // $location.url('/donor');
-                        $scope.openPrintView();
+                        $location.url('/donor');
+                        // $scope.openPrintView();
                     }
                 });
             }
@@ -516,6 +523,10 @@ phonecatControllers.controller('createDonorCtrl', function($scope, TemplateServi
     $scope.openPrintView = function() {
         NavigationService.getOneDonor($routeParams.id, function(data, status) {
             console.log(data);
+            // NavigationService.getOneHospital(data.hospital, function(hosp) {
+            //     console.log(hosp);
+            //     n.oldbottle.hospitalname = hosp.name;
+            // })
             $scope.ngDialogData = data;
             ngDialog.open({
                 template: 'views/donorprint.html',
@@ -606,8 +617,8 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
                         $scope.showfail = 0;
                         $scope.showPrintBtn = true;
                         $scope.showSaved = true;
-                        $scope.openPrintView();
-                        // $location.url('/donor');
+                        // $scope.openPrintView();
+                        $location.url('/donor');
                     }
                 });
             } else {
@@ -625,8 +636,8 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
                         $scope.bottleExist = 1;
                         $scope.showPrintBtn = true;
                         $scope.showSaved = true;
-                        $scope.openPrintView();
-                        // $location.url('/donor');
+                        // $scope.openPrintView();
+                        $location.url('/donor');
                     }
                 });
             }
@@ -732,6 +743,8 @@ phonecatControllers.controller('oldDonorCtrl', function($scope, TemplateService,
     $scope.pagedata.accesslevel = $.jStorage.get("adminuser").accesslevel;
     $scope.pagedata.hospital = $.jStorage.get("adminuser").hospital;
 
+    $scope.showNoResult = false;
+
     NavigationService.findallHospital(function(data, status) {
         console.log(data);
         if (data.value != false) {
@@ -743,6 +756,7 @@ phonecatControllers.controller('oldDonorCtrl', function($scope, TemplateService,
         NavigationService.findEntry($scope.pagedata, function(data, status) {
             console.log(data);
             if (data.value != false) {
+                $scope.showNoResult = false;
                 $scope.donorEntry = data;
                 $scope.pages = [];
                 var newclass = '';
@@ -758,6 +772,7 @@ phonecatControllers.controller('oldDonorCtrl', function($scope, TemplateService,
                     });
                 }
             } else {
+                $scope.showNoResult = true;
                 $scope.donorEntry = [];
             }
         });
@@ -816,6 +831,7 @@ phonecatControllers.controller('oldDonorCtrl', function($scope, TemplateService,
     $scope.reload2 = function() {
         NavigationService.findVerified($scope.pagedata, function(data, status) {
             if (data.value != false) {
+                $scope.showNoResult = false;
                 $scope.donor = data;
                 $scope.pages = [];
                 var newclass = '';
@@ -830,6 +846,8 @@ phonecatControllers.controller('oldDonorCtrl', function($scope, TemplateService,
                         class: newclass
                     });
                 }
+            } else {
+                $scope.showNoResult = true;
             }
         });
     }
@@ -2139,6 +2157,7 @@ phonecatControllers.controller('findEntryCtrl', function($scope, TemplateService
     $scope.pagedata.accesslevel = $scope.access.accesslevel;
     $scope.pagedata.hospital = $scope.access.hospital;
     $scope.deleteReason = '';
+    $scope.showNoResult = false;
 
     $scope.venues = [{
         value: 'All'
@@ -2154,19 +2173,24 @@ phonecatControllers.controller('findEntryCtrl', function($scope, TemplateService
     $scope.reload = function() {
         NavigationService.findEntry($scope.pagedata, function(data, status) {
             console.log(data);
-            $scope.donor = data;
-            $scope.pages = [];
-            var newclass = '';
-            for (var i = 1; i <= data.totalpages; i++) {
-                if ($scope.pagedata.page == i) {
-                    newclass = 'active';
-                } else {
-                    newclass = '';
+            if (data.value != false) {
+                $scope.showNoResult = false;
+                $scope.donor = data;
+                $scope.pages = [];
+                var newclass = '';
+                for (var i = 1; i <= data.totalpages; i++) {
+                    if ($scope.pagedata.page == i) {
+                        newclass = 'active';
+                    } else {
+                        newclass = '';
+                    }
+                    $scope.pages.push({
+                        pageno: i,
+                        class: newclass
+                    });
                 }
-                $scope.pages.push({
-                    pageno: i,
-                    class: newclass
-                });
+            } else {
+                $scope.showNoResult = true;
             }
         });
     }
@@ -2315,6 +2339,8 @@ phonecatControllers.controller('findVerifyCtrl', function($scope, TemplateServic
     $scope.pagedata.accesslevel = $.jStorage.get("adminuser").accesslevel;
     $scope.pagedata.hospital = $.jStorage.get("adminuser").hospital;
 
+    $scope.showNoResult = false;
+
     NavigationService.findallHospital(function(data, status) {
         console.log(data);
         if (data.value != false) {
@@ -2326,6 +2352,7 @@ phonecatControllers.controller('findVerifyCtrl', function($scope, TemplateServic
         NavigationService.findVerified($scope.pagedata, function(data, status) {
             console.log(data);
             if (data.value != false) {
+                $scope.showNoResult = false;
                 $scope.donor = data;
                 $scope.pages = [];
                 var newclass = '';
@@ -2340,6 +2367,8 @@ phonecatControllers.controller('findVerifyCtrl', function($scope, TemplateServic
                         class: newclass
                     });
                 }
+            } else {
+                $scope.showNoResult = true;
             }
         });
     }
@@ -2464,6 +2493,8 @@ phonecatControllers.controller('findGiftCtrl', function($scope, TemplateService,
     $scope.pagedata.accesslevel = $.jStorage.get("adminuser").accesslevel;
     $scope.pagedata.hospital = $.jStorage.get("adminuser").hospital;
 
+    $scope.showNoResult = false;
+
     NavigationService.findallHospital(function(data, status) {
         console.log(data);
         if (data.value != false) {
@@ -2474,6 +2505,7 @@ phonecatControllers.controller('findGiftCtrl', function($scope, TemplateService,
     $scope.reload2 = function() {
         NavigationService.findGifted($scope.pagedata, function(data, status) {
             if (data.value != false) {
+                $scope.showNoResult = false;
                 $scope.donor = data;
                 $scope.pages = [];
                 var newclass = '';
@@ -2488,6 +2520,8 @@ phonecatControllers.controller('findGiftCtrl', function($scope, TemplateService,
                         class: newclass
                     });
                 }
+            } else {
+                $scope.showNoResult = true;
             }
         });
     }
@@ -2676,6 +2710,9 @@ phonecatControllers.controller('campReportUsersCtrl', function($scope, TemplateS
     $scope.pagedata.lastname = '';
     $scope.pagedata.donorid = '';
     $scope.pagedata.pincode = '';
+    $scope.hidebottleno = false;
+    if ($routeParams.accesslevel == "rejected")
+        $scope.hidebottleno = true;
 
     $scope.reload = function() {
         NavigationService.donorLevels($scope.pagedata, function(data, status) {

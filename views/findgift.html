@@ -23,14 +23,14 @@
                                 </a>
                             </div>
                             <div class="col-md-4">
-                             <div class="martb">
-                                       <span style="margin-right: 5px;">Hospital</span>
+                                <div class="martb">
+                                    <span style="margin-right: 5px;">Hospital</span>
                                     <select style="min-width: 150px;height: 34px;" ng-model="pagedata.hospital" ng-change="getFilterResults1('hospital');" ng-options="hospital._id as hospital.name for hospital in hospitals">
                                     </select>
                                 </div>
                             </div>
-                         <div class="col-md-2">
-                                   <div class="fixme">
+                            <div class="col-md-2">
+                                <div class="fixme">
                                     <select ng-model="pagedata.limit" class="form-control" ng-change="getFilterResults2('limit');">
                                         <option value="20" selected>20</option>
                                         <option value="50">50</option>
@@ -71,7 +71,7 @@
                                 </div>
                             </form>
                         </div>
-                        <div style="margin-top:10px;" ng-if="isValidLogin==2">
+                        <div style="margin-top:10px;" ng-if="isValidLogin==2" ng-hide="showNoResult">
                             <div class="form-group text-center">
                                 <span ng-show="showerror2"><b>Gift already saved for donor.</b></span>
                             </div>
@@ -104,6 +104,9 @@
                                     </li>
                                 </ul>
                             </nav>
+                        </div>
+                        <div class="text-center row mtop" ng-show="showNoResult">
+                            <h4>No results found</h4>
                         </div>
                         <div class="form-group text-center">
                             <span ng-if="isValidLogin==0"><b>No data found</b></span>

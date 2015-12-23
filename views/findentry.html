@@ -76,7 +76,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div style="margin-top:20px;">
+                        <div style="margin-top:20px;" ng-hide="showNoResult">
                             <table class="table table-bordered ">
                                 <thead>
                                     <tr class="bg-dark">
@@ -107,6 +107,9 @@
                                     </li>
                                 </ul>
                             </nav>
+                        </div>
+                        <div class="text-center row mtop" ng-show="showNoResult">
+                            <h4>No results found</h4>
                         </div>
                     </div>
                 </section>

@@ -71,7 +71,7 @@
                                 </div>
                             </form>
                         </div>
-                        <div style="margin-top:10px;" ng-if="isValidLogin==2">
+                        <div style="margin-top:10px;" ng-if="isValidLogin==2" ng-hide="showNoResult">
                             <div class="form-group text-center">
                                 <span ng-show="showerror2"><b>Donor already verified.</b></span>
                             </div>
@@ -104,6 +104,9 @@
                                     </li>
                                 </ul>
                             </nav>
+                        </div>
+                        <div class="text-center row mtop" ng-show="showNoResult">
+                            <h4>No results found</h4>
                         </div>
                         <div class="form-group text-center">
                             <span ng-if="isValidLogin==0"><b>No data found</b></span>
