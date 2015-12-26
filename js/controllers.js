@@ -28,12 +28,17 @@ phonecatControllers.controller('home', function($scope, TemplateService, Navigat
     NavigationService.countGifted($.jStorage.get("adminuser"), function(data, status) {
         $scope.gifted = data;
     });
-
-    NavigationService.getBlood(function(data, status) {
-        if (data.value == false) {} else {
-            $scope.blood = data;
-        }
-    });
+    if ($.jStorage.get("adminuser").hospital) {
+        NavigationService.getBlood($.jStorage.get("adminuser").hospital, function(data, status) {
+            if (data.value == false) {
+                $scope.blood = [];
+            } else {
+                $scope.blood = data;
+            }
+        });
+    } else {
+        $scope.blood = [];
+    }
 
     NavigationService.countUser(function(data, status) {
         $scope.allusers = data;

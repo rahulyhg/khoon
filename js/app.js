@@ -205,9 +205,13 @@ firstapp.directive('capitalizeFirst', function($parse) {
 });
 firstapp.filter('touppercase', function() {
     return function(input) {
-        var firstletter = input.substr(0, 1);
-        var remaining = input.substr(1);
-        return firstletter.toUpperCase() + remaining;
+        if (input == "verify") {
+            return "Acknowledge";
+        } else {
+            var firstletter = input.substr(0, 1);
+            var remaining = input.substr(1);
+            return firstletter.toUpperCase() + remaining;
+        }
     };
 });
 firstapp.directive('onlyDigits', function() {

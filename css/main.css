@@ -637,9 +637,11 @@ h4.labeler {
 .ngdialog-close {
     display: none;
 }
+
 .align {
     text-align: center;
 }
+
 .count-donor {
     margin: 0 0 20px;
     color: #e62739;
@@ -911,6 +913,14 @@ h4.labeler {
     40% {
         opacity: 1;
     }
+}
+
+/*.marb {
+    margin-bottom: 20px;
+}*/
+
+.nomg {
+    margin: 0;
 }
 
 
