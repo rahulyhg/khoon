@@ -1,6 +1,6 @@
 var uploadres = [];
 var selectedData = [];
-var phonecatControllers = angular.module('phonecatControllers', ['templateservicemod', 'navigationservice', 'ngDialog', 'angularFileUpload', 'ui.select', 'ngSanitize', 'angular-loading-bar']);
+var phonecatControllers = angular.module('phonecatControllers', ['templateservicemod', 'navigationservice', 'ngDialog', 'angularFileUpload', 'ui.select', 'ngSanitize', 'angular-loading-bar','cfp.loadingBarInterceptor']);
 window.uploadUrl = 'http://104.197.50.51/uploadfile/upload';
 phonecatControllers.controller('home', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
@@ -270,7 +270,7 @@ phonecatControllers.controller('login', function($scope, TemplateService, Naviga
     }
 });
 //Donor Controller
-phonecatControllers.controller('DonorCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog, cfpLoadingBar) {
+phonecatControllers.controller('DonorCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive('Donor');
     TemplateService.title = $scope.menutitle;
@@ -305,10 +305,8 @@ phonecatControllers.controller('DonorCtrl', function($scope, TemplateService, Na
     }];
 
     $scope.reload = function() {
-        cfpLoadingBar.start();
         NavigationService.findLimitedDonor($scope.pagedata, function(data, status) {
             console.log(data);
-            // cfpLoadingBar.complete();
             if (data.value != false) {
                 $scope.showNoResult = false;
                 $scope.donor = data;
@@ -2621,7 +2619,7 @@ phonecatControllers.controller('findGiftCtrl', function($scope, TemplateService,
     //editDonor
 });
 
-phonecatControllers.controller('campReportCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog, $timeout, cfpLoadingBar) {
+phonecatControllers.controller('campReportCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog, $timeout) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive('Camp Report');
     TemplateService.title = $scope.menutitle;
@@ -2629,7 +2627,6 @@ phonecatControllers.controller('campReportCtrl', function($scope, TemplateServic
     TemplateService.content = 'views/campreport.html';
     TemplateService.list = 2;
     $scope.navigation = NavigationService.getnav();
-    cfpLoadingBar.start();
     $scope.report = {};
 
     NavigationService.getCamp(function(data) {
