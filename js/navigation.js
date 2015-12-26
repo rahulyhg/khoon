@@ -1,6 +1,6 @@
 // var adminurl = "http://localhost:1337/";
 var adminurl = "http://192.168.0.125:81/";
-var adminurl = "http://104.197.50.51/";
+// var adminurl = "http://104.197.50.51/";
 var adminlogin = {
     "username": "admin@admin.com",
     "password": "admin123"
@@ -184,10 +184,13 @@ var navigationservice = angular.module('navigationservice', [])
                 data: data
             }).success(callback);
         },
-        getBlood: function(callback) {
+        getBlood: function(data, callback) {
             $http({
                 url: adminurl + 'blood/find',
-                method: 'POST'
+                method: 'POST',
+                data: {
+                    _id: data
+                }
             }).success(callback);
         },
         getverified: function(data, callback) {
