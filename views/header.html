@@ -5,6 +5,7 @@
                 <img src="img/logo.png" alt=""> {{showaccess.accesslevel | touppercase}} Level
                 <span ng-if="showaccess.campnumber && showaccess.campnumber!='All'"> - {{showaccess.campnumber}}</span>
                 <span ng-if="showaccess.camp && showaccess.camp!='All'"> - {{showaccess.camp}}</span>
+                <span ng-if="showaccess.camp && showaccess.camp!='All' && showaccess.accesslevel!='gift'"> - {{hospname}}</span>
                 <span ng-if="bottleCount != 0 && showaccess.accesslevel=='entry'" style="position: absolute;transform: translateX(100%);">Last Bottle Number - {{bottleCount}}</span>
             </a>
         </div>

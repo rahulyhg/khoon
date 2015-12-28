@@ -75,7 +75,7 @@
                                 <div class='form-group ui-selecter'>
                                     <label for='exampleInputEmail1'>Select Village</label>
                                     <div class='form-group'>
-                                        <ui-select multiple tagging tagging-label='false' ng-model='donor.village' on-select='ismatchVillage(donor.village,$select);'>
+                                        <ui-select multiple limit="1" tagging tagging-label='false' ng-model='donor.village' on-select='ismatchVillage(donor.village,$select);'>
                                             <ui-select-match placeholder='Select Village'>{{$item.name}}</ui-select-match>
                                             <ui-select-choices repeat='person in village track by person._id' refresh='refreshVillage($select.search,$select.selected)' refresh-delay='0'>
                                                 <div ng-bind-html='person.name'></div>
@@ -145,6 +145,15 @@
                             </div>
                         </div>
                         <div class="row">
+                            <div class="col-md-4">
+                                <div class='form-group'>
+                                    <label>Discontinued</label>
+                                    <select ng-model='donor.discontinued' class='form-control' required>
+                                        <option value='yes'>Yes</option>
+                                        <option value='no'>No</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-md-4">
                                 <div class='form-group'>
                                     <label>Weight (in kgs.)</label>

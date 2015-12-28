@@ -38,6 +38,14 @@
                                                 <input type="text" ng-model="venue.address" placeholder="Venue Address" class="form-control" capitalize-first>
                                             </td>
                                             <td>
+                                                <ui-select multiple tagging-label='false' ng-model='venue.hospital' on-select='ismatchHospital(venue.hospital,$select);'>
+                                                    <ui-select-match placeholder='Select Hospital'>{{$item.name}}</ui-select-match>
+                                                    <ui-select-choices repeat='person in hospital track by person._id' refresh='refreshHospital($select.search,$select.selected)' refresh-delay='0'>
+                                                        <div ng-bind-html='person.name'></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </td>
+                                            <td>
                                                 <input class="bt btn-danger" type="button" ng-click="remove(camp.venues.indexOf(venue),camp.venues);" value="Delete Venue">
                                             </td>
                                         </tr>

@@ -1,6 +1,6 @@
 // var adminurl = "http://localhost:1337/";
 var adminurl = "http://192.168.0.125:81/";
-var adminurl = "http://104.197.50.51/";
+// var adminurl = "http://104.197.50.51/";
 var adminlogin = {
     "username": "admin@admin.com",
     "password": "admin123"
@@ -250,7 +250,7 @@ var navigationservice = angular.module('navigationservice', [])
                 method: 'POST',
                 data: {
                     '_id': $.jStorage.get('deletedonor'),
-                    'reason': reason,
+                    'deleteReason': reason,
                     'campnumber': $.jStorage.get('adminuser').campnumber
                 }
             }).success(callback);
@@ -282,6 +282,7 @@ var navigationservice = angular.module('navigationservice', [])
             $http({
                 url: adminurl + 'village/find',
                 method: 'POST',
+                ignoreLoadingBar: true,
                 data: {
                     search: data,
                     village: village
@@ -480,6 +481,28 @@ var navigationservice = angular.module('navigationservice', [])
                 method: 'POST'
             }).success(callback);
         },
+        findHospital: function(data, hospital, callback) {
+            $http({
+                url: adminurl + 'hospital/findForCamp',
+                method: 'POST',
+                ignoreLoadingBar: true,
+                data: {
+                    search: data,
+                    hospital: hospital
+                }
+            }).success(callback);
+        },
+        findCampHospital: function(campnumber, camp, callback) {
+            $http({
+                url: adminurl + 'camp/findCampHospital',
+                method: 'POST',
+                ignoreLoadingBar: true,
+                data: {
+                    camp: camp,
+                    campnumber: campnumber
+                }
+            }).success(callback);
+        },
         getOneSponsor: function(id, callback) {
             $http({
                 url: adminurl + 'sponsor/findone',
@@ -599,7 +622,6 @@ var navigationservice = angular.module('navigationservice', [])
                     'pagesize': parseInt(donor.limit),
                     'pagenumber': parseInt(donor.page),
                     'accesslevel': donor.accesslevel,
-                    "hospital": donor.hospital
                 }
             }).success(callback);
         },
@@ -619,7 +641,6 @@ var navigationservice = angular.module('navigationservice', [])
                     'pagesize': parseInt(donor.limit),
                     'pagenumber': parseInt(donor.page),
                     'accesslevel': donor.accesslevel,
-                    'hospital': donor.hospital
                 }
             }).success(callback);
         },
