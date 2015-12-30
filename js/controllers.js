@@ -570,6 +570,7 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
 
     if ($.jStorage.get("adminuser").accesslevel == "admin") {
         $scope.showbottle = false;
+        getDetails();
     } else {
         $scope.showbottle = true;
         if ($.jStorage.get("adminuser").hospital) {
@@ -577,6 +578,7 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
                 console.log(data);
                 if (data.value != false)
                     $scope.bottleCount = data.bottle;
+                getDetails();
             })
         }
     }
@@ -588,24 +590,26 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
         $scope.donor.age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
     }
 
-    NavigationService.getOneDonor($routeParams.id, function(data, status) {
-        console.log(data);
-        $scope.donor = data;
-        $scope.calculate(); //Add More Array
-        if ($scope.access.accesslevel == 'entry') {
-            if ($scope.donor.new) {
-                document.getElementById("bottle").disabled = true;
-            } else {
-                document.getElementById("bottle").disabled = false;
+    function getDetails() {
+        NavigationService.getOneDonor($routeParams.id, function(data, status) {
+            console.log(data);
+            $scope.donor = data;
+            $scope.calculate(); //Add More Array
+            if ($scope.access.accesslevel == 'entry') {
+                if ($scope.donor.new) {
+                    document.getElementById("bottle").disabled = true;
+                } else {
+                    document.getElementById("bottle").disabled = false;
+                }
             }
-        }
-        $scope.donor.birthdate = new Date($scope.donor.birthdate);
-        $scope.donor.hospital = $.jStorage.get("adminuser").hospital;
-        if ($scope.bottleCount && !data.bottle) {
-            $scope.donor.bottle = parseInt($scope.bottleCount) + 1;
-        }
-        // console.log($scope.donor);
-    });
+            $scope.donor.birthdate = new Date($scope.donor.birthdate);
+            $scope.donor.hospital = $.jStorage.get("adminuser").hospital;
+            if ($scope.bottleCount && !data.bottle) {
+                $scope.donor.bottle = parseInt($scope.bottleCount) + 1;
+            }
+            // console.log($scope.donor);
+        });
+    }
 
     // NavigationService.findallHospital(function(data, status) {
     //     $scope.hospital = data;
