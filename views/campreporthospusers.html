@@ -29,8 +29,11 @@
                                     <input type="search" ng-model="pagedata.lastname" placeholder="Last Name">
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-1">
                                 <a class="btn btn-primary" ng-click="getFilterResults('search');">GO</a>
+                            </div>
+                            <div class="col-md-1">
+                               <a class="btn btn-primary" ng-click="printReport();">Print</a>
                             </div>
                             <div class="pull-right" style="margin-right: 17px;">
                                 <select ng-model="pagedata.limit" class="form-control" ng-change="getFilterResults('limit');">
@@ -41,7 +44,7 @@
                             </div>
                         </div>
                         <!-- <div class="row" style="margin-top:20px">
-                            
+
                         </div> -->
                         <div style="margin-top:20px;">
                             <table class="table table-bordered ">

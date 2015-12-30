@@ -622,6 +622,7 @@ var navigationservice = angular.module('navigationservice', [])
                     'pagesize': parseInt(donor.limit),
                     'pagenumber': parseInt(donor.page),
                     'accesslevel': donor.accesslevel,
+                    "hospital": donor.hospital
                 }
             }).success(callback);
         },
@@ -686,6 +687,9 @@ var navigationservice = angular.module('navigationservice', [])
                     'hospital': data.hospital
                 }
             }).success(callback);
+        },
+        excelDonor: function(data, callback) {
+            $http.get(adminurl + "camp/excelDonor?accesslevel=" + data.accesslevel + "&camp=" + data.camp + "&campnumber=" + data.campnumber).success(callback);
         },
         setUser: function(data) {
             $.jStorage.set("user", data);
