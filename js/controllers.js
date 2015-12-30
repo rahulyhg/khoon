@@ -2725,7 +2725,7 @@ phonecatControllers.controller('campReportCtrl', function($scope, TemplateServic
     NavigationService.getCamp(function(data) {
         console.log(data);
         $scope.camps = data;
-        $scope.report.campnumber = $scope.camps[$scope.camps.length - 1].campnumber;
+        $scope.report.campnumber = $scope.camps[0].campnumber;
         $scope.venues = $scope.camps[$scope.camps.length - 1].venues;
         $scope.venues.unshift({
             value: 'All'
