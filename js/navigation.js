@@ -691,6 +691,12 @@ var navigationservice = angular.module('navigationservice', [])
         excelDonor: function(data, callback) {
             $http.get(adminurl + "camp/excelDonor?accesslevel=" + data.accesslevel + "&camp=" + data.camp + "&campnumber=" + data.campnumber).success(callback);
         },
+        hospexcelDonor: function(data, callback) {
+            $http.get(adminurl + "camp/hospitalDonor?hospital=" + data.hospital + "&camp=" + data.camp + "&campnumber=" + data.campnumber).success(callback);
+        },
+        printSummary: function(data, callback) {
+            $http.get(adminurl + "donor/findForPrint?_id=" + data.id + "&campnumber=" + data.campnumber).success(callback);
+        },
         setUser: function(data) {
             $.jStorage.set("user", data);
         },

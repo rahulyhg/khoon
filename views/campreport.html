@@ -129,6 +129,7 @@
                                         <div class="col-md-6">
                                             <div class="text">
                                                 <h3 class="text-center" ng-if="levelCounts.verify && levelCounts.entry && donorDeleted">{{levelCounts.entry-levelCounts.verify-donorDeleted}}</h3>
+                                                <h3 class="text-center" ng-if="levelCounts.verify && levelCounts.entry">{{levelCounts.entry-levelCounts.verify}}</h3>
                                                 <h3 class="text-center" ng-if="!levelCounts.verify && !levelCounts.entry">0</h3>
                                                 <h3 class="text-center" ng-if="!levelCounts.verify && levelCounts.entry">{{levelCounts.entry}}</h3>
                                                 <p class="text-center">Pending Acknowledged</p>

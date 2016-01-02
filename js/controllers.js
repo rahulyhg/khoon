@@ -464,7 +464,7 @@ phonecatControllers.controller('createDonorCtrl', function($scope, TemplateServi
                         $scope.showfail = 1;
                         $scope.showSaved = true;
                         $location.url('/donor');
-                        // $scope.openPrintView();
+                        // $scope.openPrintView(data.id);
                     }
                 });
             } else {
@@ -481,8 +481,8 @@ phonecatControllers.controller('createDonorCtrl', function($scope, TemplateServi
                         $scope.showfail = 1;
                         $scope.bottleExist = 1;
                         $scope.showSaved = true;
+                        $scope.openPrintView(data.id);
                         $location.url('/donor');
-                        // $scope.openPrintView();
                     }
                 });
             }
@@ -526,22 +526,21 @@ phonecatControllers.controller('createDonorCtrl', function($scope, TemplateServi
         }
     };
 
-    $scope.openPrintView = function() {
-        NavigationService.getOneDonor($routeParams.id, function(data, status) {
+    $scope.openPrintView = function(id) {
+        var abc = {
+            'id': id,
+            'campnumber': $.jStorage.get("adminuser").campnumber
+        }
+        NavigationService.printSummary(abc, function(data, status) {
             console.log(data);
-            // NavigationService.getOneHospital(data.hospital, function(hosp) {
-            //     console.log(hosp);
-            //     n.oldbottle.hospitalname = hosp.name;
-            // })
-            $scope.ngDialogData = data;
-            ngDialog.open({
-                template: 'views/donorprint.html',
-                controller: 'createDonorCtrl',
-                data: $scope.ngDialogData
-            });
+            if (data.value != false) {
+                var mywin = window.open('', '', 'width=1000,height=600');
+                mywin.document.write(data);
+                mywin.document.write('<script type="text/javascript">window.onload = function() { window.print();window.close(); }</script>');
+                mywin.document.close();
+            }
         });
     }
-
     $scope.closePrintModal = function() {
         ngDialog.closeAll();
         $location.url('/donor');
@@ -691,7 +690,7 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
                         $scope.bottleExist = 1;
                         $scope.showPrintBtn = true;
                         $scope.showSaved = true;
-                        // $scope.openPrintView();
+                        $scope.openPrintView();
                         $location.url('/donor');
                     }
                 });
@@ -748,14 +747,18 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
     }
 
     $scope.openPrintView = function() {
-        NavigationService.getOneDonor($routeParams.id, function(data, status) {
+        var abc = {
+            'id': $routeParams.id,
+            'campnumber': $scope.access.campnumber
+        }
+        NavigationService.printSummary(abc, function(data, status) {
             console.log(data);
-            $scope.ngDialogData = data;
-            ngDialog.open({
-                template: 'views/donorprint.html',
-                controller: 'editDonorCtrl',
-                data: $scope.ngDialogData
-            });
+            if (data.value != false) {
+                var mywin = window.open('', '', 'width=1000,height=600');
+                mywin.document.write(data);
+                mywin.document.write('<script type="text/javascript">window.onload = function() { window.print();window.close(); }</script>');
+                mywin.document.close();
+            }
         });
     }
 
@@ -2781,7 +2784,7 @@ phonecatControllers.controller('campReportCtrl', function($scope, TemplateServic
 
 });
 
-phonecatControllers.controller('campReportUsersCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog, $routeParams) {
+phonecatControllers.controller('campReportUsersCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog, $routeParams, $timeout) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive('Camp Report');
     TemplateService.title = $scope.menutitle;
@@ -2879,13 +2882,22 @@ phonecatControllers.controller('campReportUsersCtrl', function($scope, TemplateS
     }
 
     $scope.printReport = function() {
-        window.open("http://192.168.0.125:81/camp/excelDonor?accesslevel=" + $scope.pagedata.accesslevel + "&camp=" + $scope.pagedata.camp + "&campnumber=" + $scope.pagedata.campnumber);
-        // NavigationService.excelDonor($scope.pagedata, function(data) {
-        //     console.log(data);
-        //     if (data.value != false) {
-        //         window.print(data);
+        // var mywin = window.open("http://192.168.0.125:81/camp/excelDonor?accesslevel=" + $scope.pagedata.accesslevel + "&camp=" + $scope.pagedata.camp + "&campnumber=" + $scope.pagedata.campnumber, '', 'width=1000,height=500');
+        // $timeout(function() {
+        //     if (mywin.document.readyState == "complete") {
+        //         mywin.print();
         //     }
-        // })
+        // }, 2000);
+
+        NavigationService.excelDonor($scope.pagedata, function(data) {
+            // console.log(data);
+            if (data.value != false) {
+                var mywin = window.open('', '', 'width=1000,height=600');
+                mywin.document.write(data);
+                mywin.document.write('<script type="text/javascript">window.onload = function() { window.print();window.close(); }</script>');
+                mywin.document.close();
+            }
+        })
     }
 
     //End Donor
@@ -2985,13 +2997,16 @@ phonecatControllers.controller('campReportHospUsersCtrl', function($scope, Templ
     }
 
     $scope.printReport = function() {
-        window.open("http://192.168.0.125:81/camp/hospitalDonor?hospital=" + $scope.pagedata.hospital + "&camp=" + $scope.pagedata.camp + "&campnumber=" + $scope.pagedata.campnumber);
-        // NavigationService.excelDonor($scope.pagedata, function(data) {
-        //     console.log(data);
-        //     if (data.value != false) {
-        //         window.print(data);
-        //     }
-        // })
+        // window.open("http://192.168.0.125:81/camp/hospitalDonor?hospital=" + $scope.pagedata.hospital + "&camp=" + $scope.pagedata.camp + "&campnumber=" + $scope.pagedata.campnumber);
+        NavigationService.hospexcelDonor($scope.pagedata, function(data) {
+            // console.log(data);
+            if (data.value != false) {
+                var mywin = window.open('', '', 'width=1000,height=600');
+                mywin.document.write(data);
+                mywin.document.write('<script type="text/javascript">window.onload = function() { window.print();window.close(); }</script>');
+                mywin.document.close();
+            }
+        })
     }
 
     //End Donor
