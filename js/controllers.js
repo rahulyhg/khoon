@@ -2729,7 +2729,7 @@ phonecatControllers.controller('campReportCtrl', function($scope, TemplateServic
         console.log(data);
         $scope.camps = data;
         $scope.report.campnumber = $scope.camps[0].campnumber;
-        $scope.venues = $scope.camps[$scope.camps.length - 1].venues;
+        $scope.venues = $scope.camps[0].venues;
         $scope.venues.unshift({
             value: 'All'
         });
