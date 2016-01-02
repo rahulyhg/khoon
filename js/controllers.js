@@ -440,6 +440,7 @@ phonecatControllers.controller('createDonorCtrl', function($scope, TemplateServi
     $scope.showfail = 1;
     $scope.showbottle = false;
     $scope.showSaved = false;
+    $scope.showMobileErr = false;
 
     $scope.calculate = function() {
         var birth = new Date($scope.donor.birthdate);
@@ -452,9 +453,10 @@ phonecatControllers.controller('createDonorCtrl', function($scope, TemplateServi
     } else {
         $scope.showbottle = true;
     }
+
     $scope.savedonor = function() {
         console.log($scope.donor);
-        if ($scope.donor.age >= 18 && $scope.donor.age <= 70 && $scope.donor.pincode.toString().length == 6) {
+        if ($scope.donor.age >= 18 && $scope.donor.age <= 70 && $scope.donor.pincode.toString().length == 6 && ($scope.donor.mobile.toString().length == 10 || $scope.donor.mobile.toString().length == 0)) {
             if ($.jStorage.get("adminuser").accesslevel == "admin") {
                 NavigationService.saveappDonor($scope.donor, function(data, status) {
                     if (data.value == false) {
@@ -493,6 +495,8 @@ phonecatControllers.controller('createDonorCtrl', function($scope, TemplateServi
             } else if ($scope.donor.pincode.toString().length != 6) {
                 $scope.showAgeError = false;
                 $scope.showPinError = true;
+            } else if ($scope.donor.mobile.toString().length != 10 || $scope.donor.mobile.toString().length != 0) {
+                $scope.showMobileErr = true;
             }
         }
     };
@@ -566,6 +570,7 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
     $scope.showBottleError = false;
     $scope.hideSubmitPrint = false;
     $scope.showOnlyPrint = false;
+    $scope.showMobileErr = false;
 
     if ($.jStorage.get("adminuser").accesslevel == "admin") {
         $scope.showbottle = false;
@@ -626,7 +631,7 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
     }
 
     $scope.onlyEditUser = function() {
-        if ($scope.donor.age >= 18 && $scope.donor.age <= 70 && $scope.donor.pincode.toString().length == 6) {
+        if ($scope.donor.age >= 18 && $scope.donor.age <= 70 && $scope.donor.pincode.toString().length == 6 && ($scope.donor.mobile.toString().length == 10 || $scope.donor.mobile.toString().length == 0)) {
             $scope.showAgeError = false;
             $scope.donor._id = $routeParams.id;
             delete $scope.donor.bottle;
@@ -652,13 +657,15 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
             } else if ($scope.donor.pincode.toString().length != 6) {
                 $scope.showAgeError = false;
                 $scope.showPinError = true;
+            } else if ($scope.donor.mobile.toString().length != 10 || $scope.donor.mobile.toString().length != 0) {
+                $scope.showMobileErr = true;
             }
         }
     }
 
     $scope.savedonor = function() {
         console.log($scope.donor);
-        if ($scope.donor.age >= 18 && $scope.donor.age <= 70 && $scope.donor.pincode.toString().length == 6 && $scope.donor.bottle && $scope.donor.bottle.toString().length >= 1) {
+        if ($scope.donor.age >= 18 && $scope.donor.age <= 70 && $scope.donor.pincode.toString().length == 6 && $scope.donor.bottle && $scope.donor.bottle.toString().length >= 1 && ($scope.donor.mobile.toString().length == 10 || $scope.donor.mobile.toString().length == 0)) {
             $scope.showAgeError = false;
             $scope.showBottleError = false;
             if ($.jStorage.get("adminuser").accesslevel == "admin") {
@@ -704,6 +711,8 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
                 $scope.showPinError = true;
             } else if (!$scope.donor.bottle || $scope.donor.bottle == '') {
                 $scope.showBottleError = true;
+            } else if ($scope.donor.mobile.toString().length != 10 || $scope.donor.mobile.toString().length != 0) {
+                $scope.showMobileErr = true;
             }
         }
     };
