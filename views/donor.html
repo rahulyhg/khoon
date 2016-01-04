@@ -39,7 +39,7 @@
                             <form ng-submit="getFilterResults('search');">
                                 <div class="col-md-2">
                                     <div class="search-box max margtp">
-                                        <input type="search" ng-model="pagedata.name" placeholder="Full Name">
+                                        <input id="fullName" type="search" ng-model="pagedata.name" placeholder="Full Name">
                                     </div>
                                 </div>
                                 <div class="col-md-2">
@@ -122,3 +122,8 @@
         </div>
     </div>
 </div>
+<script>
+   $(document).ready(function() {
+      $("#fullName").focus();
+   });
+</script>

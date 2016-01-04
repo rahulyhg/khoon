@@ -133,7 +133,6 @@ phonecatControllers.controller('login', function($scope, TemplateService, Naviga
     $scope.showDrop = true;
 
     NavigationService.getCamp(function(data, status) {
-        console.log(data);
         if (data.value != false) {
             $scope.camp = data;
             // $scope.camp.unshift({
@@ -351,7 +350,6 @@ phonecatControllers.controller('DonorCtrl', function($scope, TemplateService, Na
     }
 
     NavigationService.getCamp(function(data) {
-        console.log(data);
         $scope.camps = data;
         $scope.camps.unshift({
             campnumber: 'All',
@@ -2340,7 +2338,6 @@ phonecatControllers.controller('findEntryCtrl', function($scope, TemplateService
     }
 
     NavigationService.getCamp(function(data) {
-        console.log(data);
         $scope.camps = data;
         $scope.camps.unshift({
             campnumber: 'All',
@@ -2735,7 +2732,6 @@ phonecatControllers.controller('campReportCtrl', function($scope, TemplateServic
     $scope.report = {};
 
     NavigationService.getCamp(function(data) {
-        console.log(data);
         $scope.camps = data;
         $scope.report.campnumber = $scope.camps[0].campnumber;
         $scope.venues = $scope.camps[0].venues;
