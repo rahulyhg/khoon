@@ -65,14 +65,18 @@
                         </div>
                         <div class='form-group'>
                             <label>Close Camp</label>
-                            <select ng-model='camp.status' class='form-control' ng-if="disableCampClose=='no'">
+                            <select ng-model='camp.status' class='form-control'>
                                 <option value='no'>No</option>
                                 <option value='yes'>Yes</option>
                             </select>
-                            <select ng-model='camp.status' class='form-control' ng-if="disableCampClose=='yes'" disabled>
+                            <!-- <select ng-model='camp.status' class='form-control' ng-if="disableCampClose=='no'">
                                 <option value='no'>No</option>
                                 <option value='yes'>Yes</option>
-                            </select>
+                            </select> -->
+                            <!-- <select ng-model='camp.status' class='form-control' ng-if="disableCampClose=='yes'" disabled>
+                                <option value='no'>No</option>
+                                <option value='yes'>Yes</option>
+                            </select> -->
                         </div>
                         <!--Add New Tags-->
                         <div class="text-center" style="padding-bottom:20px;">
