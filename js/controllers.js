@@ -2734,13 +2734,17 @@ phonecatControllers.controller('campReportCtrl', function($scope, TemplateServic
     NavigationService.getCamp(function(data) {
         $scope.camps = data;
         $scope.report.campnumber = $scope.camps[0].campnumber;
-        $scope.venues = $scope.camps[0].venues;
+        if ($scope.camps[0].venues) {
+            $scope.venues = $scope.camps[0].venues;
+        } else {
+            $scope.venues = [];
+        }
         $scope.venues.unshift({
             value: 'All'
         });
         $scope.report.camp = 'All';
         getCounts();
-    })
+    });
 
     $scope.changeVenues = function(val) {
         console.log(val);
