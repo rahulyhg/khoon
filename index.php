@@ -42,7 +42,7 @@
 
 </head>
 
-<body>
+<body class="bkp">
 
 
     <div class="repeated-item" ng-view></div>
