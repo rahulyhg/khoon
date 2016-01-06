@@ -820,6 +820,7 @@ phonecatControllers.controller('oldDonorCtrl', function($scope, TemplateService,
     });
 
     $scope.reload1 = function() {
+      console.log($scope.pagedata);
         NavigationService.findEntry($scope.pagedata, function(data, status) {
             console.log(data);
             if (data.value != false) {
@@ -852,8 +853,6 @@ phonecatControllers.controller('oldDonorCtrl', function($scope, TemplateService,
             case 'id':
                 {
                     $scope.pagedata.page = 1;
-                    $scope.pagedata.camp = '';
-                    $scope.pagedata.campnumber = '';
                     $scope.pagedata.name = '';
                     $scope.pagedata.firstname = '';
                     $scope.pagedata.middlename = '';
@@ -926,8 +925,6 @@ phonecatControllers.controller('oldDonorCtrl', function($scope, TemplateService,
             case 'id':
                 {
                     $scope.pagedata.page = 1;
-                    $scope.pagedata.camp = '';
-                    $scope.pagedata.campnumber = '';
                     $scope.pagedata.name = '';
                     $scope.pagedata.firstname = '';
                     $scope.pagedata.middlename = '';
@@ -2252,8 +2249,8 @@ phonecatControllers.controller('findEntryCtrl', function($scope, TemplateService
     $scope.pagedata = {};
     $scope.pagedata.page = 1;
     $scope.pagedata.limit = '20';
-    $scope.pagedata.camp = '';
-    $scope.pagedata.campnumber = '';
+    $scope.pagedata.camp = $scope.access.camp;
+    $scope.pagedata.campnumber = $scope.access.campnumber;
     $scope.pagedata.donorid = '';
     $scope.pagedata.name = '';
     $scope.pagedata.firstname = '';
