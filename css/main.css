@@ -335,6 +335,7 @@ body {
 
 .box .text {
     padding: 10px;
+        cursor: pointer;
 }
 
 .box h3 {
