@@ -1,17 +1,18 @@
 <div class="p11">
    <div class="row " ng-controller="headerctrl">
-    <div class="col-md-9">
+    <div class="col-md-11">
         <div class="logo">
-            <a href="#/home" class="logo">
-                <img src="img/logo.png" alt=""> {{showaccess.accesslevel | touppercase}} Level
+            <a href="#/home" class="logo" style="text-decoration: none;">
+                <img src="img/logo.png" alt=""> <span>{{showaccess.accesslevel | touppercase}} Level</span>
                 <span ng-if="showaccess.campnumber && showaccess.campnumber!='All'"> - {{showaccess.campnumber}}</span>
                 <span ng-if="showaccess.camp && showaccess.camp!='All'"> - {{showaccess.camp}}</span>
                 <span ng-if="showaccess.camp && showaccess.camp!='All' && showaccess.accesslevel!='gift'"> - {{hospname}}</span>
-                <span ng-if="bottleCount != 0 && showaccess.accesslevel=='entry'" style="position: absolute;transform: translateX(100%);">Last Bottle Number - {{bottleCount}}</span>
+                <span ng-if="bottleCount != 0 && showaccess.accesslevel=='entry'">- Last Bottle Number - {{bottleCount}}</span>
+                <!-- <span>- Last Bottle Number - 10000</span> -->
             </a>
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-1">
         <a href="#/login" class="btn btn-default pull-right logout">Logout</a>
     </div>
 </div>
