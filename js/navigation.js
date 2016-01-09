@@ -1,5 +1,5 @@
 // var adminurl = "http://localhost:1337/";
-var adminurl = "http://192.168.0.125:81/";
+// var adminurl = "http://192.168.0.125:1337/";
 var adminurl = "http://104.197.50.51/";
 var adminlogin = {
     "username": "admin@admin.com",
@@ -53,15 +53,21 @@ var navigationservice = angular.module('navigationservice', [])
             subnav: [],
             visible: "yes"
         }, {
+            name: 'Slider',
+            active: '',
+            link: '#/slider',
+            subnav: [],
+            visible: "yes"
+        }, {
             name: 'Sponsor',
             active: '',
             link: '#/sponsor',
             subnav: [],
             visible: "yes"
         }, {
-            name: 'Slider',
+            name: 'Notification',
             active: '',
-            link: '#/slider',
+            link: '#/notification',
             subnav: [],
             visible: "yes"
         }, {
@@ -78,12 +84,6 @@ var navigationservice = angular.module('navigationservice', [])
             visible: "yes"
         }, {
             name: 'Activity',
-            active: '',
-            link: '#/home',
-            subnav: [],
-            visible: "yes"
-        }, {
-            name: 'Notification',
             active: '',
             link: '#/home',
             subnav: [],
@@ -702,6 +702,49 @@ var navigationservice = angular.module('navigationservice', [])
         },
         getUser: function() {
             $.jStorage.get("user");
+        },
+        getOneNotification: function(id, callback) {
+            $http({
+                url: adminurl + 'notification/findone',
+                method: 'POST',
+                data: {
+                    '_id': id
+                }
+            }).success(callback);
+        },
+        findLimitedNotification: function(notification, callback) {
+            $http({
+                url: adminurl + 'notification/findlimited',
+                method: 'POST',
+                data: {
+                    'search': notification.search,
+                    'pagesize': parseInt(notification.limit),
+                    'pagenumber': parseInt(notification.page)
+                }
+            }).success(callback);
+        },
+        deleteNotification: function(callback) {
+            $http({
+                url: adminurl + 'notification/delete',
+                method: 'POST',
+                data: {
+                    '_id': $.jStorage.get('deletenotification')
+                }
+            }).success(callback);
+        },
+        saveNotification: function(data, callback) {
+            $http({
+                url: adminurl + 'notification/save',
+                method: 'POST',
+                data: data
+            }).success(callback);
+        },
+        editNotification: function(data, callback) {
+            $http({
+                url: adminurl + 'notification/editnot',
+                method: 'POST',
+                data: data
+            }).success(callback);
         }, //Add New Service
 
     }

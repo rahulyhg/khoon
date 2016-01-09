@@ -62,6 +62,15 @@ firstapp.config(
             }).when('/editslider/:id', {
                 templateUrl: 'views/template.html',
                 controller: 'editSliderCtrl'
+            }).when('/notification', {
+                templateUrl: 'views/template.html',
+                controller: 'NotificationCtrl'
+            }).when('/createnotification', {
+                templateUrl: 'views/template.html',
+                controller: 'createNotificationCtrl'
+            }).when('/editnotification/:id', {
+                templateUrl: 'views/template.html',
+                controller: 'editNotificationCtrl'
             }).when('/admin', {
                 templateUrl: 'views/template.html',
                 controller: 'AdminCtrl'
@@ -124,7 +133,7 @@ firstapp.config(
     });
 firstapp.filter('uploadpath', function() {
     return function(input) {
-        return adminurl + "uploadfile/getupload?file=" + input;
+        return adminurl + "uploadfile/resize?file=" + input;
     };
 });
 
