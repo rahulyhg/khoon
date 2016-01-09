@@ -174,7 +174,13 @@
                      <div class="col-md-4" ng-if="donor.discontinued=='yes'">
                         <div class='form-group'>
                            <label>Discontinue Reason</label>
-                           <input type='text' class='form-control' ng-model='donor.reason' placeholder='Discontinue Reason'>
+                           <select class='form-control' ng-model="donor.reason" required>
+                              <option value=''>Please Select</option>
+                              <option value='SMS'>SMS</option>
+                              <option value='Multiple members for family'>Multiple members for family</option>
+                              <option value='Not fit for donation'>Not fit for donation</option>
+                              <option value='Death'>Death</option>
+                           </select>
                         </div>
                      </div>
                   </div>
@@ -189,13 +195,13 @@
                      <div class="col-md-4">
                         <div class='form-group'>
                            <label>Weight (in kgs.)</label>
-                           <input id="txtWeight" type='text' class='form-control' ng-model='donor.weight' placeholder='Weight (in kgs.)'>
+                           <input id="txtWeight" type='text' class='form-control' ng-model='donor.weight' placeholder='Weight (in kgs.)' only-digits ng-trim="false">
                         </div>
                      </div>
                      <div class="col-md-4">
                         <div class='form-group' ng-if="showbottle">
                            <label>Bottle Number</label>
-                           <input id="bottle" type='text' class='form-control' ng-model='donor.bottle' placeholder='Bottle Number'>
+                           <input id="bottle" type='text' class='form-control' ng-model='donor.bottle' placeholder='Bottle Number' only-digits ng-trim="false">
                         </div>
                      </div>
                   </div>
