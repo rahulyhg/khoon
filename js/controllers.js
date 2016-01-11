@@ -455,7 +455,7 @@ phonecatControllers.controller('createDonorCtrl', function($scope, TemplateServi
 
     $scope.savedonor = function() {
         console.log($scope.donor);
-        if ($scope.donor.age >= 18 && $scope.donor.age <= 70 && $scope.donor.pincode.toString().length == 6 && ($scope.donor.mobile.toString().length == 10 || $scope.donor.mobile.toString().length == 0)) {
+        if ($scope.donor.age >= 18 && $scope.donor.age <= 70 && $scope.donor.pincode && $scope.donor.pincode.toString().length == 6 && $scope.donor.mobile && ($scope.donor.mobile.toString().length == 10 || $scope.donor.mobile.toString().length == 0)) {
             if ($.jStorage.get("adminuser").accesslevel == "admin") {
                 NavigationService.saveappDonor($scope.donor, function(data, status) {
                     if (data.value == false) {
@@ -491,10 +491,10 @@ phonecatControllers.controller('createDonorCtrl', function($scope, TemplateServi
             if ($scope.donor.age < 18 || $scope.donor.age > 70) {
                 $scope.showAgeError = true;
                 $scope.showPinError = false;
-            } else if ($scope.donor.pincode.toString().length != 6) {
+            } else if (!$scope.donor.pincode || $scope.donor.pincode.toString().length != 6) {
                 $scope.showAgeError = false;
                 $scope.showPinError = true;
-            } else if ($scope.donor.mobile.toString().length != 10 || $scope.donor.mobile.toString().length != 0) {
+            } else if (!$scope.donor.mobile || $scope.donor.mobile.toString().length != 10 || $scope.donor.mobile.toString().length != 0) {
                 $scope.showMobileErr = true;
             }
         }
@@ -664,7 +664,7 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
 
     $scope.savedonor = function() {
         console.log($scope.donor);
-        if ($scope.donor.age >= 18 && $scope.donor.age <= 70 && $scope.donor.pincode.toString().length == 6 && $scope.donor.bottle && $scope.donor.bottle.toString().length >= 1 && ($scope.donor.mobile.toString().length == 10 || $scope.donor.mobile.toString().length == 0)) {
+        if ($scope.donor.age >= 18 && $scope.donor.age <= 70 && $scope.donor.pincode && $scope.donor.pincode.toString().length == 6 && $scope.donor.bottle && $scope.donor.bottle.toString().length >= 1 && $scope.donor.mobile && ($scope.donor.mobile.toString().length == 10 || $scope.donor.mobile.toString().length == 0)) {
             $scope.showAgeError = false;
             $scope.showBottleError = false;
             if ($.jStorage.get("adminuser").accesslevel == "admin") {
@@ -705,12 +705,12 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
             if ($scope.donor.age < 18 || $scope.donor.age > 70) {
                 $scope.showAgeError = true;
                 $scope.showPinError = false;
-            } else if ($scope.donor.pincode.toString().length != 6) {
+            } else if (!$scope.donor.pincode || $scope.donor.pincode.toString().length != 6) {
                 $scope.showAgeError = false;
                 $scope.showPinError = true;
             } else if (!$scope.donor.bottle || $scope.donor.bottle == '') {
                 $scope.showBottleError = true;
-            } else if ($scope.donor.mobile.toString().length != 10 || $scope.donor.mobile.toString().length != 0) {
+            } else if (!$scope.donor.mobile || $scope.donor.mobile.toString().length != 10 || $scope.donor.mobile.toString().length != 0) {
                 $scope.showMobileErr = true;
             }
         }
