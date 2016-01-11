@@ -1,8 +1,8 @@
 var uploadres = [];
 var selectedData = [];
 var phonecatControllers = angular.module('phonecatControllers', ['templateservicemod', 'navigationservice', 'ngDialog', 'angularFileUpload', 'ui.select', 'ngSanitize', 'angular-loading-bar', 'cfp.loadingBarInterceptor']);
-window.uploadUrl = 'http://104.197.50.51/uploadfile/upload';
-// window.uploadUrl = 'http://192.168.0.125:1337/uploadfile/upload';
+// window.uploadUrl = 'http://104.197.50.51/uploadfile/upload';
+window.uploadUrl = 'http://192.168.0.122:1337/uploadfile/upload';
 phonecatControllers.controller('home', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
 	$scope.template = TemplateService;
 	$scope.menutitle = NavigationService.makeactive("Dashboard");
@@ -1903,8 +1903,7 @@ phonecatControllers.controller('createSliderCtrl', function ($scope, TemplateSer
 					$scope.uploadResult.push(response.data);
 					imagejstupld = response.data;
 					if (imagejstupld != "") {
-						$scope.slider.image.push(imagejstupld.fileid);
-						console.log(imagejstupld.fileid);
+						$scope.slider.image.push(imagejstupld.files[0].fd);
 						console.log($scope.slider.image);
 						imagejstupld = "";
 					}
@@ -2049,7 +2048,7 @@ phonecatControllers.controller('editSliderCtrl', function ($scope, TemplateServi
 					$scope.uploadResult.push(response.data);
 					imagejstupld = response.data;
 					if (imagejstupld != "") {
-						$scope.slider.image.push(imagejstupld.fileid);
+						$scope.slider.image.push(imagejstupld.files[0].fd);
 						imagejstupld = "";
 					}
 				});
