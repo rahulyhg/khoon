@@ -1,5 +1,5 @@
 // var adminurl = "http://localhost:1337/";
-// var adminurl = "http://192.168.0.125:1337/";
+// var adminurl = "http://192.168.0.122:1337/";
 var adminurl = "http://104.197.50.51/";
 var adminlogin = {
     "username": "admin@admin.com",
