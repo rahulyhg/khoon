@@ -59,6 +59,11 @@ var navigationservice = angular.module('navigationservice', [])
             subnav: [],
             visible: "yes"
         }, {
+            name: 'Folder',
+            active: '',
+            link: '#/folder',
+            subnav: []
+        }, {
             name: 'Sponsor',
             active: '',
             link: '#/sponsor',
@@ -742,6 +747,42 @@ var navigationservice = angular.module('navigationservice', [])
         editNotification: function(data, callback) {
             $http({
                 url: adminurl + 'notification/editnot',
+                method: 'POST',
+                data: data
+            }).success(callback);
+        },
+        getOneFolder: function(id, callback) {
+            $http({
+                url: adminurl + 'folder/findone',
+                method: 'POST',
+                data: {
+                    '_id': id
+                }
+            }).success(callback);
+        },
+        findLimitedFolder: function(slider, callback) {
+            $http({
+                url: adminurl + 'folder/findlimited',
+                method: 'POST',
+                data: {
+                    'search': slider.search,
+                    'pagesize': parseInt(slider.limit),
+                    'pagenumber': parseInt(slider.page)
+                }
+            }).success(callback);
+        },
+        deleteFolder: function(callback) {
+            $http({
+                url: adminurl + 'folder/delete',
+                method: 'POST',
+                data: {
+                    '_id': $.jStorage.get('deletefolder')
+                }
+            }).success(callback);
+        },
+        saveFolder: function(data, callback) {
+            $http({
+                url: adminurl + 'folder/save',
                 method: 'POST',
                 data: data
             }).success(callback);

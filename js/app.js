@@ -125,7 +125,16 @@ firstapp.config(
             }).when('/campreporthospusers/:campnumber/:camp/:hospital', {
                 templateUrl: 'views/template.html',
                 controller: 'campReportHospUsersCtrl'
-            }). //Add New Path
+            }).when('/folder', {
+                templateUrl: 'views/template.html',
+                controller: 'FolderCtrl'
+            }).when('/createfolder', {
+                templateUrl: 'views/template.html',
+                controller: 'createFolderCtrl'
+            }).when('/editfolder/:id', {
+                templateUrl: 'views/template.html',
+                controller: 'editFolderCtrl'
+            }) //Add New Path
 
         otherwise({
             redirectTo: '/login'
