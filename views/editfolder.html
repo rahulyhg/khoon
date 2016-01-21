@@ -17,7 +17,7 @@
                             <div class="scroll-x">
                                 <div class="img-box">
                                     <div ng-repeat="bill in folder.image" class="many-img">
-                                        <img src="{{bill | uploadpath}}" ng-if="folder.image.length!=0">
+                                        <img ng-src="{{bill | uploadpath}}" ng-if="folder.image.length!=0">
                                         <button type="button" ng-click="removeimage(folder.image.indexOf(bill));" class="btn btn-danger close-btn" ng-if="folder.image.length!=0"><i class="glyphicon glyphicon-trash"></i>
                                         </button>
                                     </div>
@@ -27,13 +27,6 @@
                                 <div ng-init="httpMethod = 'POST';howToSend = 1;"></div>
                                 <div class="upload-buttons">
                                     <input type="file" name="file" ng-file-select="onFileSelect($files)" onclick="this.value=null" multiple>
-                                </div>
-                                <div class="response" ng-show="uploadResult.length > 0">
-                                    <span ng-repeat="result in uploadResult">
-                                        <div ng-init="">
-<!--                                        {{result}}-->
-                                        </div>
-                                </span>
                                 </div>
                             </div>
                         </div>

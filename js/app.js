@@ -134,7 +134,7 @@ firstapp.config(
             }).when('/editfolder/:id', {
                 templateUrl: 'views/template.html',
                 controller: 'editFolderCtrl'
-            }) //Add New Path
+            }). //Add New Path
 
         otherwise({
             redirectTo: '/login'
