@@ -1,0 +1,72 @@
+<div class="page">
+   <h2 class="title"></h2>
+   <div class="row">
+      <div class="col-md-12">
+         <section class="panel panel-default" style="border-radius:0px;">
+            <div class="panel-heading panel-hdr"><span class="glyphicon glyphicon-th mr5"></span>Edit Hospital
+            </div>
+            <div class="panel-body">
+               <form name="form_constraints" class="form-validation">
+                  <div class='form-group'>
+                     <label>Patient Name</label>
+                     <input type='text' class='form-control' ng-model='request.pname' placeholder='Name' required capitalize-first>
+                  </div>
+                  <div class='form-group'>
+                     <label>Relation With Patient</label>
+                     <input type='text' class='form-control' ng-model='request.rwp' placeholder='Relation With Patient' required capitalize-first>
+                  </div>
+                  <div class='form-group'>
+                     <label>Hospital Name</label>
+                     <input type='text' class='form-control' ng-model='request.hospname' placeholder='Hospital Name' required capitalize-first>
+                  </div>
+                  <div class='form-group'>
+                     <label>Area</label>
+                     <input type='text' class='form-control' ng-model='request.area' placeholder='Area' required capitalize-first>
+                  </div>
+                  <div class='form-group'>
+                     <label>Number of Bottle - Unit</label>
+                     <input type='text' class='form-control' ng-model='request.nob' placeholder='Number of Bottle - Unit' required capitalize-first>
+                  </div>
+                  <div class='form-group'>
+                     <label>Blood Type</label>
+                     <select ng-model="request.bloodtype" class="form-control">
+                        <option value="">Please Select</option>
+                        <option value="Fresh Blood">Fresh Blood</option>
+                        <option value="Whole Blood">Whole Blood</option>
+                        <option value="Plasma (FFP)">Plasma (FFP)</option>
+                        <option value="RDP">RDP</option>
+                        <option value="SDP">SDP</option>
+                        <option value="Packed Cells">Packed Cells</option>
+                        <option value="Semi Packed Cells">Semi Packed Cells</option>
+                        <option value="White Cell">White Cell</option>
+                     </select>
+                  </div>
+                  <div class='form-group'>
+                     <label>Blood Group</label>
+                     <select name="bloodgrp" ng-model="request.bloodgroup" class="form-control">
+                        <option value="">Please Select</option>
+                        <option value="A+">A +</option>
+                        <option value="A-">A -</option>
+                        <option value="B+">B +</option>
+                        <option value="B-">B -</option>
+                        <option value="AB+">AB +</option>
+                        <option value="AB-">AB -</option>
+                        <option value="O+">O +</option>
+                        <option value="O-">O -</option>
+                     </select>
+                  </div>
+                  <div class='form-group'>
+                     <label>Donor Id</label>
+                     <input type='text' class='form-control' ng-model='request.donorid' placeholder='Donor Id' required capitalize-first>
+                  </div>
+                  <div class='form-group'>
+                     <label>Comment</label>
+                     <textarea rows="" class='form-control' placeholder='Comment' ng-model='request.comment'>
+                     </textarea>
+                  </div>
+               </form>
+            </div>
+         </section>
+      </div>
+   </div>
+</div>
