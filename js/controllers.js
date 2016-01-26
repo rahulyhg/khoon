@@ -2,7 +2,7 @@ var uploadres = [];
 var selectedData = [];
 var phonecatControllers = angular.module('phonecatControllers', ['templateservicemod', 'navigationservice', 'ngDialog', 'angularFileUpload', 'ui.select', 'ngSanitize', 'angular-loading-bar', 'cfp.loadingBarInterceptor']);
 // window.uploadUrl = 'http://104.154.50.117/uploadfile/upload';
-window.uploadUrl = 'http://192.168.0.109:1337/uploadfile/upload';
+window.uploadUrl = 'http://192.168.0.122:1337/uploadfile/upload';
 phonecatControllers.controller('home', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
 	$scope.template = TemplateService;
 	$scope.menutitle = NavigationService.makeactive("Dashboard");
@@ -3706,4 +3706,79 @@ phonecatControllers.controller('editFolderCtrl', function($scope, TemplateServic
     //editSlider
 });
 //editFolder Controller
+phonecatControllers.controller('RequestCtrl', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
+	$scope.template = TemplateService;
+	$scope.menutitle = NavigationService.makeactive('Need Blood');
+	TemplateService.title = $scope.menutitle;
+	TemplateService.submenu = '';
+	TemplateService.content = 'views/request.html';
+	TemplateService.list = 2;
+	$scope.navigation = NavigationService.getnav();
+	$scope.request = [];
+	$scope.pagedata = {};
+	$scope.pagedata.page = 1;
+	$scope.pagedata.limit = '20';
+	$scope.pagedata.search = '';
+	$scope.number = 100;
+	$scope.reload = function (pagedata) {
+		$scope.pagedata = pagedata;
+		NavigationService.findLimitedRequest($scope.pagedata, function (data, status) {
+			$scope.request = data;
+			$scope.pages = [];
+			var newclass = '';
+			for (var i = 1; i <= data.totalpages; i++) {
+				if (pagedata.page == i) {
+					newclass = 'active';
+				} else {
+					newclass = '';
+				}
+				$scope.pages.push({
+					pageno: i,
+					class: newclass
+				});
+			}
+		});
+	}
+	$scope.reload($scope.pagedata);
+	$scope.confDelete = function () {
+		NavigationService.deleteRequest(function (data, status) {
+			ngDialog.close();
+			window.location.reload();
+		});
+	}
+	$scope.deletefun = function (id) {
+			$.jStorage.set('deleterequest', id);
+			ngDialog.open({
+				template: 'views/delete.html',
+				controller: 'RequestCtrl',
+				closeByDocument: false
+			});
+		}
+		//End Request
+});
+//request Controller
+//createRequest Controller
+phonecatControllers.controller('editRequestCtrl', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog, $upload, $timeout) {
+	$scope.template = TemplateService;
+	$scope.menutitle = NavigationService.makeactive('Need Blood');
+	TemplateService.title = $scope.menutitle;
+	TemplateService.submenu = '';
+	TemplateService.content = 'views/editrequest.html';
+	TemplateService.list = 2;
+	$scope.navigation = NavigationService.getnav();
+	$scope.request = {};
+
+	NavigationService.getOneRequest($routeParams.id, function(data, status) {
+			$scope.request = data; //Add More Array
+	});
+	// $scope.submitForm = function() {
+	// 		$scope.request._id = $routeParams.id;
+	// 		NavigationService.saveRequest($scope.request, function(data, status) {
+	// 				$location.url('/request');
+	// 		});
+	// };
+	//createRequest
+});
+//createSlider Controller
+
 //Add New Controller

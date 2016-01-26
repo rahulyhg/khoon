@@ -134,6 +134,12 @@ firstapp.config(
             }).when('/editfolder/:id', {
                 templateUrl: 'views/template.html',
                 controller: 'editFolderCtrl'
+            }).when('/request', {
+                templateUrl: 'views/template.html',
+                controller: 'RequestCtrl'
+            }).when('/editrequest/:id', {
+                templateUrl: 'views/template.html',
+                controller: 'editRequestCtrl'
             }). //Add New Path
 
         otherwise({

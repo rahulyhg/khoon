@@ -1,5 +1,5 @@
 // var adminurl = "http://localhost:1337/";
-var adminurl = "http://192.168.0.109:1337/";
+var adminurl = "http://192.168.0.122:1337/";
 // var adminurl = "http://104.154.50.117/";
 var adminlogin = {
     "username": "admin@admin.com",
@@ -84,7 +84,7 @@ var navigationservice = angular.module('navigationservice', [])
         }, {
             name: 'Need Blood',
             active: '',
-            link: '#/home',
+            link: '#/request',
             subnav: [],
             visible: "yes"
         }, {
@@ -785,6 +785,35 @@ var navigationservice = angular.module('navigationservice', [])
                 url: adminurl + 'folder/save',
                 method: 'POST',
                 data: data
+            }).success(callback);
+        },
+        getOneRequest: function(id, callback) {
+            $http({
+                url: adminurl + 'request/findone',
+                method: 'POST',
+                data: {
+                    '_id': id
+                }
+            }).success(callback);
+        },
+        findLimitedRequest: function(slider, callback) {
+            $http({
+                url: adminurl + 'request/findlimited',
+                method: 'POST',
+                data: {
+                    'search': slider.search,
+                    'pagesize': parseInt(slider.limit),
+                    'pagenumber': parseInt(slider.page)
+                }
+            }).success(callback);
+        },
+        deleteRequest: function(callback) {
+            $http({
+                url: adminurl + 'request/delete',
+                method: 'POST',
+                data: {
+                    '_id': $.jStorage.get('deleterequest')
+                }
             }).success(callback);
         }, //Add New Service
 
