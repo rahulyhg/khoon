@@ -4027,12 +4027,12 @@ phonecatControllers.controller('editRequestCtrl', function($scope, TemplateServi
     NavigationService.getOneRequest($routeParams.id, function(data, status) {
         $scope.request = data; //Add More Array
     });
-    // $scope.submitForm = function() {
-    // 		$scope.request._id = $routeParams.id;
-    // 		NavigationService.saveRequest($scope.request, function(data, status) {
-    // 				$location.url('/request');
-    // 		});
-    // };
+    $scope.submitForm = function() {
+    		$scope.request._id = $routeParams.id;
+    		NavigationService.saveRequest($scope.request, function(data, status) {
+    				$location.url('/request');
+    		});
+    };
     //createRequest
 });
 //createSlider Controller
