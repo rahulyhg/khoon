@@ -1,6 +1,6 @@
 // var adminurl = "http://localhost:1337/";
-// var adminurl = "http://192.168.0.122:1337/";
-var adminurl = "http://104.154.50.117/";
+var adminurl = "http://192.168.0.122:1337/";
+// var adminurl = "http://104.154.50.117/";
 var adminlogin = {
     "username": "admin@admin.com",
     "password": "admin123"
@@ -783,6 +783,13 @@ var navigationservice = angular.module('navigationservice', [])
         saveFolder: function(data, callback) {
             $http({
                 url: adminurl + 'folder/save',
+                method: 'POST',
+                data: data
+            }).success(callback);
+        },
+        saveRequest: function(data, callback) {
+            $http({
+                url: adminurl + 'request/save',
                 method: 'POST',
                 data: data
             }).success(callback);
