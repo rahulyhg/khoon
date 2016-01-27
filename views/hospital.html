@@ -25,7 +25,6 @@
                                     <tr class="bg-dark">
                                         <th class="text-center">Name</th>
                                         <th class="text-center">Long Name</th>
-                                        <th class="text-center">Location</th>
                                         <th class="text-center">Contact No.</th>
                                         <th colspan="2" class="text-center">Operations</th>
                                     </tr>
@@ -34,7 +33,6 @@
                                     <tr ng-repeat="value in hospital.data">
                                         <td class="text-center">{{value.name}}</td>
                                         <td class="text-center">{{value.lname}}</td>
-                                        <td class="text-center">{{value.location}}</td>
                                         <td class="text-center">{{value.phone}}</td>
                                         <td class="text-center"><a ng-click="deletefun(value._id)" class="btn btn-primary all-btn"><i class="fa fa-times"></i></a>
                                         </td>
