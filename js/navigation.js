@@ -96,7 +96,7 @@ var navigationservice = angular.module('navigationservice', [])
         }, {
             name: 'Request',
             active: '',
-            link: '#/home',
+            link: '#/request',
             subnav: [],
             visible: "yes"
         }, {
