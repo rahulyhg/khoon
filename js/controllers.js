@@ -4025,13 +4025,16 @@ phonecatControllers.controller('editRequestCtrl', function($scope, TemplateServi
     $scope.request = {};
 
     NavigationService.getOneRequest($routeParams.id, function(data, status) {
-        $scope.request = data; //Add More Array
+        NavigationService.getOneDonor(data.getid, function(donor) {
+            $scope.request = data;
+            $scope.request.donorName = donor.name;
+        })
     });
     $scope.submitForm = function() {
-    		$scope.request._id = $routeParams.id;
-    		NavigationService.saveRequest($scope.request, function(data, status) {
-    				$location.url('/request');
-    		});
+        $scope.request._id = $routeParams.id;
+        NavigationService.saveRequest($scope.request, function(data, status) {
+            $location.url('/request');
+        });
     };
     //createRequest
 });

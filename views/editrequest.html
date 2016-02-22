@@ -8,8 +8,12 @@
             <div class="panel-body">
                <form name="form_constraints" class="form-validation" ng-submit="submitForm();">
                   <div class='form-group'>
+                     <label>Name</label>
+                     <input type='text' class='form-control' ng-model='request.donorName' placeholder='Name' required capitalize-first>
+                  </div>
+                  <div class='form-group'>
                      <label>Patient Name</label>
-                     <input type='text' class='form-control' ng-model='request.pname' placeholder='Name' required capitalize-first>
+                     <input type='text' class='form-control' ng-model='request.pname' placeholder='Patient Name' required capitalize-first>
                   </div>
                   <div class='form-group'>
                      <label>Relation With Patient</label>
@@ -62,6 +66,10 @@
                   <div class='form-group'>
                      <label>Donor Id</label>
                      <input type='text' class='form-control' ng-model='request.donorid' placeholder='Donor Id' required capitalize-first>
+                  </div>
+                  <div class='form-group'>
+                     <label>Mobile Number</label>
+                     <input type='text' class='form-control' ng-model='request.mobile' placeholder='Donor Id' required>
                   </div>
                   <div class='form-group'>
                      <label>Comment</label>
