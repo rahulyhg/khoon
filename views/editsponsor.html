@@ -13,6 +13,26 @@
                             <input type='text' class='form-control' ng-model='sponsor.name' placeholder='Name' required capitalize-first>
                         </div>
                         <div class='form-group'>
+                            <label for='exampleInputEmail1'>Link</label>
+                            <input type='text' class='form-control' ng-model='sponsor.link' placeholder='Link'>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Image</label>
+                            <div class="scroll-x">
+                                <div class="img-box" ng-if="sponsor.image">
+                                    <img ng-src="{{sponsor.image | uploadpath}}" width="200" height="150">
+                                    <button type="button" ng- click="removeimage();" class="btn btn-danger close-btn"><i class="glyphicon glyphicon-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="upload-div">
+                                <div ng-init="httpMethod = 'POST';howToSend = 1;"></div>
+                                <div class="upload-buttons">
+                                    <input type="file" name="file" ng-file-select="onFileSelect($files)" onclick="this.value=null">
+                                </div>
+                            </div>
+                        </div>
+                        <div class='form-group'>
                             <label for='exampleInputEmail1'>Content</label>
                             <textarea class='form-control' ng-model='sponsor.content' placeholder='Content' capitalize-first></textarea>
                         </div>

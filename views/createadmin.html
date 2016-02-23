@@ -15,19 +15,20 @@
                             <label>Password</label>
                             <input type='password' class='form-control' ng-model='admin.password' placeholder='Password' required> </div>
                         <div class='form-group'>
-                            <label>Camp Number</label>
-                            <select class="form-control" ng-model="admin.campnumber" ng-options="cmp.campnumber as cmp.campnumber for cmp in camp" ng-change="changeVenues(admin.campnumber);"></select>
-                        </div>
-                        <div class='form-group'>
                             <label>Accesslevel</label>
-                            <select ng-model='admin.accesslevel' class='form-control' required>
+                            <select ng-model='admin.accesslevel' class='form-control' required ng-change="changedrop();">
                                 <option value=''>Select Accesslevel</option>
                                 <option value='entry'>Entry Level</option>
                                 <option value='verify'>Acknowledge Level</option>
                                 <option value='gift'>Gift Level</option>
+                                <option value='needblood'>Need Blood</option>
                             </select>
                         </div>
-                        <div class='form-group'>
+                        <div class='form-group' ng-show="showDrop">
+                            <label>Camp Number</label>
+                            <select class="form-control" ng-model="admin.campnumber" ng-options="cmp.campnumber as cmp.campnumber for cmp in camp" ng-change="changeVenues(admin.campnumber);"></select>
+                        </div>
+                        <div class='form-group' ng-show="showDrop">
                             <label>Camp</label>
                             <select ng-model='admin.camp' class='form-control' ng-options="venue.value as venue.value for venue in venues" required></select>
                         </div>

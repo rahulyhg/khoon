@@ -33,7 +33,10 @@
                                 <a class="btn btn-primary" ng-click="getFilterResults('search');">GO</a>
                             </div>
                             <div class="col-md-1">
-                               <a class="btn btn-primary" ng-click="printReport();">Generate Report</a>
+                                <a class="btn btn-primary" ng-click="printReport();">Generate Report</a>
+                            </div>
+                            <div class="col-md-1">
+                                <a class="btn btn-primary" ng-click="downloadExcel();">Download</a>
                             </div>
                             <div class="pull-right" style="margin-right: 17px;">
                                 <select ng-model="pagedata.limit" class="form-control" ng-change="getFilterResults('limit');">
@@ -83,7 +86,7 @@
     </div>
 </div>
 <script>
-   $(document).ready(function() {
-      $("#fullName").focus();
-   });
+$(document).ready(function() {
+    $("#fullName").focus();
+});
 </script>
