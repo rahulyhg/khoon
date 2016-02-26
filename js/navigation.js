@@ -1,6 +1,6 @@
 // var adminurl = "http://localhost:1337/";
 var adminurl = "http://104.154.50.117/";
-// var adminurl = "http://192.168.0.122:1337/";
+var adminurl = "http://192.168.0.122:1337/";
 var navigationservice = angular.module('navigationservice', [])
 
 .factory('NavigationService', function ($http) {
@@ -155,7 +155,7 @@ var navigationservice = angular.module('navigationservice', [])
         },
         countHospital: function (data, callback) {
             $http({
-                url: adminurl + "camp/countforHosp",
+                url: adminurl + "table/findCount",
                 method: "POST",
                 data: data
             }).success(callback);

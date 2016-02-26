@@ -2,7 +2,7 @@ var uploadres = [];
 var selectedData = [];
 var phonecatControllers = angular.module('phonecatControllers', ['templateservicemod', 'navigationservice', 'ngDialog', 'angularFileUpload', 'ui.select', 'ngSanitize', 'angular-loading-bar', 'cfp.loadingBarInterceptor']);
 window.uploadUrl = 'http://104.154.50.117/uploadfile/upload';
-// window.uploadUrl = 'http://192.168.0.122:1337/uploadfile/upload';
+window.uploadUrl = 'http://192.168.0.122:1337/uploadfile/upload';
 phonecatControllers.controller('home', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive("Dashboard");
@@ -504,7 +504,7 @@ phonecatControllers.controller('createDonorCtrl', function ($scope, TemplateServ
                         $scope.bottleExist = 1;
                         $scope.showSaved = true;
                         $scope.openPrintView(data.id);
-                        $location.url('/donor');
+                        // $location.url('/donor');
                     }
                 });
             }
@@ -3074,18 +3074,29 @@ phonecatControllers.controller('campReportCtrl', function ($scope, TemplateServi
     });
 
     function getCounts() {
-        NavigationService.countLevels($scope.report, function (data) {
-            console.log(data);
-            $scope.levelCounts = data;
-        });
-        NavigationService.countHospital($scope.report, function (data) {
-            console.log(data);
-            $scope.hospitalCounts = _.chunk(data, 3);
-        });
-        // NavigationService.countDeleted($scope.report, function(data) {
+        // NavigationService.countLevels($scope.report, function (data) {
         //     console.log(data);
-        //     $scope.donorDeleted = data;
-        // })
+        //     $scope.levelCounts = data;
+        // });
+        $scope.levelCounts = {};
+        $scope.levelCounts.verify = 0;
+        $scope.levelCounts.pendingV = 0;
+        $scope.levelCounts.gift = 0;
+        $scope.levelCounts.rejected = 0;
+        NavigationService.countHospital($scope.report, function (data) {
+            _.each(data, function (respo) {
+                $scope.levelCounts.verify += respo.verify;
+                $scope.levelCounts.pendingV += respo.pendingV;
+                $scope.levelCounts.gift += respo.gift;
+                $scope.levelCounts.rejected += respo.rejected;
+            });
+            $scope.levelCounts.entry = $scope.levelCounts.verify + $scope.levelCounts.pendingV + $scope.levelCounts.rejected;
+            $scope.levelCounts.pendingG = $scope.levelCounts.verify - $scope.levelCounts.gift;
+            if (data[0].hospitalname)
+                $scope.hospitalCounts = _.chunk(data, 3);
+            else
+                $scope.hospitalCounts = [];
+        });
     }
 
     $scope.getDonorLevels = function (accesslevel) {
