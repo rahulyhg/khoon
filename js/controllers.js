@@ -2,7 +2,7 @@ var uploadres = [];
 var selectedData = [];
 var phonecatControllers = angular.module('phonecatControllers', ['templateservicemod', 'navigationservice', 'ngDialog', 'angularFileUpload', 'ui.select', 'ngSanitize', 'angular-loading-bar', 'cfp.loadingBarInterceptor']);
 window.uploadUrl = 'http://104.154.50.117/uploadfile/upload';
-window.uploadUrl = 'http://192.168.0.122:1337/uploadfile/upload';
+// window.uploadUrl = 'http://192.168.0.122:1337/uploadfile/upload';
 phonecatControllers.controller('home', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive("Dashboard");
