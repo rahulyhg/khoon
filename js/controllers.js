@@ -3096,7 +3096,7 @@ phonecatControllers.controller('campReportCtrl', function ($scope, TemplateServi
         });
         $scope.venues = _.uniq($scope.venues, 'value');
         $scope.report.camp = 'All';
-        // getCounts();
+        getCounts();
     }
 
     $scope.changeCounts = function () {
