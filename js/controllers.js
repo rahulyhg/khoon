@@ -3058,7 +3058,6 @@ phonecatControllers.controller('campReportCtrl', function ($scope, TemplateServi
         if (val) {
             $scope.$apply();
         }
-
         lastCamp = $scope.report.camp + "_" + $scope.report.campnumber;
     }
     var callOn = function (msg) {
@@ -3106,6 +3105,12 @@ phonecatControllers.controller('campReportCtrl', function ($scope, TemplateServi
             io.socket.off(lastCamp, callOn);
 
             var blastName = $scope.report.camp + "_" + $scope.report.campnumber;
+            console.log(blastName);
+            io.socket.on(blastName, callOn);
+        } else {
+            io.socket.off(lastCamp, callOn);
+
+            var blastName = "All" + "_" + $scope.report.campnumber;
             console.log(blastName);
             io.socket.on(blastName, callOn);
         }
