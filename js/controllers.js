@@ -3059,6 +3059,7 @@ phonecatControllers.controller('campReportCtrl', function ($scope, TemplateServi
             $scope.$apply();
         }
         lastCamp = $scope.report.camp + "_" + $scope.report.campnumber;
+        console.log(lastCamp);
     }
     var callOn = function (msg) {
         console.log(msg);
@@ -3079,6 +3080,10 @@ phonecatControllers.controller('campReportCtrl', function ($scope, TemplateServi
         console.log("All_" + $scope.report.campnumber);
         io.socket.on("All_" + $scope.report.campnumber, callOn);
         getCounts();
+    });
+
+    NavigationService.countUser(function (data, status) {
+        $scope.allusers = data;
     });
 
     $scope.changeVenues = function (val) {
@@ -3108,6 +3113,7 @@ phonecatControllers.controller('campReportCtrl', function ($scope, TemplateServi
             console.log(blastName);
             io.socket.on(blastName, callOn);
         } else {
+            console.log("in All");
             io.socket.off(lastCamp, callOn);
 
             var blastName = "All" + "_" + $scope.report.campnumber;
