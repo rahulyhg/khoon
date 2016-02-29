@@ -169,6 +169,12 @@ phonecatControllers.controller('login', function ($scope, TemplateService, Navig
             $scope.showDrop = false;
             // document.getElementById("mydrop").disabled = true;
             // document.getElementById("campdrop").disabled = true;
+        } else if ($scope.login.accesslevel == "score") {
+            $scope.login.campnumber = "All";
+            $scope.login.camp = "All";
+            $scope.showDrop = false;
+            // document.getElementById("mydrop").disabled = true;
+            // document.getElementById("campdrop").disabled = true;
         } else {
             $scope.showDrop = true;
             $scope.login.camp = "";
@@ -253,6 +259,15 @@ phonecatControllers.controller('login', function ($scope, TemplateService, Navig
                             }
                         });
                         locationcheck();
+                    } else if (data.accesslevel == "score") {
+                        _.each($scope.navigation, function (n) {
+                            if (n.name == "Camp Report") {
+                                n.visible = "yes";
+                            } else {
+                                n.visible = "no";
+                            }
+                        });
+                        locationcheck();
                     } else {
                         NavigationService.findallHospital(function (data, status) {
                             if (data.value == false) {
@@ -275,6 +290,8 @@ phonecatControllers.controller('login', function ($scope, TemplateService, Navig
                     NavigationService.setnav($scope.navigation);
                     if ($.jStorage.get("adminuser") && $.jStorage.get("adminuser").accesslevel == "needblood") {
                         $location.url("/request");
+                    } else if ($.jStorage.get("adminuser") && $.jStorage.get("adminuser").accesslevel == "score") {
+                        $location.url("/campreport");
                     } else {
                         $location.url("/home");
                     }
@@ -1493,6 +1510,10 @@ phonecatControllers.controller('createAdminCtrl', function ($scope, TemplateServ
             $scope.admin.campnumber = "All";
             $scope.admin.camp = "All";
             $scope.showDrop = false;
+        } else if ($scope.admin.accesslevel == "score") {
+            $scope.admin.campnumber = "All";
+            $scope.admin.camp = "All";
+            $scope.showDrop = false;
         } else {
             $scope.showDrop = true;
         }
@@ -1539,6 +1560,17 @@ phonecatControllers.controller('editAdminCtrl', function ($scope, TemplateServic
     NavigationService.getOneAdmin($routeParams.id, function (data, status) {
         $scope.admin = data;
         generateDrop();
+        if ($scope.admin.accesslevel == "needblood") {
+            $scope.admin.campnumber = "All";
+            $scope.admin.camp = "All";
+            $scope.showDrop = false;
+        } else if ($scope.admin.accesslevel == "score") {
+            $scope.admin.campnumber = "All";
+            $scope.admin.camp = "All";
+            $scope.showDrop = false;
+        } else {
+            $scope.showDrop = true;
+        }
         // if (!$scope.camp.donation) {
         //     $scope.camp.donation = [];
         // }
@@ -1552,6 +1584,10 @@ phonecatControllers.controller('editAdminCtrl', function ($scope, TemplateServic
 
     $scope.changedrop = function () {
         if ($scope.admin.accesslevel == "needblood") {
+            $scope.admin.campnumber = "All";
+            $scope.admin.camp = "All";
+            $scope.showDrop = false;
+        } else if ($scope.admin.accesslevel == "score") {
             $scope.admin.campnumber = "All";
             $scope.admin.camp = "All";
             $scope.showDrop = false;
@@ -2508,6 +2544,14 @@ phonecatControllers.controller('headerctrl', function ($scope, TemplateService, 
         } else if ($.jStorage.get("adminuser").accesslevel == "needblood") {
             _.each($scope.navigation, function (n) {
                 if (n.name == "Need Blood") {
+                    n.visible = "yes";
+                } else {
+                    n.visible = "no";
+                }
+            });
+        } else if ($.jStorage.get("adminuser").accesslevel == "score") {
+            _.each($scope.navigation, function (n) {
+                if (n.name == "Camp Report") {
                     n.visible = "yes";
                 } else {
                     n.visible = "no";
