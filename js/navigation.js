@@ -1,6 +1,6 @@
 // var adminurl = "http://localhost:1337/";
 var adminurl = "http://104.154.50.117/";
-// var adminurl = "http://192.168.0.122:1337/";
+// var adminurl = "http://192.168.0.126:1337/";
 var navigationservice = angular.module('navigationservice', [])
 
 .factory('NavigationService', function ($http) {
