@@ -2,7 +2,7 @@ var uploadres = [];
 var selectedData = [];
 var phonecatControllers = angular.module('phonecatControllers', ['templateservicemod', 'navigationservice', 'ngDialog', 'angularFileUpload', 'ui.select', 'ngSanitize', 'angular-loading-bar', 'cfp.loadingBarInterceptor']);
 window.uploadUrl = 'http://104.154.50.117/uploadfile/upload';
-// window.uploadUrl = 'http://192.168.0.122:1337/uploadfile/upload';
+// window.uploadUrl = 'http://192.168.0.126:1337/uploadfile/upload';
 phonecatControllers.controller('home', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive("Dashboard");
@@ -503,7 +503,7 @@ phonecatControllers.controller('createDonorCtrl', function ($scope, TemplateServ
                         $scope.showfail = 1;
                         $scope.showSaved = true;
                         $location.url('/donor');
-                        // $scope.openPrintView(data.id);
+                        $scope.openPrintView(data.id);
                     }
                 });
             } else {
@@ -521,7 +521,7 @@ phonecatControllers.controller('createDonorCtrl', function ($scope, TemplateServ
                         $scope.bottleExist = 1;
                         $scope.showSaved = true;
                         $scope.openPrintView(data.id);
-                        // $location.url('/donor');
+                        $location.url('/donor');
                     }
                 });
             }
@@ -3279,15 +3279,7 @@ phonecatControllers.controller('campReportUsersCtrl', function ($scope, Template
         $scope.pagedata.page = pageno.pageno;
         $scope.reload();
     }
-
     $scope.printReport = function () {
-        // var mywin = window.open("http://192.168.0.125:81/camp/excelDonor?accesslevel=" + $scope.pagedata.accesslevel + "&camp=" + $scope.pagedata.camp + "&campnumber=" + $scope.pagedata.campnumber, '', 'width=1000,height=500');
-        // $timeout(function() {
-        //     if (mywin.document.readyState == "complete") {
-        //         mywin.print();
-        //     }
-        // }, 2000);
-
         NavigationService.excelDonor($scope.pagedata, function (data) {
             // console.log(data);
             if (data.value != false) {
