@@ -1,7 +1,7 @@
 var uploadres = [];
 var selectedData = [];
 var phonecatControllers = angular.module('phonecatControllers', ['templateservicemod', 'navigationservice', 'ngDialog', 'angularFileUpload', 'ui.select', 'ngSanitize', 'angular-loading-bar', 'cfp.loadingBarInterceptor']);
-window.uploadUrl = 'http://104.154.50.117/uploadfile/upload';
+window.uploadUrl = 'http://api.thetmm.org/uploadfile/upload';
 // window.uploadUrl = 'http://192.168.0.126:1337/uploadfile/upload';
 phonecatControllers.controller('home', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
