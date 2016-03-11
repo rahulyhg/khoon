@@ -282,7 +282,7 @@ body {
   font-weight: bold;
   text-align: center;
 }
-.logo .logo span{
+.logo .logo span {
   font-size: 30px;
   font-weight: bold;
 }
@@ -773,6 +773,10 @@ h4.labeler {
 
 .nomg {
   margin: 0;
+}
+.manage {
+  margin: 10px 1px 10px 0;
+  float: right;
 }
 
 /*loading bar end*/
