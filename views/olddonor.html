@@ -1,277 +1,283 @@
 <div ng-controller="oldDonorCtrl">
-   <h2 class="title"></h2>
-   <div class="page">
-      <div class="row" ng-if="access == 'verify'">
-         <div class="col-md-12">
-            <section class="panel panel-default" style="border-radius:0px;">
-               <div class="panel-heading panel-hdr">
-                  <span class="glyphicon glyphicon-th mr5"></span>Show Donor
-               </div>
-               <div class="panel-body">
-                  <div class="row" ng-if="isValidLogin==2">
-                     <form ng-submit="getFilterResults1('id');">
-                        <div class="col-md-2">
-                           <div class="search-box">
-                              <input type="search" ng-model="pagedata.donorid" placeholder="Donor ID">
-                           </div>
-                        </div>
-                        <div class="col-md-2 text-center">
-                           <button type="submit" class="btn btn-primary margtp">Donor Id</button>
-                        </div>
-                     </form>
-                     <div class="col-md-2" ng-if="access.accesslevel == 'admin' || access.accesslevel == 'entry'">
-                        <a href="#/createdonor" class="right btn btn-primary all-btn create-btn">New Donor
+    <h2 class="title"></h2>
+    <div class="page">
+        <div class="row" ng-if="access == 'verify'">
+            <div class="col-md-12">
+                <section class="panel panel-default" style="border-radius:0px;">
+                    <div class="panel-heading panel-hdr">
+                        <span class="glyphicon glyphicon-th mr5"></span>Show Donor
+                    </div>
+                    <div class="panel-body">
+                        <div class="row" ng-if="isValidLogin==2">
+                            <form ng-submit="getFilterResults1('id');">
+                                <div class="col-md-2">
+                                    <div class="search-box">
+                                        <input type="search" ng-model="pagedata.donorid" placeholder="Donor ID">
+                                    </div>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <button type="submit" class="btn btn-primary margtp">Donor Id</button>
+                                </div>
+                            </form>
+                            <div class="col-md-2" ng-if="access.accesslevel == 'admin' || access.accesslevel == 'entry'">
+                                <a href="#/createdonor" class="right btn btn-primary all-btn create-btn">New Donor
                                 </a>
-                     </div>
-                     <div class="col-md-6">
-                        <div class="martb">
-                           <span style="margin-right: 5px;">Hospital</span>
-                           <select style="min-width: 150px;height: 34px;" ng-model="pagedata.hospital" ng-change="getFilterResults1('hospital');" ng-options="hospital._id as hospital.name for hospital in hospitals">
-                           </select>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="martb">
+                                    <span style="margin-right: 5px;">Hospital</span>
+                                    <select style="min-width: 150px;height: 34px;" ng-model="pagedata.hospital" ng-change="getFilterResults1('hospital');" ng-options="hospital._id as hospital.name for hospital in hospitals">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="fixme">
+                                    <select ng-model="pagedata.limit" class="form-control" ng-change="getFilterResults1('limit');">
+                                        <option value="20" selected>20</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                     </div>
-                     <div class="col-md-2">
-                        <div class="fixme">
-                           <select ng-model="pagedata.limit" class="form-control" ng-change="getFilterResults1('limit');">
-                              <option value="20" selected>20</option>
-                              <option value="50">50</option>
-                              <option value="100">100</option>
-                           </select>
+                        <div class="row" style="margin-top:20px" ng-if="isValidLogin==2">
+                            <form ng-submit="getFilterResults1('search');">
+                                <div class="col-md-2">
+                                    <div class="search-box max margtp">
+                                        <input id="fullName1" type="search" ng-model="pagedata.name" placeholder="Full Name">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="search-box max margtp">
+                                        <input type="search" ng-model="pagedata.firstname" placeholder="First Name">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="search-box max margtp">
+                                        <input type="search" ng-model="pagedata.middlename" placeholder="Middle Name">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="search-box max margtp">
+                                        <input type="search" ng-model="pagedata.lastname" placeholder="Last Name">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="search-box max margtp">
+                                        <input type="search" ng-model="pagedata.pincode" placeholder="Pincode">
+                                    </div>
+                                </div>
+                                <div class="col-md-2 logo">
+                                    <button type="submit" class="btn btn-primary margtp">GO</button>
+                                </div>
+                            </form>
                         </div>
-                     </div>
-                  </div>
-                  <div class="row" style="margin-top:20px" ng-if="isValidLogin==2">
-                     <form ng-submit="getFilterResults1('search');">
-                        <div class="col-md-2">
-                           <div class="search-box max margtp">
-                              <input id="fullName1" type="search" ng-model="pagedata.name" placeholder="Full Name">
-                           </div>
+                        <div style="margin-top:10px;" ng-if="isValidLogin==2" ng-hide="showNoResult">
+                            <div class="form-group text-center">
+                                <span ng-show="showerror2"><b>Donor already verified.</b></span>
+                            </div>
+                            <div class="form-group text-center">
+                                <span ng-show="showtrue"><b>Donor verified.</b></span>
+                            </div>
+                            <table class="table table-bordered ">
+                                <thead>
+                                    <tr class="bg-dark">
+                                        <th class="text-center">Donor Id</th>
+                                        <th class="text-center">Donor Name</th>
+                                        <th class="text-center">Operations</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="value in donorEntry.data">
+                                        <td class="text-center">{{value.donorid}}</td>
+                                        <td class="text-center">{{value.name}}</td>
+                                        <td class="text-center">
+                                            <a href="" class="btn btn-primary all-btn" ng-click="openverify(value);">
+                                                <i class="fa fa-pencil-square-o"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <nav>
+                                <ul class="pagination">
+                                    <li ng-class="page.class" ng-repeat="page in pages"><a ng-click="changePage1(page);">{{page.pageno}}</a>
+                                    </li>
+                                </ul>
+                            </nav>
                         </div>
-                        <div class="col-md-2">
-                           <div class="search-box max margtp">
-                              <input type="search" ng-model="pagedata.firstname" placeholder="First Name">
-                           </div>
+                        <div class="text-center row mtop" ng-show="showNoResult">
+                            <h4>No results found</h4>
                         </div>
-                        <div class="col-md-2">
-                           <div class="search-box max margtp">
-                              <input type="search" ng-model="pagedata.middlename" placeholder="Middle Name">
-                           </div>
+                        <div class="form-group text-center">
+                            <span ng-if="isValidLogin==0"><b>No data found</b></span>
                         </div>
-                        <div class="col-md-2">
-                           <div class="search-box max margtp">
-                              <input type="search" ng-model="pagedata.lastname" placeholder="Last Name">
-                           </div>
+                        <div class="bot search-box" ng-if="isValidLogin==1">
+                            <div class="form-group text-center">
+                                <span ng-if="showerror==0"><b>Please Check Donated Blood.</b></span>
+                            </div>
+                            <div class='form-group'>
+                                <label>Donor ID</label>
+                                <input type="text" class="form-control" ng-model="editdonor.donorid" placeholder="Donor ID" disabled/>
+                                <label>Name</label>
+                                <input type="text" class="form-control" ng-model="editdonor.name" placeholder="Name" disabled/>
+                            </div>
+                            <div class='form-group'>
+                                <input type="checkbox" ng-model="editdonor.verified">Donated Blood
+                            </div>
+                            <button type="button" class="btn btn-primary all-btn" ng-click="verify();">Submit</button>
                         </div>
-                        <div class="col-md-2">
-                           <div class="search-box max margtp">
-                              <input type="search" ng-model="pagedata.pincode" placeholder="Pincode">
-                           </div>
-                        </div>
-                        <div class="col-md-2 logo">
-                           <button type="submit" class="btn btn-primary margtp">GO</button>
-                        </div>
-                     </form>
-                  </div>
-                  <div style="margin-top:10px;" ng-if="isValidLogin==2" ng-hide="showNoResult">
-                     <div class="form-group text-center">
-                        <span ng-show="showerror2"><b>Donor already verified.</b></span>
-                     </div>
-                     <div class="form-group text-center">
-                        <span ng-show="showtrue"><b>Donor verified.</b></span>
-                     </div>
-                     <table class="table table-bordered ">
-                        <thead>
-                           <tr class="bg-dark">
-                              <th class="text-center">Donor Id</th>
-                              <th class="text-center">Donor Name</th>
-                              <th class="text-center">Operations</th>
-                           </tr>
-                        </thead>
-                        <tbody>
-                           <tr ng-repeat="value in donorEntry.data">
-                              <td class="text-center">{{value.donorid}}</td>
-                              <td class="text-center">{{value.name}}</td>
-                              <td class="text-center">
-                                 <a href="" class="btn btn-primary all-btn" ng-click="openverify(value);">
-                                    <i class="fa fa-pencil-square-o"></i>
-                                 </a>
-                              </td>
-                           </tr>
-                        </tbody>
-                     </table>
-                     <nav>
-                        <ul class="pagination">
-                           <li ng-class="page.class" ng-repeat="page in pages"><a ng-click="changePage1(page);">{{page.pageno}}</a>
-                           </li>
-                        </ul>
-                     </nav>
-                  </div>
-                  <div class="text-center row mtop" ng-show="showNoResult">
-                     <h4>No results found</h4>
-                  </div>
-                  <div class="form-group text-center">
-                     <span ng-if="isValidLogin==0"><b>No data found</b></span>
-                  </div>
-                  <div class="bot search-box" ng-if="isValidLogin==1">
-                     <div class="form-group text-center">
-                        <span ng-if="showerror==0"><b>Please Check Donated Blood.</b></span>
-                     </div>
-                     <div class='form-group'>
-                        <label>Donor ID</label>
-                        <input type="text" class="form-control" ng-model="editdonor.donorid" placeholder="Donor ID" disabled/>
-                     </div>
-                     <div class='form-group'>
-                        <input type="checkbox" ng-model="editdonor.verified">Donated Blood
-                     </div>
-                     <button type="button" class="btn btn-primary all-btn" ng-click="verify();">Submit</button>
-                  </div>
-               </div>
-            </section>
-         </div>
-      </div>
-      <div class="row" ng-if="access == 'gift'">
-         <div class="col-md-12">
-            <section class="panel panel-default" style="border-radius:0px;">
-               <div class="panel-heading panel-hdr">
-                  <span class="glyphicon glyphicon-th mr5"></span>Show Donor
-               </div>
-               <div class="panel-body">
-                  <div class="row" ng-if="isValidLogin==2">
-                     <form ng-submit="getFilterResults2('id');">
-                        <div class="col-md-2">
-                           <div class="search-box">
-                              <input type="search" ng-model="pagedata.donorid" placeholder="Donor ID">
-                           </div>
-                        </div>
-                        <div class="col-md-2 text-center">
-                           <button type="submit" class="btn btn-primary margtp">Donor Id</button>
-                        </div>
-                     </form>
-                     <div class="col-md-2">
-                        <a href="#/createdonor" class="right btn btn-primary all-btn create-btn" ng-if="access.accesslevel == 'admin' || access.accesslevel == 'entry'">New Donor
+                    </div>
+                </section>
+            </div>
+        </div>
+        <div class="row" ng-if="access == 'gift'">
+            <div class="col-md-12">
+                <section class="panel panel-default" style="border-radius:0px;">
+                    <div class="panel-heading panel-hdr">
+                        <span class="glyphicon glyphicon-th mr5"></span>Show Donor
+                    </div>
+                    <div class="panel-body">
+                        <div class="row" ng-if="isValidLogin==2">
+                            <form ng-submit="getFilterResults2('id');">
+                                <div class="col-md-2">
+                                    <div class="search-box">
+                                        <input type="search" ng-model="pagedata.donorid" placeholder="Donor ID">
+                                    </div>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <button type="submit" class="btn btn-primary margtp">Donor Id</button>
+                                </div>
+                            </form>
+                            <div class="col-md-2">
+                                <a href="#/createdonor" class="right btn btn-primary all-btn create-btn" ng-if="access.accesslevel == 'admin' || access.accesslevel == 'entry'">New Donor
                                 </a>
-                     </div>
-                     <div class="col-md-6">
-                        <div class="martb">
-                           <span style="margin-right: 5px;">Hospital</span>
-                           <select style="min-width: 150px;height: 34px;" ng-model="pagedata.hospital" ng-change="getFilterResults1('hospital');" ng-options="hospital._id as hospital.name for hospital in hospitals">
-                           </select>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="martb">
+                                    <span style="margin-right: 5px;">Hospital</span>
+                                    <select style="min-width: 150px;height: 34px;" ng-model="pagedata.hospital" ng-change="getFilterResults1('hospital');" ng-options="hospital._id as hospital.name for hospital in hospitals">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="fixme">
+                                    <select ng-model="pagedata.limit" class="form-control" ng-change="getFilterResults2('limit');">
+                                        <option value="20" selected>20</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                     </div>
-                     <div class="col-md-2">
-                        <div class="fixme">
-                           <select ng-model="pagedata.limit" class="form-control" ng-change="getFilterResults2('limit');">
-                              <option value="20" selected>20</option>
-                              <option value="50">50</option>
-                              <option value="100">100</option>
-                           </select>
+                        <div class="row" style="margin-top:20px" ng-if="isValidLogin==2">
+                            <form ng-submit="getFilterResults2('search');">
+                                <div class="col-md-2">
+                                    <div class="search-box max margtp">
+                                        <input id="fullName2" type="search" ng-model="pagedata.name" placeholder="Full Name">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="search-box max margtp">
+                                        <input type="search" ng-model="pagedata.firstname" placeholder="First Name">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="search-box max margtp">
+                                        <input type="search" ng-model="pagedata.middlename" placeholder="Middle Name">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="search-box max margtp">
+                                        <input type="search" ng-model="pagedata.lastname" placeholder="Last Name">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="search-box max margtp">
+                                        <input type="search" ng-model="pagedata.pincode" placeholder="Pincode">
+                                    </div>
+                                </div>
+                                <div class="col-md-2 logo">
+                                    <button type="submit" class="btn btn-primary margtp">GO</button>
+                                </div>
+                            </form>
                         </div>
-                     </div>
-                  </div>
-                  <div class="row" style="margin-top:20px" ng-if="isValidLogin==2">
-                     <form ng-submit="getFilterResults2('search');">
-                        <div class="col-md-2">
-                           <div class="search-box max margtp">
-                              <input id="fullName2" type="search" ng-model="pagedata.name" placeholder="Full Name">
-                           </div>
-                        </div>
-                        <div class="col-md-2">
-                           <div class="search-box max margtp">
-                              <input type="search" ng-model="pagedata.firstname" placeholder="First Name">
-                           </div>
-                        </div>
-                        <div class="col-md-2">
-                           <div class="search-box max margtp">
-                              <input type="search" ng-model="pagedata.middlename" placeholder="Middle Name">
-                           </div>
-                        </div>
-                        <div class="col-md-2">
-                           <div class="search-box max margtp">
-                              <input type="search" ng-model="pagedata.lastname" placeholder="Last Name">
-                           </div>
-                        </div>
-                        <div class="col-md-2">
-                           <div class="search-box max margtp">
-                              <input type="search" ng-model="pagedata.pincode" placeholder="Pincode">
-                           </div>
-                        </div>
-                        <div class="col-md-2 logo">
-                           <button type="submit" class="btn btn-primary margtp">GO</button>
-                        </div>
-                     </form>
-                  </div>
-                  <div style="margin-top:10px;" ng-if="isValidLogin==2" ng-hide="showNoResult">
-                     <div class="form-group text-center">
-                        <span ng-show="showerror2"><b>Gift already saved for donor.</b></span>
-                     </div>
-                     <div class="form-group text-center">
-                        <span ng-show="showtrue"><b>Gift saved.</b></span>
-                     </div>
-                     <table class="table table-bordered ">
-                        <thead>
-                           <tr class="bg-dark">
-                              <th class="text-center">Donor Id</th>
-                              <th class="text-center">Donor Name</th>
-                              <th class="text-center">Operations</th>
-                           </tr>
-                        </thead>
-                        <tbody>
-                           <tr ng-repeat="value in donor.data">
-                              <td class="text-center">{{value.donorid}}</td>
-                              <td class="text-center">{{value.name}}
-                                 <span class="pull-right badge" style="background-color: #e62739;font-size: 17px;" ng-if="value.donationcount==10 || value.donationcount==25 || value.donationcount==50 || value.donationcount==75 || value.donationcount==100">
+                        <div style="margin-top:10px;" ng-if="isValidLogin==2" ng-hide="showNoResult">
+                            <div class="form-group text-center">
+                                <span ng-show="showerror2"><b>Gift already saved for donor.</b></span>
+                            </div>
+                            <div class="form-group text-center">
+                                <span ng-show="showtrue"><b>Gift saved.</b></span>
+                            </div>
+                            <table class="table table-bordered ">
+                                <thead>
+                                    <tr class="bg-dark">
+                                        <th class="text-center">Donor Id</th>
+                                        <th class="text-center">Donor Name</th>
+                                        <th class="text-center">Operations</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="value in donor.data">
+                                        <td class="text-center">{{value.donorid}}</td>
+                                        <td class="text-center">{{value.name}}
+                                            <span class="pull-right badge" style="background-color: #e62739;font-size: 17px;" ng-if="value.donationcount==10 || value.donationcount==25 || value.donationcount==50 || value.donationcount==75 || value.donationcount==100">
                                     {{value.donationcount}}
                                  </span>
-                              </td>
-                              <td class="text-center">
-                                 <a href="" class="btn btn-primary all-btn" ng-click="opengift(value);">
-                                    <i class="fa fa-pencil-square-o"></i>
-                                 </a>
-                              </td>
-                           </tr>
-                        </tbody>
-                     </table>
-                     <nav>
-                        <ul class="pagination">
-                           <li ng-class="page.class" ng-repeat="page in pages"><a ng-click="changePage2(page);">{{page.pageno}}</a>
-                           </li>
-                        </ul>
-                     </nav>
-                  </div>
-                  <div class="text-center row mtop" ng-show="showNoResult">
-                     <h4>No results found</h4>
-                  </div>
-                  <div class="form-group text-center">
-                     <span ng-if="isValidLogin==0"><b>No data found</b></span>
-                  </div>
-                  <div class="bot search-box" ng-if="isValidLogin==1">
-                     <div class="form-group text-center">
-                        <span ng-if="showerror==0"><b>Please Check Gift Given.</b></span>
-                     </div>
-                     <div class='form-group'>
-                        <label>Donor ID</label>
-                        <input type="text" class="form-control" ng-model="editdonor.donorid" placeholder="Donor ID" disabled/>
-                     </div>
-                     <div class='form-group'>
-                        <label>Donation Count</label>
-                        <input type="text" ng-model="editdonor.donationcount" placeholder="Donation Count" disabled/>
-                     </div>
-                     <div class='form-group'>
-                        <input type="checkbox" ng-model="editdonor.giftdone">Gift Given
-                     </div>
-                     <button type="button" class="btn btn-primary all-btn" ng-click="gift();">Submit</button>
-                  </div>
-               </div>
-            </section>
-         </div>
-      </div>
-   </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="" class="btn btn-primary all-btn" ng-click="opengift(value);">
+                                                <i class="fa fa-pencil-square-o"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <nav>
+                                <ul class="pagination">
+                                    <li ng-class="page.class" ng-repeat="page in pages"><a ng-click="changePage2(page);">{{page.pageno}}</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="text-center row mtop" ng-show="showNoResult">
+                            <h4>No results found</h4>
+                        </div>
+                        <div class="form-group text-center">
+                            <span ng-if="isValidLogin==0"><b>No data found</b></span>
+                        </div>
+                        <div class="bot search-box" ng-if="isValidLogin==1">
+                            <div class="form-group text-center">
+                                <span ng-if="showerror==0"><b>Please Check Gift Given.</b></span>
+                            </div>
+                            <div class='form-group'>
+                                <label>Donor ID</label>
+                                <input type="text" class="form-control" ng-model="editdonor.donorid" placeholder="Donor ID" disabled/>
+                            </div>
+                            <div class='form-group'>
+                                <label>Donor Name</label>
+                                <input type="text" class="form-control" ng-model="editdonor.name" placeholder="Name" disabled/>
+                            </div>
+                            <div class='form-group'>
+                                <label>Donation Count</label>
+                                <input type="text" ng-model="editdonor.donationcount" placeholder="Donation Count" disabled/>
+                            </div>
+                            <div class='form-group'>
+                                <input type="checkbox" ng-model="editdonor.giftdone">Gift Given
+                            </div>
+                            <button type="button" class="btn btn-primary all-btn" ng-click="gift();">Submit</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
 </div>
 <script>
-   $(document).ready(function() {
-      $("#fullName1").focus();
-   });
-   $(document).ready(function() {
-      $("#fullName2").focus();
-   });
+$(document).ready(function() {
+    $("#fullName1").focus();
+});
+$(document).ready(function() {
+    $("#fullName2").focus();
+});
 </script>

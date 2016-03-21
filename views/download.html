@@ -8,26 +8,51 @@
                 </div>
                 <div class="panel-body">
                     <form name="form_constraints" class="form-validation" data-ng-submit="submitForm()">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Upload Excel</label>
-                            <div class="scroll-x">
-                                <div class="img-box">
-                                    <label>{{download.name}}</label>
-                                    <button type="button" ng-click="removefile();" class="btn btn-danger close-btn" ng-if="download.name"><i class="glyphicon glyphicon-trash"></i>
-                                    </button>
+                        <div class="form-group text-center">
+                            <a class="btn btn-primary" ng-click="donwloadAll();">Download All</a>
+                        </div>
+                        <hr class="myhr">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="exampleInputEmail1">Upload Excel</label>
+                                <div class="scroll-x">
+                                    <div class="img-box">
+                                        <label>{{download.name}}</label>
+                                        <button type="button" ng-click="removefile();" class="btn btn-danger close-btn" ng-if="download.name"><i class="glyphicon glyphicon-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="upload-div">
+                                    <div ng-init="httpMethod = 'POST';howToSend = 1;"></div>
+                                    <div class="upload-buttons">
+                                        <input type="file" name="file" ng-file-select="onFileSelect($files)" onclick="this.value=null">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="upload-div">
-                                <div ng-init="httpMethod = 'POST';howToSend = 1;"></div>
-                                <div class="upload-buttons">
-                                    <input type="file" name="file" ng-file-select="onFileSelect($files)" onclick="this.value=null">
+                            <div class="col-md-4" style="padding-bottom:20px;">
+                                <button type="submit" class="btn btn-primary all-btn">Submit</button>
+                            </div>
+                        </div>
+                        <hr class="myhr">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="form-group" ng-if="countArr.length > 0">
+                                    <select class="form-control" ng-model="check.count" ng-options="cmp.id as cmp.id for cmp in countArr" ng-change="changedrop();"></select>
                                 </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group" ng-if="campArr.length > 0">
+                                    <select class="form-control" ng-model="check.campnumber" ng-options="cmp.campnumber as cmp.campnumber for cmp in campArr" ng-change="changedrop();"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <a class="btn btn-primary" ng-click="dataDownload();">Download All</a>
+                            </div>
+                            <div class="col-md-4">
+                                <span style="color:red;" ng-show="countErr">Please select count.</span>
                             </div>
                         </div>
                         <!--Add New Tags-->
-                        <div class="text-center" style="padding-bottom:20px;">
-                            <button type="submit" class="btn btn-primary all-btn">Submit</button>
-                        </div>
                     </form>
                 </div>
             </section>
