@@ -946,6 +946,11 @@ h4.labeler {
     margin: 0;
 }
 
+.manage {
+    margin: 10px 1px 10px 0;
+    float: right;
+}
+
 
 /*loading bar end*/
 

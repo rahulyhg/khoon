@@ -1,4 +1,4 @@
-var adminurl = "http://104.154.50.117/";
+var adminurl = "http://api.thetmm.org/";
 // var adminurl = "http://192.168.0.126:1337/";
 var navigationservice = angular.module('navigationservice', [])
 

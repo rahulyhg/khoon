@@ -16,9 +16,9 @@
     <link rel="stylesheet" type="text/css" href="css/mobile.css" />
 <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <script type"text/javascript" src="http://104.154.50.117/js/dependencies/sails.io.js" environment="development"></script>
+    <script type"text/javascript" src="http://api.thetmm.org/js/dependencies/sails.io.js" environment="development"></script>
     <script type="text/javascript">
-        io.sails.url = 'http://localhost:1337/';
+        io.sails.url = 'http://api.thetmm.org/';
     </script>
     <script src="lib/js/jquery-1.11.1.min.js"></script>
     <script src="lib/js/angular.js"></script>
