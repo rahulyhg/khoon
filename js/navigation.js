@@ -1,5 +1,5 @@
 var adminurl = "http://api.thetmm.org/";
-// var adminurl = "http://192.168.0.126:1337/";
+var adminurl = "http://192.168.0.126:1337/";
 var navigationservice = angular.module('navigationservice', [])
 
 .factory('NavigationService', function($http) {
@@ -786,6 +786,14 @@ var navigationservice = angular.module('navigationservice', [])
                 method: 'POST',
                 data: merge
             }).success(callback);
-        }, //Add New Service
+        },
+        closeLogin: function(obj, callback) {
+            $http({
+                url: adminurl + 'camp/closeLogin',
+                method: 'POST',
+                data: obj
+            }).success(callback);
+        },
+        //Add New Service
     }
 })

@@ -608,6 +608,7 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
     $scope.hideSubmitPrint = false;
     $scope.showOnlyPrint = false;
     $scope.showMobileErr = false;
+    $scope.showWeightErr = false;
 
     if ($.jStorage.get("adminuser").accesslevel == "admin") {
         $scope.showbottle = false;
@@ -702,7 +703,7 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
 
     $scope.savedonor = function() {
         console.log($scope.donor);
-        if ($scope.donor.age >= 18 && $scope.donor.age <= 70 && $scope.donor.pincode && $scope.donor.pincode.toString().length == 6 && $scope.donor.bottle && $scope.donor.bottle.toString().length >= 1 && $scope.donor.mobile && ($scope.donor.mobile.toString().length == 10 || $scope.donor.mobile.toString().length == 0)) {
+        if ($scope.donor.age >= 18 && $scope.donor.age <= 70 && $scope.donor.pincode && $scope.donor.pincode.toString().length == 6 && $scope.donor.bottle && $scope.donor.bottle.toString().length >= 1 && $scope.donor.mobile && $scope.donor.mobile.toString().length == 10 && $scope.donor.weight && $scope.donor.weight != '') {
             $scope.showAgeError = false;
             $scope.showBottleError = false;
             if ($.jStorage.get("adminuser").accesslevel == "admin") {
@@ -748,8 +749,10 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
                 $scope.showPinError = true;
             } else if (!$scope.donor.bottle || $scope.donor.bottle == '') {
                 $scope.showBottleError = true;
-            } else if (!$scope.donor.mobile || $scope.donor.mobile.toString().length != 10 || $scope.donor.mobile.toString().length != 0) {
+            } else if (!$scope.donor.mobile || $scope.donor.mobile.toString().length != 10) {
                 $scope.showMobileErr = true;
+            }else if (!$scope.donor.weight) {
+              $scope.showWeightErr = true;
             }
         }
     };
@@ -1299,13 +1302,15 @@ phonecatControllers.controller('createCampCtrl', function($scope, TemplateServic
             camp.venues = [{
                 "value": "",
                 "address": "",
-                "hospital": []
+                "hospital": [],
+                "status": "enable"
             }];
         } else {
             camp.venues.push({
                 "value": "",
                 "address": "",
-                "hospital": []
+                "hospital": [],
+                "status": "enable"
             });
         }
     };
@@ -1353,7 +1358,7 @@ phonecatControllers.controller('createCampCtrl', function($scope, TemplateServic
 });
 //createCamp Controller
 //editCamp Controller
-phonecatControllers.controller('editCampCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
+phonecatControllers.controller('editCampCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog, $timeout) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive('Camp');
     TemplateService.title = $scope.menutitle;
@@ -1363,6 +1368,22 @@ phonecatControllers.controller('editCampCtrl', function($scope, TemplateService,
     $scope.navigation = NavigationService.getnav();
     $scope.camp = {};
     $scope.disableCampClose = 'no';
+    $scope.updated = false;
+    $scope.closeLogin = function(venue) {
+        var obj = {};
+        obj.camp = venue.value;
+        obj.campnumber = $scope.camp.campnumber;
+        obj.status = venue.status;
+        NavigationService.closeLogin(obj, function(data) {
+            if (data.value != false) {
+                $scope.updated = true;
+                $timeout(function() {
+                    $scope.updated = false;
+                }, 3000);
+            }
+        });
+    }
+
     $scope.add = function(camp) {
         if (!camp.venues) {
             camp.venues = [{
@@ -4370,7 +4391,9 @@ phonecatControllers.controller('DownloadCtrl', function($scope, TemplateService,
     });
 
     for (var i = 1; i <= 100; i++) {
-        $scope.countArr.push({ id: i });
+        $scope.countArr.push({
+            id: i
+        });
     }
 
     $scope.dataDownload = function() {
