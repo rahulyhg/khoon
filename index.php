@@ -20,9 +20,9 @@
     <script type="text/javascript">
       io.sails.url = 'http://api.thetmm.org/';
     </script> -->
-    <script type"text/javascript" src="http://192.168.1.125:1337/js/dependencies/sails.io.js" environment="development"></script>
+    <script type"text/javascript" src="http://192.168.1.122:1337/js/dependencies/sails.io.js" environment="development"></script>
     <script type="text/javascript">
-        io.sails.url = 'http://192.168.1.125:1337/';
+        io.sails.url = 'http://192.168.1.122:1337/';
     </script>
     <script src="lib/js/jquery-1.11.1.min.js"></script>
     <script src="lib/js/angular.js"></script>

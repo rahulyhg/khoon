@@ -4408,12 +4408,32 @@ phonecatControllers.controller('DownloadCtrl', function($scope, TemplateService,
     }
 
     $scope.dataDownload = function() {
-        if ($scope.count > 0) {
+        if ($scope.check.count && $scope.check.campnumber) {
             $scope.countErr = false;
-            window.location.href = adminurl + "donor/check?count=" + $scope.count + "&campnumber=" + $scope.campnumber;
+            window.location.href = adminurl + "donor/check?count=" + $scope.check.count + "&campnumber=" + $scope.check.campnumber;
+        } else if ($scope.check.count) {
+            window.location.href = adminurl + "donor/singleCheck?count=" + $scope.check.count;
         } else {
             $scope.countErr = true;
         }
+    }
+});
+phonecatControllers.controller('SendSMSCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog, $timeout, $upload, $timeout) {
+    $scope.template = TemplateService;
+    $scope.menutitle = NavigationService.makeactive('Send SMS');
+    TemplateService.title = $scope.menutitle;
+    TemplateService.submenu = '';
+    TemplateService.content = 'views/sendsms.html';
+    TemplateService.list = 2;
+    $scope.navigation = NavigationService.getnav();
+    $scope.sms = {};
+    $scope.sms.type = 'All';
+
+    $scope.sendSMS = function() {
+        console.log($scope.sms);
+        NavigationService.sendSMS($scope.sms, function(data) {
+            console.log(data);
+        })
     }
 });
 ///////////////////////

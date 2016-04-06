@@ -145,6 +145,9 @@ firstapp.config(
             }).when('/download', {
                 templateUrl: 'views/template.html',
                 controller: 'DownloadCtrl'
+            }).when('/sendsms', {
+                templateUrl: 'views/template.html',
+                controller: 'SendSMSCtrl'
             }). //Add New Path
 
         otherwise({

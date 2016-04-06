@@ -69,6 +69,12 @@ var navigationservice = angular.module('navigationservice', [])
             subnav: [],
             visible: "yes"
         }, {
+            name: 'Send SMS',
+            active: '',
+            link: '#/sendsms',
+            subnav: [],
+            visible: "yes"
+        }, {
             name: 'Notification',
             active: '',
             link: '#/notification',
@@ -790,6 +796,13 @@ var navigationservice = angular.module('navigationservice', [])
         closeLogin: function(obj, callback) {
             $http({
                 url: adminurl + 'camp/closeLogin',
+                method: 'POST',
+                data: obj
+            }).success(callback);
+        },
+        sendSMS: function(obj, callback) {
+            $http({
+                url: adminurl + 'donor/sms',
                 method: 'POST',
                 data: obj
             }).success(callback);

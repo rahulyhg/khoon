@@ -1,0 +1,59 @@
+<div class="page">
+   <h2 class="title">
+</h2>
+   <div class="row">
+      <div class="col-md-12">
+         <section class="panel panel-default" style="border-radius:0px;">
+            <div class="panel-heading panel-hdr"><span class="glyphicon glyphicon-th mr5"></span>Send SMS
+            </div>
+            <div class="panel-body">
+               <div class="row">
+                  <div class="col-md-2">
+                     <div class="form-group">
+                        <label>Send SMS to : </label>
+                        <select class="form-control" ng-model="sms.type">
+                           <option value="All">All</option>
+                           <option value="Pincode">Specific Pincodes</option>
+                        </select>
+                     </div>
+                  </div>
+               </div>
+               <form ng-submit="sendSMS();">
+                  <div class="row" ng-if="sms.type=='Pincode'">
+                     <div class="col-md-2">
+                        <div class="form-group">
+                           <label>From Pincode : </label>
+                           <input type='text' class='form-control' ng-model='sms.from' placeholder='From Pincode' required maxlength="6">
+                        </div>
+                     </div>
+                     <div class="col-md-2">
+                        <div class="form-group">
+                           <label>To Pincode : </label>
+                           <input type='text' class='form-control' ng-model='sms.to' placeholder='To Pincode' required maxlength="6">
+                        </div>
+                     </div>
+                  </div>
+                  <div class="row">
+                     <div class="col-md-12">
+                        <div class="form-group">
+                           <label>Message : </label>
+                           <textarea name="" id="" class="form-control" rows="3" ng-model="sms.message" required>
+                           </textarea>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="row">
+                     <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary">Send SMS</button>
+                     </div>
+                     <div class="col-md-12">
+                        <p style="color:red;font-weight: bold;" ng-show="countErr">Please select count.</p>
+                     </div>
+                  </div>
+               </form>
+            </div>
+            <!--Add New Tags-->
+         </section>
+      </div>
+   </div>
+</div>
