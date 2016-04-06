@@ -1,8 +1,8 @@
 var uploadres = [];
 var selectedData = [];
 var phonecatControllers = angular.module('phonecatControllers', ['templateservicemod', 'navigationservice', 'ngDialog', 'angularFileUpload', 'ui.select', 'ngSanitize', 'angular-loading-bar', 'cfp.loadingBarInterceptor']);
-window.uploadUrl = 'http://api.thetmm.org/uploadfile/upload';
-// window.uploadUrl = 'http://192.168.0.126:1337/uploadfile/upload';
+// window.uploadUrl = 'http://api.thetmm.org/uploadfile/upload';
+window.uploadUrl = 'http://192.168.1.122:1337/uploadfile/upload';
 phonecatControllers.controller('home', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive("Dashboard");
@@ -473,6 +473,7 @@ phonecatControllers.controller('createDonorCtrl', function($scope, TemplateServi
     $scope.showbottle = false;
     $scope.showSaved = false;
     $scope.showMobileErr = false;
+    $scope.showWeightErr = false;
 
     $scope.calculate = function() {
         var birth = new Date($scope.donor.birthdate);
@@ -493,7 +494,7 @@ phonecatControllers.controller('createDonorCtrl', function($scope, TemplateServi
 
     $scope.savedonor = function() {
         console.log($scope.donor);
-        if ($scope.donor.age >= 18 && $scope.donor.age <= 70 && $scope.donor.pincode && $scope.donor.pincode.toString().length == 6 && $scope.donor.mobile && ($scope.donor.mobile.toString().length == 10 || $scope.donor.mobile.toString().length == 0)) {
+        if ($scope.donor.age >= 18 && $scope.donor.age <= 70 && $scope.donor.pincode && $scope.donor.pincode.toString().length == 6 && $scope.donor.mobile && ($scope.donor.mobile.toString().length == 10 || $scope.donor.mobile.toString().length == 0) && $scope.donor.weight && $scope.donor.weight != "") {
             if ($.jStorage.get("adminuser").accesslevel == "admin") {
                 NavigationService.saveappDonor($scope.donor, function(data, status) {
                     if (data.value == false) {
@@ -532,8 +533,10 @@ phonecatControllers.controller('createDonorCtrl', function($scope, TemplateServi
             } else if (!$scope.donor.pincode || $scope.donor.pincode.toString().length != 6) {
                 $scope.showAgeError = false;
                 $scope.showPinError = true;
-            } else if (!$scope.donor.mobile || $scope.donor.mobile.toString().length != 10 || $scope.donor.mobile.toString().length != 0) {
+            } else if (!$scope.donor.mobile || $scope.donor.mobile.toString().length != 10 || $scope.donor.mobile.toString().length == "") {
                 $scope.showMobileErr = true;
+            } else if (!$scope.donor.weight || $scope.donor.weight == "") {
+                $scope.showWeightErr = true;
             }
         }
     };
@@ -608,7 +611,6 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
     $scope.hideSubmitPrint = false;
     $scope.showOnlyPrint = false;
     $scope.showMobileErr = false;
-    $scope.showWeightErr = false;
 
     if ($.jStorage.get("adminuser").accesslevel == "admin") {
         $scope.showbottle = false;
@@ -669,7 +671,7 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
     }
 
     $scope.onlyEditUser = function() {
-        if ($scope.donor.age >= 18 && $scope.donor.age <= 70 && $scope.donor.pincode.toString().length == 6 && ($scope.donor.mobile.toString().length == 10 || $scope.donor.mobile.toString().length == 0)) {
+        if ($scope.donor.age >= 18 && $scope.donor.age <= 70 && $scope.donor.pincode.toString().length == 6 && ($scope.donor.mobile.toString().length == 10 || $scope.donor.mobile.toString().length == 0) && $scope.donor.weight != "") {
             $scope.showAgeError = false;
             $scope.donor._id = $routeParams.id;
             delete $scope.donor.bottle;
@@ -697,6 +699,8 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
                 $scope.showPinError = true;
             } else if ($scope.donor.mobile.toString().length != 10 || $scope.donor.mobile.toString().length != 0) {
                 $scope.showMobileErr = true;
+            } else if (!$scope.donor.weight || $scope.donor.weight != "") {
+                $scope.showWeightErr = true;
             }
         }
     }
@@ -751,8 +755,8 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
                 $scope.showBottleError = true;
             } else if (!$scope.donor.mobile || $scope.donor.mobile.toString().length != 10) {
                 $scope.showMobileErr = true;
-            }else if (!$scope.donor.weight) {
-              $scope.showWeightErr = true;
+            } else if (!$scope.donor.weight) {
+                $scope.showWeightErr = true;
             }
         }
     };
@@ -1044,13 +1048,18 @@ phonecatControllers.controller('oldDonorCtrl', function($scope, TemplateService,
         }
     };
     $scope.opengift = function(value) {
+        console.log(value);
         $scope.editdonor = value;
-        $scope.editdonor.giftdone = false;
         $scope.isValidLogin = 1;
     }
     $scope.gift = function() {
-        if ($scope.editdonor.giftdone == true) {
+        if ($scope.editdonor.giftdone && $scope.editdonor.giftdone != "") {
             $scope.showerror = 1;
+            if ($scope.editdonor.giftdone == "true") {
+                $scope.editdonor.giftdone = true;
+            } else {
+                $scope.editdonor.giftdone = false;
+            }
             delete $scope.editdonor.donationcount;
             NavigationService.giftsave($scope.editdonor, function(data, status) {
                 if (data.value == false && data.comment == "No data found") {
@@ -3107,15 +3116,17 @@ phonecatControllers.controller('campReportCtrl', function($scope, TemplateServic
         $scope.levelCounts.verify = 0;
         $scope.levelCounts.pendingV = 0;
         $scope.levelCounts.gift = 0;
+        $scope.levelCounts.giftRejected = 0;
         $scope.levelCounts.rejected = 0;
         _.each(data, function(respo) {
             $scope.levelCounts.verify += respo.verify;
             $scope.levelCounts.pendingV += respo.pendingV;
             $scope.levelCounts.gift += respo.gift;
             $scope.levelCounts.rejected += respo.rejected;
+            $scope.levelCounts.giftRejected += respo.giftRejected;
         });
         $scope.levelCounts.entry = $scope.levelCounts.verify + $scope.levelCounts.pendingV + $scope.levelCounts.rejected;
-        $scope.levelCounts.pendingG = $scope.levelCounts.verify - $scope.levelCounts.gift;
+        $scope.levelCounts.pendingG = $scope.levelCounts.verify - ($scope.levelCounts.gift + $scope.levelCounts.giftRejected);
         if (data && data[0] && data[0].hospitalname)
             $scope.hospitalCounts = _.chunk(data, 3);
         else

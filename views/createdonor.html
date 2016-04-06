@@ -175,7 +175,7 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class='form-group' ng-show="showbottle">
+                                <div class='form-group' ng-if="showbottle">
                                     <label>Bottle Number</label>
                                     <input type='text' class='form-control' ng-model='donor.bottle' placeholder='Bottle Number' required only-digits ng-trim="false">
                                 </div>
@@ -195,24 +195,31 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" ng-show="showAgeError">
+                        <div class="row" ng-if="showAgeError">
                             <div class="col-md-12">
                                 <div class="form-group text-center">
                                     <span style="color:red;"><b>Your age should be between 18 and 70</b></span>
                                 </div>
                             </div>
                         </div>
-                        <div class="row" ng-show="showPinError">
+                        <div class="row" ng-if="showPinError">
                             <div class="col-md-12">
                                 <div class="form-group text-center">
                                     <span style="color:red;"><b>Invalid Pincode</b></span>
                                 </div>
                             </div>
                         </div>
-                        <div class="row" ng-show="showMobileErr">
+                        <div class="row" ng-if="showMobileErr">
                             <div class="col-md-12">
                                 <div class="form-group text-center">
                                     <span style="color:red;"><b>Invalid Mobile No</b></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-if="showWeightErr">
+                            <div class="col-md-12">
+                                <div class="form-group text-center">
+                                    <span style="color:red;"><b>Invalid Weight</b></span>
                                 </div>
                             </div>
                         </div>
