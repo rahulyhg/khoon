@@ -706,57 +706,62 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
     }
 
     $scope.savedonor = function() {
-        console.log($scope.donor);
-        if ($scope.donor.age >= 18 && $scope.donor.age <= 70 && $scope.donor.pincode && $scope.donor.pincode.toString().length == 6 && $scope.donor.bottle && $scope.donor.bottle.toString().length >= 1 && $scope.donor.mobile && $scope.donor.mobile.toString().length == 10 && $scope.donor.weight && $scope.donor.weight != '') {
-            $scope.showAgeError = false;
-            $scope.showBottleError = false;
-            if ($.jStorage.get("adminuser").accesslevel == "admin") {
-                $scope.donor._id = $routeParams.id;
-                NavigationService.saveappDonor($scope.donor, function(data, status) {
-                    if (data.value == false) {
-                        $scope.showfail = 1;
-                        $scope.showSaved = false;
-                    } else {
-                        $scope.showfail = 0;
-                        $scope.showPrintBtn = true;
-                        $scope.showSaved = true;
-                        // $scope.openPrintView();
-                        $location.url('/donor');
-                    }
-                });
-            } else {
-                $scope.donor._id = $routeParams.id;
-                $scope.donor.camp = $.jStorage.get("adminuser").camp;
-                $scope.donor.campnumber = $.jStorage.get("adminuser").campnumber;
-                NavigationService.saveDonor($scope.donor, function(data, status) {
-                    if (data.value == true && data.comment == "Bottle already exists") {
-                        $scope.bottleExist = 0;
-                    } else if (data.value == false) {
-                        $scope.showfail = 1;
-                        $scope.showSaved = false;
-                    } else {
-                        $scope.showfail = 0;
-                        $scope.bottleExist = 1;
-                        $scope.showPrintBtn = true;
-                        $scope.showSaved = true;
-                        $scope.openPrintView();
-                        $location.url('/donor');
-                    }
-                });
-            }
-        } else {
-            if ($scope.donor.age < 18 || $scope.donor.age > 70) {
-                $scope.showAgeError = true;
-                $scope.showPinError = false;
-            } else if (!$scope.donor.pincode || $scope.donor.pincode.toString().length != 6) {
+        if ($scope.formValid != false) {
+            console.log($scope.donor);
+            if ($scope.donor.age >= 18 && $scope.donor.age <= 70 && $scope.donor.pincode && $scope.donor.pincode.toString().length == 6 && $scope.donor.bottle && $scope.donor.bottle.toString().length >= 1 && $scope.donor.mobile && $scope.donor.mobile.toString().length == 10 && $scope.donor.weight && $scope.donor.weight != '') {
                 $scope.showAgeError = false;
-                $scope.showPinError = true;
-            } else if (!$scope.donor.bottle || $scope.donor.bottle == '') {
-                $scope.showBottleError = true;
-            } else if (!$scope.donor.mobile || $scope.donor.mobile.toString().length != 10) {
-                $scope.showMobileErr = true;
-            } else if (!$scope.donor.weight) {
-                $scope.showWeightErr = true;
+                $scope.showBottleError = false;
+                if ($.jStorage.get("adminuser").accesslevel == "admin") {
+                    $scope.donor._id = $routeParams.id;
+                    NavigationService.saveappDonor($scope.donor, function(data, status) {
+                        if (data.value == false) {
+                            $scope.showfail = 1;
+                            $scope.showSaved = false;
+                        } else {
+                            $scope.showfail = 0;
+                            $scope.showPrintBtn = true;
+                            $scope.showSaved = true;
+                            // $scope.openPrintView();
+                            $location.url('/donor');
+                        }
+                    });
+                } else {
+                    $scope.donor._id = $routeParams.id;
+                    $scope.donor.camp = $.jStorage.get("adminuser").camp;
+                    $scope.donor.campnumber = $.jStorage.get("adminuser").campnumber;
+                    NavigationService.saveDonor($scope.donor, function(data, status) {
+                        if (data.value == true && data.comment == "Bottle already exists") {
+                            $scope.bottleExist = 0;
+                        } else if (data.value == false) {
+                            $scope.showfail = 1;
+                            $scope.showSaved = false;
+                        } else {
+                            $scope.showfail = 0;
+                            $scope.bottleExist = 1;
+                            $scope.showPrintBtn = true;
+                            $scope.showSaved = true;
+                            $scope.openPrintView();
+                            $location.url('/donor');
+                        }
+                    });
+                }
+            } else {
+                if ($scope.donor.age < 18 || $scope.donor.age > 70) {
+                    $scope.showAgeError = true;
+                    $scope.showPinError = false;
+                    $scope.showBottleError = false;
+                } else if (!$scope.donor.pincode || $scope.donor.pincode.toString().length != 6) {
+                    $scope.showAgeError = false;
+                    $scope.showPinError = true;
+                } else if (!$scope.donor.bottle || $scope.donor.bottle == '') {
+                    $scope.showBottleError = true;
+                } else if (!$scope.donor.mobile || $scope.donor.mobile.toString().length != 10) {
+                    $scope.showMobileErr = true;
+                    $scope.showBottleError = false;
+                } else if (!$scope.donor.weight) {
+                    $scope.showWeightErr = true;
+                    $scope.showBottleError = false;
+                }
             }
         }
     };
@@ -818,6 +823,23 @@ phonecatControllers.controller('editDonorCtrl', function($scope, TemplateService
     $scope.closePrintModal = function() {
         ngDialog.closeAll();
         $location.url('/donor');
+    }
+
+    $scope.bottleCheck = function() {
+        $scope.donor.camp = $.jStorage.get("adminuser").camp;
+        $scope.donor.campnumber = $.jStorage.get("adminuser").campnumber;
+        NavigationService.bottleCheck($scope.donor, function(data) {
+            console.log(data);
+            if (data.value != false) {
+                $scope.assignedTo = "";
+                $scope.formValid = true;
+                $scope.bottleExist = 1;
+            } else {
+                $scope.assignedTo = data.donorid;
+                $scope.formValid = false;
+                $scope.bottleExist = 0;
+            }
+        })
     }
 
     //editDonor
@@ -4403,9 +4425,17 @@ phonecatControllers.controller('DownloadCtrl', function($scope, TemplateService,
 
     for (var i = 1; i <= 100; i++) {
         $scope.countArr.push({
-            id: i
+            id: i,
+            value: i
         });
     }
+    $scope.countArr.unshift({
+        id: "",
+        value: "All"
+    })
+
+    $scope.check.count = "";
+    $scope.check.campnumber = "";
 
     $scope.dataDownload = function() {
         if ($scope.check.count && $scope.check.campnumber) {
@@ -4428,13 +4458,23 @@ phonecatControllers.controller('SendSMSCtrl', function($scope, TemplateService, 
     $scope.navigation = NavigationService.getnav();
     $scope.sms = {};
     $scope.sms.type = 'All';
+    $scope.sms.remaining = 160;
 
     $scope.sendSMS = function() {
         console.log($scope.sms);
+        $scope.sms.pincode = $scope.sms.pincode.split(',');
         NavigationService.sendSMS($scope.sms, function(data) {
             console.log(data);
         })
     }
+
+    $scope.calcRemaining = function() {
+        if ($scope.sms.message)
+            $scope.sms.remaining = 160 - $scope.sms.message.length;
+        else
+            $scope.sms.remaining = 160;
+    }
+
 });
 ///////////////////////
 //Add New Controller

@@ -14,15 +14,15 @@
     <link rel="stylesheet" type="text.css" href="bower_components/angular-loading-bar/src/loading-bar.css" />
     <link rel="stylesheet" type="text/css" href="css/main.css" />
     <link rel="stylesheet" type="text/css" href="css/mobile.css" />
-<meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <!--<script type"text/javascript" src="http://api.thetmm.org/js/dependencies/sails.io.js" environment="development"></script>
     <script type="text/javascript">
       io.sails.url = 'http://api.thetmm.org/';
     </script> -->
-    <script type"text/javascript" src="http://192.168.1.122:1337/js/dependencies/sails.io.js" environment="development"></script>
+    <script type"text/javascript" src="http://192.168.1.122:90/js/dependencies/sails.io.js" environment="development"></script>
     <script type="text/javascript">
-        io.sails.url = 'http://192.168.1.122:1337/';
+        io.sails.url = 'http://192.168.1.122:90/';
     </script>
     <script src="lib/js/jquery-1.11.1.min.js"></script>
     <script src="lib/js/angular.js"></script>
@@ -38,8 +38,6 @@
     <script src="bower_components/angular-ui-select/dist/select.js"></script>
     <script src="bower_components/angular-loading-bar/src/loading-bar.js"></script>
 
-
-
     <script src="lib/js/jstorage.js"></script>
     <script src="js/app.js"></script>
     <script src="js/controllers.js"></script>
@@ -47,13 +45,7 @@
     <script src="js/navigation.js"></script>
     <script src="lib/js/select2.min.js"></script>
 
-
 </head>
-
 <body class="bkp">
-
-
     <div class="repeated-item" ng-view></div>
-
-
 </html>

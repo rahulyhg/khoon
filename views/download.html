@@ -38,7 +38,7 @@
                      <div class="col-md-2">
                         <div class="form-group" ng-if="countArr.length > 0">
                            <label>Count</label>
-                           <select class="form-control" ng-model="check.count" ng-options="cmp.id as cmp.id for cmp in countArr" ng-change="changedrop();"></select>
+                           <select class="form-control" ng-model="check.count" ng-options="cmp.id as cmp.value for cmp in countArr" ng-change="changedrop();"></select>
                         </div>
                      </div>
                      <div class="col-md-2">

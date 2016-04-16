@@ -13,7 +13,7 @@
                             <div class="col-md-4">
                                 <div class='form-group'>
                                     <label>Last Name</label>
-                                    <input type='text' class='form-control' ng-model='donor.lastname' placeholder='Last Name' required capitalize-first> </div>
+                                    <input type='text' class='form-control' ng-model='donor.lastname' placeholder='Last Name' required capitalize-first id="lastname"> </div>
                             </div>
                             <div class="col-md-4">
                                 <div class='form-group'>
@@ -232,3 +232,8 @@
         </div>
     </div>
 </div>
+<script>
+$(document).ready(function() {
+    $("#lastname").focus();
+});
+</script>

@@ -1,5 +1,5 @@
 var adminurl = "http://api.thetmm.org/";
-var adminurl = "http://192.168.1.122:90/";
+//var adminurl = "http://192.168.1.122:1337/";
 var navigationservice = angular.module('navigationservice', [])
 
 .factory('NavigationService', function($http) {
@@ -805,19 +805,6 @@ var navigationservice = angular.module('navigationservice', [])
                 url: adminurl + 'donor/sms',
                 method: 'POST',
                 data: obj
-            }).success(callback);
-        },
-        bottleCheck: function(obj, callback) {
-            $http({
-                url: adminurl + 'donor/bottleCheck',
-                method: 'POST',
-                data: {
-                    "camp": obj.camp,
-                    "campnumber": obj.campnumber,
-                    "hospital": obj.hospital,
-                    "bottle": obj.bottle
-                },
-                ignoreLoadingBar: true
             }).success(callback);
         },
         //Add New Service

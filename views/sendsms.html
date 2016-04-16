@@ -20,16 +20,11 @@
                </div>
                <form ng-submit="sendSMS();">
                   <div class="row" ng-if="sms.type=='Pincode'">
-                     <div class="col-md-2">
+                     <div class="col-md-12">
                         <div class="form-group">
-                           <label>From Pincode : </label>
-                           <input type='text' class='form-control' ng-model='sms.from' placeholder='From Pincode' required maxlength="6">
-                        </div>
-                     </div>
-                     <div class="col-md-2">
-                        <div class="form-group">
-                           <label>To Pincode : </label>
-                           <input type='text' class='form-control' ng-model='sms.to' placeholder='To Pincode' required maxlength="6">
+                           <label>Pincodes (Comma sepearted) : </label>
+                           <textarea name="" id="" class="form-control" rows="3" ng-model="sms.pincode" required>
+                           </textarea>
                         </div>
                      </div>
                   </div>
@@ -37,8 +32,11 @@
                      <div class="col-md-12">
                         <div class="form-group">
                            <label>Message : </label>
-                           <textarea name="" id="" class="form-control" rows="3" ng-model="sms.message" required>
+                           <textarea name="" id="" class="form-control" rows="3" maxlength="160" ng-model="sms.message" required ng-change="calcRemaining();">
                            </textarea>
+                        </div>
+                        <div class="text-right">
+                          <label>Characters Remaining : {{sms.remaining}}/160</label>
                         </div>
                      </div>
                   </div>

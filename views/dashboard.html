@@ -117,6 +117,7 @@
                                         <tr class="bg-dark">
                                             <th class="text-center">Bottle Number</th>
                                             <th class="text-center">Hospital</th>
+                                            <th class="text-center">Reason</th>
                                             <th class="text-center">Status</th>
                                         </tr>
                                     </thead>
@@ -124,6 +125,7 @@
                                         <tr ng-repeat="value in blood">
                                             <td class="text-center">{{value.number}}</td>
                                             <td class="text-center">{{value.hospital}}</td>
+                                            <td class="text-center">{{value.reason}}</td>
                                             <td class="text-center">{{value.used}}</td>
                                         </tr>
                                     </tbody>
