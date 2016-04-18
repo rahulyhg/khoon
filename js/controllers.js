@@ -4485,6 +4485,13 @@ phonecatControllers.controller('SendSMSCtrl', function($scope, TemplateService, 
         $scope.sms.pincode = $scope.sms.pincode.split(',');
         NavigationService.sendSMS($scope.sms, function(data) {
             console.log(data);
+            if (data.value != false) {
+                $scope.sms = {};
+                $scope.showSuccess = true;
+                $timeout(function() {
+                    $scope.showSuccess = false;
+                }, 3000);
+            }
         })
     }
 

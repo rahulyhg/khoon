@@ -36,7 +36,7 @@
                            </textarea>
                         </div>
                         <div class="text-right">
-                          <label>Characters Remaining : {{sms.remaining}}/160</label>
+                           <label>Characters Remaining : {{sms.remaining}}/160</label>
                         </div>
                      </div>
                   </div>
@@ -44,8 +44,11 @@
                      <div class="col-md-12">
                         <button type="submit" class="btn btn-primary">Send SMS</button>
                      </div>
-                     <div class="col-md-12">
-                        <p style="color:red;font-weight: bold;" ng-show="countErr">Please select count.</p>
+                     <div class="col-md-12" ng-show="countErr">
+                        <p style="color:red;font-weight: bold;">Please select count.</p>
+                     </div>
+                     <div class="col-md-12 text-center" ng-show="showSuccess">
+                        <p style="color:green;font-weight: bold;">SMS Sent Successfully</p>
                      </div>
                   </div>
                </form>
