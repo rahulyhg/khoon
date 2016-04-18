@@ -92,6 +92,10 @@ phonecatControllers.controller('home', function($scope, TemplateService, Navigat
         $location.url("/findgift");
     }
 
+    if ($.jStorage.get("adminuser").accesslevel == "search") {
+        $location.url("/searchBlood");
+    }
+
 });
 phonecatControllers.controller('closeDialog', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
@@ -161,27 +165,23 @@ phonecatControllers.controller('login', function($scope, TemplateService, Naviga
             $scope.login.campnumber = "All";
             $scope.login.camp = "All";
             $scope.showDrop = false;
-            // document.getElementById("mydrop").disabled = true;
-            // document.getElementById("campdrop").disabled = true;
         } else if ($scope.login.accesslevel == "needblood") {
             $scope.login.campnumber = "All";
             $scope.login.camp = "All";
             $scope.showDrop = false;
-            // document.getElementById("mydrop").disabled = true;
-            // document.getElementById("campdrop").disabled = true;
         } else if ($scope.login.accesslevel == "score") {
             $scope.login.campnumber = "All";
             $scope.login.camp = "All";
             $scope.showDrop = false;
-            // document.getElementById("mydrop").disabled = true;
-            // document.getElementById("campdrop").disabled = true;
+        } else if ($scope.login.accesslevel == "search") {
+            $scope.login.campnumber = "All";
+            $scope.login.camp = "All";
+            $scope.showDrop = false;
         } else {
             $scope.showDrop = true;
             $scope.login.camp = "";
             $scope.login.campnumber = "";
             $scope.changeloc();
-            // document.getElementById("mydrop").disabled = false;
-            // document.getElementById("campdrop").disabled = false;
         }
     }
     $scope.changeloc = function() {
@@ -1566,6 +1566,10 @@ phonecatControllers.controller('createAdminCtrl', function($scope, TemplateServi
             $scope.admin.campnumber = "All";
             $scope.admin.camp = "All";
             $scope.showDrop = false;
+        } else if ($scope.admin.accesslevel == "search") {
+            $scope.admin.campnumber = "All";
+            $scope.admin.camp = "All";
+            $scope.showDrop = false;
         } else {
             $scope.showDrop = true;
         }
@@ -1620,6 +1624,10 @@ phonecatControllers.controller('editAdminCtrl', function($scope, TemplateService
             $scope.admin.campnumber = "All";
             $scope.admin.camp = "All";
             $scope.showDrop = false;
+        } else if ($scope.admin.accesslevel == "search") {
+            $scope.admin.campnumber = "All";
+            $scope.admin.camp = "All";
+            $scope.showDrop = false;
         } else {
             $scope.showDrop = true;
         }
@@ -1640,6 +1648,10 @@ phonecatControllers.controller('editAdminCtrl', function($scope, TemplateService
             $scope.admin.camp = "All";
             $scope.showDrop = false;
         } else if ($scope.admin.accesslevel == "score") {
+            $scope.admin.campnumber = "All";
+            $scope.admin.camp = "All";
+            $scope.showDrop = false;
+        } else if ($scope.admin.accesslevel == "search") {
             $scope.admin.campnumber = "All";
             $scope.admin.camp = "All";
             $scope.showDrop = false;
@@ -2604,6 +2616,14 @@ phonecatControllers.controller('headerctrl', function($scope, TemplateService, $
         } else if ($.jStorage.get("adminuser").accesslevel == "score") {
             _.each($scope.navigation, function(n) {
                 if (n.name == "Camp Report") {
+                    n.visible = "yes";
+                } else {
+                    n.visible = "no";
+                }
+            });
+        } else if ($.jStorage.get("adminuser").accesslevel == "search") {
+            _.each($scope.navigation, function(n) {
+                if (n.name == "Search Blood") {
                     n.visible = "yes";
                 } else {
                     n.visible = "no";
@@ -4473,6 +4493,49 @@ phonecatControllers.controller('SendSMSCtrl', function($scope, TemplateService, 
             $scope.sms.remaining = 160 - $scope.sms.message.length;
         else
             $scope.sms.remaining = 160;
+    }
+
+});
+phonecatControllers.controller('searchBloodCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
+    $scope.template = TemplateService;
+    $scope.menutitle = NavigationService.makeactive('Search Blood');
+    TemplateService.title = $scope.menutitle;
+    TemplateService.submenu = '';
+    TemplateService.content = 'views/searchBlood.html';
+    TemplateService.list = 2;
+    $scope.navigation = NavigationService.getnav();
+    $scope.Hospital = [];
+    $scope.pagedata = {};
+    $scope.pagedata.page = 1;
+    $scope.pagedata.limit = '20';
+    $scope.pagedata.search = '';
+    $scope.number = 100;
+    $scope.reload = function() {
+        if ($scope.pagedata.pincode && $scope.pagedata.bloodgrp) {
+            if (typeof $scope.pagedata.pincode == "string")
+                $scope.pagedata.pincode = $scope.pagedata.pincode.split(',');
+            NavigationService.getSearch($scope.pagedata, function(data, status) {
+                $scope.hospital = data;
+                $scope.pages = [];
+                var newclass = '';
+                for (var i = 1; i <= data.totalpages; i++) {
+                    if ($scope.pagedata.page == i) {
+                        newclass = 'active';
+                    } else {
+                        newclass = '';
+                    }
+                    $scope.pages.push({
+                        pageno: i,
+                        class: newclass
+                    });
+                }
+            });
+        }
+    }
+
+    $scope.getSearchResults = function() {
+        $scope.pagedata.page = 1;
+        $scope.reload();
     }
 
 });

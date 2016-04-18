@@ -148,6 +148,9 @@ firstapp.config(
             }).when('/sendsms', {
                 templateUrl: 'views/template.html',
                 controller: 'SendSMSCtrl'
+            }).when('/searchBlood', {
+                templateUrl: 'views/template.html',
+                controller: 'searchBloodCtrl'
             }). //Add New Path
 
         otherwise({
