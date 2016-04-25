@@ -79,7 +79,7 @@
                             </div>
                         </div>
                         <div class="row" style="margin-top:20px">
-                            <div class="col-md-4" ng-click="getDonorLevels('rejected');">
+                            <div class="col-md-3" ng-click="getDonorLevels('rejected');">
                                 <div class="box">
                                     <div class="row">
                                         <div class="col-md-6">
@@ -95,7 +95,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4" ng-click="getDonorLevels('pendingV');">
+                            <div class="col-md-3" ng-click="getDonorLevels('pendingV');">
                                 <div class="box">
                                     <div class="row">
                                         <div class="col-md-6">
@@ -111,7 +111,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4" ng-click="getDonorLevels('pendingG');">
+                            <div class="col-md-3" ng-click="getDonorLevels('pendingG');">
                                 <div class="box">
                                     <div class="row">
                                         <div class="col-md-6">
@@ -122,6 +122,22 @@
                                             <div class="text">
                                                 <h3 class="text-center">{{levelCounts.pendingG}}</h3>
                                                 <p class="text-center">Pending Gifted</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3" ng-click="getDonorLevels('giftRejected');">
+                                <div class="box">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="icon"><i class="fa fa-times"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="text">
+                                                <h3 class="text-center">{{levelCounts.giftRejected}}</h3>
+                                                <p class="text-center">Gift Declined</p>
                                             </div>
                                         </div>
                                     </div>

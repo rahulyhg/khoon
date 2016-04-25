@@ -3161,12 +3161,22 @@ phonecatControllers.controller('campReportCtrl', function($scope, TemplateServic
         $scope.levelCounts.giftRejected = 0;
         $scope.levelCounts.rejected = 0;
         _.each(data, function(respo) {
-            $scope.levelCounts.verify += respo.verify;
-            $scope.levelCounts.pendingV += respo.pendingV;
-            $scope.levelCounts.gift += respo.gift;
-            $scope.levelCounts.rejected += respo.rejected;
-            $scope.levelCounts.giftRejected += respo.giftRejected;
+            if (respo.verify)
+                $scope.levelCounts.verify += respo.verify;
+            if (respo.pendingV)
+                $scope.levelCounts.pendingV += respo.pendingV;
+            if (respo.gift)
+                $scope.levelCounts.gift += respo.gift;
+            if (respo.rejected)
+                $scope.levelCounts.rejected += respo.rejected;
+            if (respo.giftRejected)
+                $scope.levelCounts.giftRejected += respo.giftRejected;
         });
+        // console.log("$scope.levelCounts.verify = " + $scope.levelCounts.verify);
+        // console.log("$scope.levelCounts.pendingV = " + $scope.levelCounts.pendingV);
+        // console.log("$scope.levelCounts.gift = " + $scope.levelCounts.gift);
+        // console.log("$scope.levelCounts.rejected = " + $scope.levelCounts.rejected);
+        // console.log("$scope.levelCounts.giftRejected = " + $scope.levelCounts.giftRejected);
         $scope.levelCounts.entry = $scope.levelCounts.verify + $scope.levelCounts.pendingV + $scope.levelCounts.rejected;
         $scope.levelCounts.pendingG = $scope.levelCounts.verify - ($scope.levelCounts.gift + $scope.levelCounts.giftRejected);
         if (data && data[0] && data[0].hospitalname)
@@ -3282,8 +3292,12 @@ phonecatControllers.controller('campReportUsersCtrl', function($scope, TemplateS
     $scope.pagedata.donorid = '';
     $scope.pagedata.pincode = '';
     $scope.hidebottleno = false;
-    if ($routeParams.accesslevel == "rejected")
+    if ($routeParams.accesslevel == "rejected") {
         $scope.hidebottleno = true;
+        $scope.showreason = true;
+    } else {
+        $scope.showreason = false;
+    }
 
     $scope.reload = function() {
         NavigationService.donorLevels($scope.pagedata, function(data, status) {

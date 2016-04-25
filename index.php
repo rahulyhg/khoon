@@ -16,14 +16,14 @@
     <link rel="stylesheet" type="text/css" href="css/mobile.css" />
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <!--<script type"text/javascript" src="http://api.thetmm.org/js/dependencies/sails.io.js" environment="development"></script>
+    <script type"text/javascript" src="http://api.thetmm.org/js/dependencies/sails.io.js" environment="development"></script>
     <script type="text/javascript">
       io.sails.url = 'http://api.thetmm.org/';
-    </script> -->
-    <script type"text/javascript" src="http://192.168.1.122:90/js/dependencies/sails.io.js" environment="development"></script>
+    </script>
+    <!-- <script type"text/javascript" src="http://192.168.1.122:90/js/dependencies/sails.io.js" environment="development"></script>
     <script type="text/javascript">
         io.sails.url = 'http://192.168.1.122:90/';
-    </script>
+    </script> -->
     <script src="lib/js/jquery-1.11.1.min.js"></script>
     <script src="lib/js/angular.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
