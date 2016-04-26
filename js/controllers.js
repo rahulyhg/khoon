@@ -2631,7 +2631,7 @@ phonecatControllers.controller('headerctrl', function($scope, TemplateService, $
             });
         } else {
             _.each($scope.navigation, function(n) {
-                if (n.name == "Donor" || n.name == "Dashboard") {
+                if (n.name == "Donor" || n.name == "Dashboard" || n.name == "Printing Rules") {
                     n.visible = "yes";
                 } else {
                     n.visible = "no";
@@ -4559,6 +4559,15 @@ phonecatControllers.controller('searchBloodCtrl', function($scope, TemplateServi
         $scope.reload();
     }
 
+});
+phonecatControllers.controller('printingCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
+    $scope.template = TemplateService;
+    $scope.menutitle = NavigationService.makeactive('Printing Rules');
+    TemplateService.title = $scope.menutitle;
+    TemplateService.submenu = '';
+    TemplateService.content = 'views/printing.html';
+    TemplateService.list = 2;
+    $scope.navigation = NavigationService.getnav();
 });
 ///////////////////////
 //Add New Controller

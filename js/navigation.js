@@ -1,5 +1,5 @@
 var adminurl = "http://api.thetmm.org/";
-// var adminurl = "http://192.168.1.122:90/";
+// var adminurl = "http://192.168.1.131:90/";
 var navigationservice = angular.module('navigationservice', [])
 
 .factory('NavigationService', function($http) {
@@ -108,6 +108,12 @@ var navigationservice = angular.module('navigationservice', [])
             name: 'Search Blood',
             active: '',
             link: '#/searchBlood',
+            subnav: [],
+            visible: "yes"
+        }, {
+            name: 'Printing Rules',
+            active: '',
+            link: '#/printing',
             subnav: [],
             visible: "yes"
         }, //Add New Left

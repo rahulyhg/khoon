@@ -4,14 +4,14 @@
 <head ng-controller="headerctrl">
     <title ng-bind="'Blood Bank - '+template.title"></title>
 <!--   <link rel="shortcut icon" href="img/favicon.png" />-->
-    <link rel="stylesheet" type="text.css" href="bower_components/angular-ui-select/dist/select.css" />
+    <link rel="stylesheet" type="text/css" href="bower_components/angular-ui-select/dist/select.css" />
     <link rel="stylesheet" type="text/css" href="lib/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="lib/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="lib/css/animate.css" />
     <link rel="stylesheet" type="text/css" href="lib/css/ngDialog-theme-default.css" />
     <link rel="stylesheet" type="text/css" href="lib/css/ngDialog-theme-plain.css" />
-    <link rel="stylesheet" type="text.css" href="lib/css/ngDialog.css" />
-    <link rel="stylesheet" type="text.css" href="bower_components/angular-loading-bar/src/loading-bar.css" />
+    <link rel="stylesheet" type="text/css" href="lib/css/ngDialog.css" />
+    <link rel="stylesheet" type="text/css" href="bower_components/angular-loading-bar/src/loading-bar.css" />
     <link rel="stylesheet" type="text/css" href="css/main.css" />
     <link rel="stylesheet" type="text/css" href="css/mobile.css" />
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -20,9 +20,9 @@
     <script type="text/javascript">
       io.sails.url = 'http://api.thetmm.org/';
     </script>
-    <!-- <script type"text/javascript" src="http://192.168.1.122:90/js/dependencies/sails.io.js" environment="development"></script>
+    <!-- <script type"text/javascript" src="http://192.168.1.131:90/js/dependencies/sails.io.js" environment="development"></script>
     <script type="text/javascript">
-        io.sails.url = 'http://192.168.1.122:90/';
+        io.sails.url = 'http://192.168.1.131:90/';
     </script> -->
     <script src="lib/js/jquery-1.11.1.min.js"></script>
     <script src="lib/js/angular.js"></script>

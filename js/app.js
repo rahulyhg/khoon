@@ -151,6 +151,9 @@ firstapp.config(
             }).when('/searchBlood', {
                 templateUrl: 'views/template.html',
                 controller: 'searchBloodCtrl'
+            }).when('/printing', {
+                templateUrl: 'views/template.html',
+                controller: 'printingCtrl'
             }). //Add New Path
 
         otherwise({
