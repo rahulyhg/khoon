@@ -116,6 +116,12 @@ var navigationservice = angular.module('navigationservice', [])
             link: '#/printing',
             subnav: [],
             visible: "yes"
+        },{
+            name: 'Score Viewer',
+            active: '',
+            link: '#/score',
+            subnav: [],
+            visible: "no"
         }, //Add New Left
     ];
 
@@ -253,7 +259,7 @@ var navigationservice = angular.module('navigationservice', [])
         },
         deleteDonor: function(callback) {
             $http({
-                url: adminurl + 'donor/delete',
+                url: adminurl + 'donor/deleteDonor',
                 method: 'POST',
                 data: {
                     '_id': $.jStorage.get('deletedonor')

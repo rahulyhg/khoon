@@ -261,7 +261,7 @@ phonecatControllers.controller('login', function($scope, TemplateService, Naviga
                         locationcheck();
                     } else if (data.accesslevel == "score") {
                         _.each($scope.navigation, function(n) {
-                            if (n.name == "Camp Report") {
+                            if (n.name == "Score Viewer") {
                                 n.visible = "yes";
                             } else {
                                 n.visible = "no";
@@ -291,7 +291,7 @@ phonecatControllers.controller('login', function($scope, TemplateService, Naviga
                     if ($.jStorage.get("adminuser") && $.jStorage.get("adminuser").accesslevel == "needblood") {
                         $location.url("/request");
                     } else if ($.jStorage.get("adminuser") && $.jStorage.get("adminuser").accesslevel == "score") {
-                        $location.url("/campreport");
+                        $location.url("/score");
                     } else {
                         $location.url("/home");
                     }
@@ -2615,7 +2615,7 @@ phonecatControllers.controller('headerctrl', function($scope, TemplateService, $
             });
         } else if ($.jStorage.get("adminuser").accesslevel == "score") {
             _.each($scope.navigation, function(n) {
-                if (n.name == "Camp Report") {
+                if (n.name == "Score Viewer") {
                     n.visible = "yes";
                 } else {
                     n.visible = "no";
@@ -4560,6 +4560,7 @@ phonecatControllers.controller('searchBloodCtrl', function($scope, TemplateServi
     }
 
 });
+
 phonecatControllers.controller('printingCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive('Printing Rules');
@@ -4569,5 +4570,135 @@ phonecatControllers.controller('printingCtrl', function($scope, TemplateService,
     TemplateService.list = 2;
     $scope.navigation = NavigationService.getnav();
 });
+
+phonecatControllers.controller('ScoreCtrl', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog, $timeout) {
+    $scope.template = TemplateService;
+    $scope.menutitle = NavigationService.makeactive('Score Viewer');
+    TemplateService.title = $scope.menutitle;
+    TemplateService.submenu = '';
+    TemplateService.content = 'views/score.html';
+    TemplateService.list = 2;
+    $scope.navigation = NavigationService.getnav();
+    $scope.report = {};
+    var lastCamp = "";
+
+    function populateData(data, val) {
+        var grouped = _.groupBy(data, 'camp');
+        var campwise = [];
+        _.each(grouped, function(value, key) {
+            var obj = {
+                name: "",
+                count: 0,
+                ack: 0
+            }
+            _.each(value, function(n) {
+                obj.name = n.camp;
+                if (n.verify) {
+                    obj.count += n.verify;
+                    obj.ack += n.verify;
+                }
+                if (n.pendingV)
+                    obj.count += n.pendingV;
+                if (n.rejected)
+                    obj.count += n.rejected;
+            })
+            campwise.push(obj);
+        });
+        var allObj = {
+            name: "All",
+            count: 0
+        }
+        _.each(campwise, function(k) {
+            if (k.count)
+                allObj.count += k.count;
+            if (k.ack) {
+                $scope.totalBottles = 122893 + 1541 + k.ack;
+            }
+        });
+        campwise.unshift(allObj);
+        $scope.allCampCounts = campwise;
+        if (val) {
+            $scope.$apply();
+        }
+        lastCamp = $scope.report.camp + "_" + $scope.report.campnumber;
+    }
+    var callOn = function(msg) {
+        console.log(msg);
+        populateData(msg, "withSocket");
+    }
+    NavigationService.getCamp(function(data) {
+        $scope.camps = data;
+        $scope.report.campnumber = $scope.camps[0].campnumber;
+        if ($scope.camps[0].venues) {
+            $scope.venues = $scope.camps[0].venues;
+        } else {
+            $scope.venues = [];
+        }
+        $scope.venues.unshift({
+            value: 'All'
+        });
+        $scope.report.camp = 'All';
+        console.log("All_" + $scope.report.campnumber);
+        io.socket.on("All_" + $scope.report.campnumber, callOn);
+        getCounts();
+    });
+
+    NavigationService.countUser(function(data, status) {
+        $scope.allusers = data;
+    });
+
+    $scope.changeVenues = function(val) {
+        console.log(val);
+        var foundIndex = _.findIndex($scope.camps, {
+            'campnumber': val
+        });
+        $scope.venues = $scope.camps[foundIndex].venues;
+        if (!$scope.venues) {
+            $scope.venues = [];
+        }
+        console.log($scope.venues);
+        $scope.venues.unshift({
+            value: 'All'
+        });
+        $scope.venues = _.uniq($scope.venues, 'value');
+        $scope.report.camp = 'All';
+        getCounts();
+    }
+
+    $scope.changeCounts = function() {
+        if ($scope.report.camp != "All") {
+            console.log(lastCamp);
+            io.socket.off(lastCamp, callOn);
+
+            var blastName = $scope.report.camp + "_" + $scope.report.campnumber;
+            console.log(blastName);
+            io.socket.on(blastName, callOn);
+        } else {
+            console.log("in All");
+            io.socket.off(lastCamp, callOn);
+
+            var blastName = "All" + "_" + $scope.report.campnumber;
+            console.log(blastName);
+            io.socket.on(blastName, callOn);
+        }
+        getCounts();
+    }
+
+    function getCounts() {
+        NavigationService.countHospital($scope.report, function(data) {
+            populateData(data);
+        });
+    }
+
+    $scope.getDonorLevels = function(accesslevel) {
+        $location.url("/campreportusers/" + $scope.report.campnumber + "/" + $scope.report.camp + "/" + accesslevel);
+    }
+
+    $scope.getHospUsers = function(hospid) {
+        $location.url("/campreporthospusers/" + $scope.report.campnumber + "/" + $scope.report.camp + "/" + hospid);
+    }
+
+});
+
 ///////////////////////
 //Add New Controller

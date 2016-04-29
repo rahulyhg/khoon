@@ -1,0 +1,77 @@
+<div>
+   <h2 class="title"></h2>
+   <div class="page">
+      <div class="row">
+         <div class="col-md-12">
+            <section class="panel panel-default" style="border-radius:0px;">
+               <div class="panel-heading panel-hdr"><span class="glyphicon glyphicon-th mr5"></span>{{menutitle}}
+               </div>
+               <div class="panel-body">
+                  <div class="text-center count-donor">
+                     <h1 class="text-center">Total Bottles Collected</h1>
+                     <h1 class="text-center">{{totalBottles}}</h1>
+                  </div>
+                  <div class="row">
+                     <div class="col-md-6">
+                        <div class="text-center">
+                           <h2 style="color: #E62739;">Camp Location</h2>
+                        </div>
+                     </div>
+                     <div class="col-md-6">
+                        <div class="text-center">
+                           <h2 style="color: #E62739;">Total Entry</h2>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="row" ng-repeat="camp in allCampCounts">
+                     <div class="col-md-6">
+                        <div class="text-center">
+                           <h2 style="color: #E62739;" ng-if="$index==0">{{camp.name}}</h3>
+                           <h3 style="color: #E62739;" ng-if="$index!=0">{{camp.name}}</h3>
+                        </div>
+                     </div>
+                     <div class="col-md-6">
+                        <div class="text-center">
+                           <h2 style="color: #E62739;" ng-if="$index==0">{{camp.count}}</h3>
+                           <h3 style="color: #E62739;" ng-if="$index!=0">{{camp.count}}</h3>
+                        </div>
+                     </div>
+                  </div>
+                  <!-- <div class="row" ng-repeat="camp in allCampCounts" style="margin: 10px;">
+                     <div class="col-md-6">
+                        <div class="box">
+                           <div class="row">
+                              <div class="col-md-4">
+                                 <div class="icon"><i class="fa fa-university"></i>
+                                 </div>
+                              </div>
+                              <div class="col-md-8">
+                                 <div class="text">
+                                    <h3 class="text-center">{{camp.name}}</h3>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-md-6">
+                        <div class="box">
+                           <div class="row">
+                              <div class="col-md-4">
+                                 <div class="icon"><i class="fa fa-users"></i>
+                                 </div>
+                              </div>
+                              <div class="col-md-8">
+                                 <div class="text">
+                                    <h3 class="text-center">{{camp.count}}</h3>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div> -->
+               </div>
+            </section>
+         </div>
+      </div>
+   </div>
+</div>

@@ -154,6 +154,9 @@ firstapp.config(
             }).when('/printing', {
                 templateUrl: 'views/template.html',
                 controller: 'printingCtrl'
+            }).when('/score', {
+                templateUrl: 'views/template.html',
+                controller: 'ScoreCtrl'
             }). //Add New Path
 
         otherwise({
