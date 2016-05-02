@@ -4608,13 +4608,15 @@ phonecatControllers.controller('ScoreCtrl', function($scope, TemplateService, Na
             name: "All",
             count: 0
         }
+        var totalAck = 0;
         _.each(campwise, function(k) {
             if (k.count)
                 allObj.count += k.count;
             if (k.ack) {
-                $scope.totalBottles = 122893 + 1541 + k.ack;
+                totalAck += k.ack;
             }
         });
+        $scope.totalBottles = 122893 + 1541 + totalAck;
         campwise.unshift(allObj);
         $scope.allCampCounts = campwise;
         if (val) {
