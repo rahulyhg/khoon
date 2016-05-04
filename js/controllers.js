@@ -592,6 +592,7 @@ phonecatControllers.controller('createDonorCtrl', function($scope, TemplateServi
     $scope.bottleCheck = function() {
         $scope.donor.camp = $.jStorage.get("adminuser").camp;
         $scope.donor.campnumber = $.jStorage.get("adminuser").campnumber;
+        $scope.donor.hospital = $.jStorage.get("adminuser").hospital;
         NavigationService.bottleCheck($scope.donor, function(data) {
             console.log(data);
             if (data.value != false) {
