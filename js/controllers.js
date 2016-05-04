@@ -2,7 +2,7 @@ var uploadres = [];
 var selectedData = [];
 var phonecatControllers = angular.module('phonecatControllers', ['templateservicemod', 'navigationservice', 'ngDialog', 'angularFileUpload', 'ui.select', 'ngSanitize', 'angular-loading-bar', 'cfp.loadingBarInterceptor']);
 // window.uploadUrl = 'http://api.thetmm.org/uploadfile/upload';
-window.uploadUrl = 'http://192.168.1.122:1337/uploadfile/upload';
+window.uploadUrl = 'http://192.168.1.131:1337/uploadfile/upload';
 phonecatControllers.controller('home', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive("Dashboard");
@@ -588,6 +588,22 @@ phonecatControllers.controller('createDonorCtrl', function($scope, TemplateServi
     $scope.closePrintModal = function() {
         ngDialog.closeAll();
         $location.url('/donor');
+    }
+    $scope.bottleCheck = function() {
+        $scope.donor.camp = $.jStorage.get("adminuser").camp;
+        $scope.donor.campnumber = $.jStorage.get("adminuser").campnumber;
+        NavigationService.bottleCheck($scope.donor, function(data) {
+            console.log(data);
+            if (data.value != false) {
+                $scope.assignedTo = "";
+                $scope.formValid = true;
+                $scope.bottleExist = 1;
+            } else {
+                $scope.assignedTo = data.donorid;
+                $scope.formValid = false;
+                $scope.bottleExist = 0;
+            }
+        })
     }
 
     //createDonor

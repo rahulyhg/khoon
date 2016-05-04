@@ -177,7 +177,7 @@
                             <div class="col-md-4">
                                 <div class='form-group' ng-if="showbottle">
                                     <label>Bottle Number</label>
-                                    <input type='text' class='form-control' ng-model='donor.bottle' placeholder='Bottle Number' required only-digits ng-trim="false">
+                                    <input type='text' class='form-control' ng-model='donor.bottle' placeholder='Bottle Number' required only-digits ng-trim="false" ng-change="bottleCheck();">
                                 </div>
                             </div>
                         </div>
