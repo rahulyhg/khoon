@@ -1,8 +1,8 @@
 var uploadres = [];
 var selectedData = [];
 var phonecatControllers = angular.module('phonecatControllers', ['templateservicemod', 'navigationservice', 'ngDialog', 'angularFileUpload', 'ui.select', 'ngSanitize', 'angular-loading-bar', 'cfp.loadingBarInterceptor']);
-// window.uploadUrl = 'http://api.thetmm.org/uploadfile/upload';
-window.uploadUrl = 'http://192.168.1.131:1337/uploadfile/upload';
+window.uploadUrl = 'http://api.thetmm.org/uploadfile/upload';
+// window.uploadUrl = 'http://192.168.1.131:1337/uploadfile/upload';
 phonecatControllers.controller('home', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive("Dashboard");
@@ -3196,10 +3196,18 @@ phonecatControllers.controller('campReportCtrl', function($scope, TemplateServic
         // console.log("$scope.levelCounts.giftRejected = " + $scope.levelCounts.giftRejected);
         $scope.levelCounts.entry = $scope.levelCounts.verify + $scope.levelCounts.pendingV + $scope.levelCounts.rejected;
         $scope.levelCounts.pendingG = $scope.levelCounts.verify - ($scope.levelCounts.gift + $scope.levelCounts.giftRejected);
-        if (data && data[0] && data[0].hospitalname)
-            $scope.hospitalCounts = _.chunk(data, 3);
-        else
+        if (data && data[0] && data[0].hospitalname) {
+            var hospitals = [];
+            _.each(data, function(n) {
+                if (n.verify > 0) {
+                    hospitals.push(n);
+                }
+            })
+            // $scope.hospitalCounts = _.chunk(data, 3);
+            $scope.hospitalCounts = _.chunk(_.uniq(hospitals, 'hospitalname'), 3);
+        } else {
             $scope.hospitalCounts = [];
+        }
         if (val) {
             $scope.$apply();
         }

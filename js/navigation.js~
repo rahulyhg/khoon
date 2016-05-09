@@ -1,5 +1,5 @@
-var adminurl = "http://api.thetmm.org/";
-//var adminurl = "http://192.168.1.122:1337/";
+// var adminurl = "http://api.thetmm.org/";
+var adminurl = "http://192.168.1.131:90/";
 var navigationservice = angular.module('navigationservice', [])
 
 .factory('NavigationService', function($http) {
@@ -104,6 +104,24 @@ var navigationservice = angular.module('navigationservice', [])
             link: '#/home',
             subnav: [],
             visible: "yes"
+        }, {
+            name: 'Search Blood',
+            active: '',
+            link: '#/searchBlood',
+            subnav: [],
+            visible: "yes"
+        }, {
+            name: 'Printing Rules',
+            active: '',
+            link: '#/printing',
+            subnav: [],
+            visible: "yes"
+        },{
+            name: 'Score Viewer',
+            active: '',
+            link: '#/score',
+            subnav: [],
+            visible: "no"
         }, //Add New Left
     ];
 
@@ -241,7 +259,7 @@ var navigationservice = angular.module('navigationservice', [])
         },
         deleteDonor: function(callback) {
             $http({
-                url: adminurl + 'donor/delete',
+                url: adminurl + 'donor/deleteDonor',
                 method: 'POST',
                 data: {
                     '_id': $.jStorage.get('deletedonor')
@@ -805,6 +823,31 @@ var navigationservice = angular.module('navigationservice', [])
                 url: adminurl + 'donor/sms',
                 method: 'POST',
                 data: obj
+            }).success(callback);
+        },
+        bottleCheck: function(obj, callback) {
+            $http({
+                url: adminurl + 'donor/bottleCheck',
+                method: 'POST',
+                data: {
+                    "camp": obj.camp,
+                    "campnumber": obj.campnumber,
+                    "hospital": obj.hospital,
+                    "bottle": obj.bottle
+                },
+                ignoreLoadingBar: true
+            }).success(callback);
+        },
+        getSearch: function(obj, callback) {
+            $http({
+                url: adminurl + 'donor/getSearch',
+                method: 'POST',
+                data: {
+                    "pagenumber": obj.page,
+                    "pagesize": obj.limit,
+                    "pincode": obj.pincode,
+                    "bloodgrp": obj.bloodgrp
+                }
             }).success(callback);
         },
         //Add New Service
