@@ -2,6 +2,7 @@ var uploadres = [];
 var selectedData = [];
 var phonecatControllers = angular.module('phonecatControllers', ['templateservicemod', 'navigationservice', 'ngDialog', 'angularFileUpload', 'ui.select', 'ngSanitize', 'angular-loading-bar', 'cfp.loadingBarInterceptor']);
 window.uploadUrl = 'http://api.thetmm.org/uploadfile/upload';
+window.uploadUrl2 = 'http://api.thetmm.org/uploadfile/upload2';
 // window.uploadUrl = 'http://192.168.1.131:1337/uploadfile/upload';
 phonecatControllers.controller('home', function($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
@@ -2299,7 +2300,7 @@ phonecatControllers.controller('createSliderCtrl', function($scope, TemplateServ
         console.log($scope.howToSend = 1);
         if ($scope.howToSend == 1) {
             $scope.upload[index] = $upload.upload({
-                url: uploadUrl,
+                url: uploadUrl2,
                 method: $scope.httpMethod,
                 headers: {
                     'Content-Type': 'Content-Type'
@@ -2444,7 +2445,7 @@ phonecatControllers.controller('editSliderCtrl', function($scope, TemplateServic
         console.log($scope.howToSend = 1);
         if ($scope.howToSend == 1) {
             $scope.upload[index] = $upload.upload({
-                url: uploadUrl,
+                url: uploadUrl2,
                 method: $scope.httpMethod,
                 headers: {
                     'Content-Type': 'Content-Type'
