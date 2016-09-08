@@ -3200,11 +3200,11 @@ phonecatControllers.controller('campReportCtrl', function($scope, TemplateServic
         if (data && data[0] && data[0].hospitalname) {
             var hospitals = [];
             _.each(data, function(n) {
-                if (n.verify > 0) {
-                    hospitals.push(n);
-                }
-            })
-            // $scope.hospitalCounts = _.chunk(data, 3);
+                    if (n.verify > 0) {
+                        hospitals.push(n);
+                    }
+                })
+                // $scope.hospitalCounts = _.chunk(data, 3);
             $scope.hospitalCounts = _.chunk(_.uniq(hospitals, 'hospitalname'), 3);
         } else {
             $scope.hospitalCounts = [];
@@ -4521,18 +4521,30 @@ phonecatControllers.controller('SendSMSCtrl', function($scope, TemplateService, 
     $scope.sms.remaining = 160;
 
     $scope.sendSMS = function() {
-        console.log($scope.sms);
-        $scope.sms.pincode = $scope.sms.pincode.split(',');
-        NavigationService.sendSMS($scope.sms, function(data) {
-            console.log(data);
-            if (data.value != false) {
-                $scope.sms = {};
-                $scope.showSuccess = true;
-                $timeout(function() {
-                    $scope.showSuccess = false;
-                }, 3000);
-            }
-        })
+        if ($scope.sms.type = "All") {
+            NavigationService.sendSMS($scope.sms, function(data) {
+                if (data.value != false) {
+                    $scope.sms = {};
+                    $scope.showSuccess = true;
+                    $timeout(function() {
+                        $scope.showSuccess = false;
+                    }, 3000);
+                }
+            });
+        } else {
+            console.log($scope.sms);
+            $scope.sms.pincode = $scope.sms.pincode.split(',');
+            NavigationService.sendSMS($scope.sms, function(data) {
+                console.log(data);
+                if (data.value != false) {
+                    $scope.sms = {};
+                    $scope.showSuccess = true;
+                    $timeout(function() {
+                        $scope.showSuccess = false;
+                    }, 3000);
+                }
+            });
+        }
     }
 
     $scope.calcRemaining = function() {
