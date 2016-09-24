@@ -1,4 +1,5 @@
 var adminurl = "http://api.thetmm.org/";
+// var adminurl = "http://localhost:1337/"
 // var adminurl = "http://192.168.1.131:90/";
 var navigationservice = angular.module('navigationservice', [])
 
@@ -116,7 +117,7 @@ var navigationservice = angular.module('navigationservice', [])
             link: '#/printing',
             subnav: [],
             visible: "yes"
-        },{
+        }, {
             name: 'Score Viewer',
             active: '',
             link: '#/score',

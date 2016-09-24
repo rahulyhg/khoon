@@ -4521,7 +4521,7 @@ phonecatControllers.controller('SendSMSCtrl', function($scope, TemplateService, 
     $scope.sms.remaining = 160;
 
     $scope.sendSMS = function() {
-        if ($scope.sms.type = "All") {
+        if ($scope.sms.type == "All") {
             NavigationService.sendSMS($scope.sms, function(data) {
                 if (data.value != false) {
                     $scope.sms = {};
