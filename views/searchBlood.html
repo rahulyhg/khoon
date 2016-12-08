@@ -54,7 +54,7 @@
                            <tr ng-repeat="value in hospital.data">
                               <td class="text-center">{{value.donorid}}</td>
                               <td class="text-center">{{value.name}}</td>
-                              <td class="text-center">{{value.mobile}}</td>
+                              <td class="text-center">{{value.mobile}} <span ng-if="value.tel1">, {{value.tel1 || 'N.A.'}}</span><span ng-if="value.tel2">, {{value.tel2 || 'N.A.'}}</span></td>
                            </tr>
                         </tbody>
                      </table>
