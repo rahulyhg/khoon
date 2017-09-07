@@ -62,11 +62,11 @@
                                         <input type="search" ng-model="pagedata.pincode" placeholder="pincode">
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                <!--<div class="col-md-2">
                                     <div class="search-box max margtp">
                                         <input type="search" ng-model="pagedata.mobile" placeholder="mobile">
                                     </div>
-                                </div>
+                                </div>-->
                                 <div class="col-md-2">
                                     <div class="text-center">
                                         <button type="submit" class="btn btn-primary margtp btn-size ">GO</button>
@@ -85,11 +85,11 @@
                                 <select style="min-width: 150px;height: 34px;" ng-model="pagedata.camp" ng-change="getFilterResults('venue')" ng-options="venue.value as venue.value for venue in venues">
                                 </select>
                             </div>
-                            <!--<form ng-submit="getFilterResults('search');">
+                            <form ng-submit="getFilterResults('search');">
                                 <div class="col-md-3 search-box max margtp">
                                     <input type="search" ng-model="pagedata.mobile" placeholder="Mobile Number">
-                                </div>{{pagedata.mobile}}
-                            </form>-->
+                                </div>
+                            </form>
                         </div>
                         <div style="margin-top:20px;" ng-hide="showNoResult">
                             <table class="table table-bordered ">
