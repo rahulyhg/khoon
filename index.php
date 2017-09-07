@@ -8,10 +8,15 @@
     <link rel="stylesheet" type="text/css" href="lib/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="lib/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="lib/css/animate.css" />
-    <link rel="stylesheet" type="text/css" href="lib/css/ngDialog-theme-default.css" />
+    <!--<link rel="stylesheet" type="text/css" href="lib/css/ngDialog-theme-default.css" />-->
     <link rel="stylesheet" type="text/css" href="lib/css/ngDialog-theme-plain.css" />
-    <link rel="stylesheet" type="text/css" href="lib/css/ngDialog.css" />
-    <link rel="stylesheet" type="text/css" href="bower_components/angular-loading-bar/src/loading-bar.css" />
+    <!--<link rel="stylesheet" type="text/css" href="lib/css/ngDialog.css" />
+    <link rel="stylesheet" type="text/css" href="bower_components/angular-loading-bar/src/loading-bar.css" />-->
+    <!--<link rel="stylesheet" type="text.css" href="lib/css/ngDialog.css" /> -->
+    <link rel="stylesheet" type="text/css" href="bower_components/ng-dialog/css/ngDialog-theme-default.css" />
+    <link rel="stylesheet" type="text/css" href="bower_components/ng-dialog/css/ngDialog-theme-plain.css" />
+    <link rel="stylesheet" type="text/css" href="bower_components/ng-dialog/css/ngDialog.css" />
+     <link rel="stylesheet" type="text/css" href="bower_components/angular-loading-bar/src/loading-bar.css" />
     <link rel="stylesheet" type="text/css" href="css/main.css" />
     <link rel="stylesheet" type="text/css" href="css/mobile.css" />
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -27,7 +32,8 @@
     <script src="lib/js/jquery-1.11.1.min.js"></script>
     <script src="lib/js/angular.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="lib/js/ngDialog.js"></script>
+    <!--<script src="lib/js/ngDialog.js"></script>-->
+    <script src="bower_components/ng-dialog/js/ngDialog.min.js"></script> 
     <script src="lib/js/angular-route.min.js"></script>
     <script src="lib/js/angular-animate.min.js"></script>
     <script src="lib/js/angular-file-upload.js"></script>

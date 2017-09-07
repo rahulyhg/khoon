@@ -27,8 +27,7 @@
                     <a href="javascript:;" class="btn-icon btn-icon-sm bg-google-plus"><i class="fa fa-google-plus"></i></a>
                 </section>
                 <div class="msg"> {{signinmessage}} </div>
-                <span class="line-thru">OR</span>
--->
+                <span class="line-thru">OR</span>-->
                 <form class="form-horizontal">
                     <fieldset>
                         <div class="form-group">
@@ -61,7 +60,8 @@
                             </select>
                         </div>
                         <div class="form-group" ng-show="showDrop">
-                            <select id="campdrop" class="form-control selct-height" ng-model="login.campnumber" ng-options="cmp.campnumber as cmp.campnumber for cmp in camp" ng-change="changeloc();"></select>
+                            <select id="campdrop" class="form-control selct-height" ng-model="login.campnumber" ng-options="cmp.campnumber as cmp.campnumber for cmp in camp"
+                                ng-change="changeloc();"></select>
                         </div>
                         <div class='form-group' ng-show="showDrop">
                             <!-- <label>Camp</label> -->

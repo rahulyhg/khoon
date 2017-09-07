@@ -1,0 +1,70 @@
+<div class="page">
+    <h2 class="title">
+    </h2>
+    <div class="row">
+        <div class="col-md-12">
+            <section class="panel panel-default" style="border-radius:0px;">
+                <div class="panel-heading panel-hdr"><span class="glyphicon glyphicon-th mr5"></span>Create Donation Request
+                </div>
+                <div class="panel-body">
+                    <form name="form_constraints" class="form-validation" data-ng-submit="submitForm()">
+                        <div class='form-group'>
+                            <label>Full Name</label>
+                            <input type='text' class='form-control' ng-model='donationRequest.fullname' placeholder='Full Name' required>
+                        </div>
+                        <div class='form-group'>
+                            <label>Donor ID</label>
+                            <input type='text' class='form-control' ng-model='donationRequest.donorid' placeholder='Donor ID'>
+                        </div>
+                        <div class='form-group'>
+                            <label>Date</label>
+                            <input type='date' class='form-control' ng-model='donationRequest.date' placeholder='Date' required>
+                        </div>
+                        <!--<div class='form-group'>
+                             <label>Image</label>
+                             <input type='image' ng-model='donationRequest.image' required>
+                             <upload-image ng-model="donationRequest.image" no-view></upload-image>
+                         </div>-->
+
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Image</label>
+                            <div class="scroll-x">
+                                <div class="img-box">
+
+                                    <div class="many-img">
+                                        <img ng-src="{{donationRequest.image | uploadpath}}">
+                                        <button type="button" ng-click="removeimage(donationRequest.image);" class="btn btn-danger close-btn"><i class="glyphicon glyphicon-trash"></i>
+                                         </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="upload-div">
+                                <div ng-init="httpMethod = 'POST';howToSend = 1;"></div>
+                                <div class="upload-buttons">
+                                    <input type="file" name="file" ng-file-select="onFileSelect($files)" onclick="this.value=null" multiple>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='form-group'>
+                            <!--<label>Image</label>
+                            <input type='image' class='form-control' ng-model='donationRequest.image' placeholder='Image'>      
+                                                  </div>-->
+                            <div class='form-group'>
+                                <label>Status</label>
+                                <select ng-model='donationRequest.status' class='form-control' required>
+                                <!--<option value=''>Select Status</option>-->
+                                <option value='Accepted'>Accepted</option>
+                                <option value='Pending'>Pending</option>
+                               <option value='Rejected'>Rejected</option>
+                            </select>
+                            </div>
+                            <!--Add New Tags-->
+                            <div class="text-center" style="padding-bottom:20px;">
+                                <button type="submit" class="btn btn-primary all-btn">Submit</button>
+                            </div>
+                    </form>
+                    </div>
+            </section>
+            </div>
+        </div>
+    </div>

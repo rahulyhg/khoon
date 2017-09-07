@@ -1,6 +1,6 @@
 <div>
     <h2 class="title">
-</h2>
+    </h2>
     <div class="page">
         <div class="row">
             <div class="col-md-12">
@@ -59,7 +59,12 @@
                                 </div>
                                 <div class="col-md-2">
                                     <div class="search-box max margtp">
-                                        <input type="search" ng-model="pagedata.pincode" placeholder="Mobile No.">
+                                        <input type="search" ng-model="pagedata.pincode" placeholder="pincode">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="search-box max margtp">
+                                        <input type="search" ng-model="pagedata.mobile" placeholder="mobile">
                                     </div>
                                 </div>
                                 <div class="col-md-2">
@@ -80,6 +85,11 @@
                                 <select style="min-width: 150px;height: 34px;" ng-model="pagedata.camp" ng-change="getFilterResults('venue')" ng-options="venue.value as venue.value for venue in venues">
                                 </select>
                             </div>
+                            <!--<form ng-submit="getFilterResults('search');">
+                                <div class="col-md-3 search-box max margtp">
+                                    <input type="search" ng-model="pagedata.mobile" placeholder="Mobile Number">
+                                </div>{{pagedata.mobile}}
+                            </form>-->
                         </div>
                         <div style="margin-top:20px;" ng-hide="showNoResult">
                             <table class="table table-bordered ">
@@ -123,7 +133,7 @@
     </div>
 </div>
 <script>
-   $(document).ready(function() {
-      $("#fullName").focus();
-   });
+    $(document).ready(function () {
+        $("#fullName").focus();
+    });
 </script>

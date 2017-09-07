@@ -4,21 +4,24 @@
     <div class="row">
         <div class="col-md-12">
             <section class="panel panel-default" style="border-radius:0px;">
-                <div class="panel-heading panel-hdr"><span class="glyphicon glyphicon-th mr5"></span>Create Slider
+                <div class="panel-heading panel-hdr"><span class="glyphicon glyphicon-th mr5"></span>Create Mobile Banner
                 </div>
                 <div class="panel-body">
                     <form name="form_constraints" class="form-validation" data-ng-submit="submitForm()">
-                        <div class='form-group'>
-                            <label>Title</label>
-                            <input type='text' class='form-control' ng-model='slider.title' placeholder='Title' required capitalize-first>
-                        </div>
+                        <!--<div class='form-group'>
+                            <label>Image</label>
+                            <input type='image' ng-model='mobileBanner.image' required>
+                            <upload-image ng-model="mobileBanner.image" no-view></upload-image>
+                        </div>-->
+
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Image (Size: 2350X1467)</label>
+                            <label for="exampleInputEmail1">Image</label>
                             <div class="scroll-x">
                                 <div class="img-box">
-                                    <div ng-repeat="bill in slider.image" class="many-img" ng-if="slider.image.length>0">
-                                        <img ng-src="{{bill | uploadpath}}" width="200" height="150">
-                                        <button type="button" ng-click="removeimage(slider.image.indexOf(bill));" class="btn btn-danger close-btn"><i class="glyphicon glyphicon-trash"></i>
+
+                                    <div ng-repeat="bill in mobileBanner.image" class="many-img" ng-if="mobileBanner.image.length>0">
+                                        <img ng-src="{{bill | uploadpath}}">
+                                        <button type="button" ng-click="removeimage(mobileBanner.image.indexOf(bill));" class="btn btn-danger close-btn"><i class="glyphicon glyphicon-trash"></i>
                                         </button>
                                     </div>
                                 </div>
@@ -30,6 +33,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <!--Add New Tags-->
                         <div class="text-center" style="padding-bottom:20px;">
                             <button type="submit" class="btn btn-primary all-btn">Submit</button>

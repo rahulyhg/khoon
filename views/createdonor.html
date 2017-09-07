@@ -1,29 +1,29 @@
 <div class="page">
     <h2 class="title">
-   </h2>
+    </h2>
     <div class="row">
         <div class="col-md-12">
             <section class="panel panel-default" style="border-radius:0px;">
                 <div class="panel-heading panel-hdr">
                     <span class="glyphicon glyphicon-th mr5"></span>Create Donor
                 </div>
-                <form ng-submit="savedonor();">
+                <form ng-submit="savedonor();" name="dnr" novalidates>
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-4">
                                 <div class='form-group'>
                                     <label>Last Name</label>
-                                    <input type='text' class='form-control' ng-model='donor.lastname' placeholder='Last Name' required capitalize-first id="lastname"> </div>
+                                    <input type='text' class='form-control' ng-model='donor.lastname' placeholder='Last Name' required capitalize-first id="lastname">                                    </div>
                             </div>
                             <div class="col-md-4">
                                 <div class='form-group'>
                                     <label>First Name</label>
-                                    <input type='text' class='form-control' ng-model='donor.firstname' placeholder='First Name' required capitalize-first> </div>
+                                    <input type='text' class='form-control' ng-model='donor.firstname' placeholder='First Name' required capitalize-first>                                    </div>
                             </div>
                             <div class="col-md-4">
                                 <div class='form-group'>
                                     <label>Middle Name</label>
-                                    <input type='text' class='form-control' ng-model='donor.middlename' placeholder='Middle Name' required capitalize-first> </div>
+                                    <input type='text' class='form-control' ng-model='donor.middlename' placeholder='Middle Name' required capitalize-first>                                    </div>
                             </div>
                         </div>
                         <div class="row">
@@ -77,7 +77,8 @@
                                     <div class='form-group'>
                                         <ui-select multiple limit="1" tagging tagging-label='false' ng-model='donor.village' on-select='ismatchVillage(donor.village,$select);'>
                                             <ui-select-match placeholder='Select Village'>{{$item.name}}</ui-select-match>
-                                            <ui-select-choices repeat='person in village track by person._id' refresh='refreshVillage($select.search,$select.selected)' refresh-delay='0'>
+                                            <ui-select-choices repeat='person in village track by person._id' refresh='refreshVillage($select.search,$select.selected)'
+                                                refresh-delay='0'>
                                                 <div ng-bind-html='person.name'></div>
                                             </ui-select-choices>
                                         </ui-select>
@@ -89,7 +90,7 @@
                             <div class="col-md-4">
                                 <div class='form-group'>
                                     <label>Previous Name</label>
-                                    <input type='text' class='form-control' ng-model='donor.previousname' placeholder='Previous Name' capitalize-first> </div>
+                                    <input type='text' class='form-control' ng-model='donor.previousname' placeholder='Previous Name' capitalize-first>                                    </div>
                             </div>
                             <div class="col-md-4">
                                 <div class='form-group'>
@@ -120,7 +121,8 @@
                             <div class="col-md-4">
                                 <div class='form-group'>
                                     <label>Pincode</label>
-                                    <input type='text' class='form-control' ng-model='donor.pincode' placeholder='Pincode' required only-digits ng-trim="false" maxlength="6">
+                                    <input type='text' class='form-control' ng-model='donor.pincode' placeholder='Pincode' required only-digits ng-trim="false"
+                                        maxlength="6">
                                 </div>
                             </div>
                         </div>
@@ -177,7 +179,8 @@
                             <div class="col-md-4">
                                 <div class='form-group' ng-if="showbottle">
                                     <label>Bottle Number</label>
-                                    <input type='text' class='form-control' ng-model='donor.bottle' placeholder='Bottle Number' required only-digits ng-trim="false" ng-change="bottleCheck();">
+                                    <input type='text' class='form-control' ng-model='donor.bottle' placeholder='Bottle Number' required only-digits ng-trim="false"
+                                        ng-change="bottleCheck();">
                                 </div>
                             </div>
                         </div>
@@ -234,7 +237,7 @@
     </div>
 </div>
 <script>
-$(document).ready(function() {
-    $("#lastname").focus();
-});
+    $(document).ready(function () {
+        $("#lastname").focus();
+    });
 </script>
