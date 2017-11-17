@@ -185,7 +185,15 @@ firstapp.config(
         }).when('/score', {
             templateUrl: 'views/template.html',
             controller: 'ScoreCtrl'
-        }). //Add New Path
+        }).when('/adddonor/:id', {
+            templateUrl: 'views/template.html',
+            controller: 'addDonorCtrl'
+        }).when('/adddonorview', {
+            templateUrl: 'views/template.html',
+            controller: 'addDonorViewCtrl'
+        }).
+        
+        //Add New Path
 
         otherwise({
             redirectTo: '/login'

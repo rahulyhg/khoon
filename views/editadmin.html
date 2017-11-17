@@ -30,7 +30,7 @@
                      <label>Camp Number</label>
                      <select class="form-control" ng-model="admin.campnumber" ng-options="cmp.campnumber as cmp.campnumber for cmp in camp" ng-change="changeVenues(admin.campnumber);"></select>
                   </div>
-                  <div class='form-group' ng-if="admin.accesslevel != 'admin'" ng-show="showDrop">
+                  <div class='form-group' ng-if="admin.accesslevel != 'admin' && admin.campnumber != 'All'" ng-show="showDrop">
                      <label>Camp</label>
                      <select ng-model='admin.camp' class='form-control' ng-options="venue.value as venue.value for venue in venues" required></select>
                   </div>

@@ -3,7 +3,8 @@ var selectedData = [];
 var phonecatControllers = angular.module('phonecatControllers', ['templateservicemod', 'navigationservice', 'ngDialog', 'angularFileUpload', 'ui.select', 'ngSanitize', 'angular-loading-bar', 'cfp.loadingBarInterceptor']);
 window.uploadUrl = 'http://api.thetmm.org/uploadfile/upload';
 window.uploadUrl2 = 'http://api.thetmm.org/uploadfile/upload2';
-// window.uploadUrl = 'http://192.168.1.131:1337/uploadfile/upload';
+//window.uploadUrl2 = 'http://localhost:1337/uploadfile/upload2';
+//window.uploadUrl = 'http://192.168.1.131:1337/uploadfile/upload';
 // window.uploadUrl = 'http://localhost:1337/uploadfile/upload';
 phonecatControllers.controller('home', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
@@ -307,6 +308,164 @@ phonecatControllers.controller('login', function ($scope, TemplateService, Navig
         }
     }
 });
+//addDonorViewCtrl
+phonecatControllers.controller('addDonorViewCtrl', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
+    $scope.template = TemplateService;
+    $scope.menutitle = NavigationService.makeactive('Add Donor');
+    TemplateService.title = $scope.menutitle;
+    TemplateService.submenu = '';
+    if ($.jStorage.get('adminuser').accesslevel == "admin" || $.jStorage.get('adminuser').accesslevel == "entry") {
+        TemplateService.content = 'views/addDonorView.html';
+    }
+    //  else {
+    //     TemplateService.content = 'views/olddonor.html';
+    // }
+    TemplateService.list = 2;
+    $scope.navigation = NavigationService.getnav();
+    $scope.Donor = [];
+    $scope.access = $.jStorage.get('adminuser');
+    $scope.number = 100;
+    $scope.pagedata = {};
+    $scope.pagedata.page = 1;
+    $scope.pagedata.limit = '50';
+    $scope.pagedata.camp = '';
+    $scope.pagedata.campnumber = '';
+    $scope.pagedata.donorid = '';
+    $scope.pagedata.name = '';
+    $scope.pagedata.firstname = '';
+    $scope.pagedata.middlename = '';
+    $scope.pagedata.lastname = '';
+    $scope.pagedata.pincode = '';
+    $scope.pagedata.mobile = '';
+    $scope.pagedata.accesslevel = $scope.access.accesslevel;
+    $scope.deleteReason = '';
+    $scope.showNoResult = false;
+
+    $scope.venues = [{
+        value: 'All'
+    }];
+
+    $scope.reload = function () {
+        console.log("%DE4frtgyhjui", $scope.pagedata);
+        NavigationService.findLimitedDonor($scope.pagedata, function (data, status) {
+            console.log(data);
+            if (data.value != false) {
+                $scope.showNoResult = false;
+                $scope.donor = data;
+                $scope.pages = [];
+                var newclass = '';
+                for (var i = 1; i <= data.totalpages; i++) {
+                    if ($scope.pagedata.page == i) {
+                        newclass = 'active';
+                    } else {
+                        newclass = '';
+                    }
+                    $scope.pages.push({
+                        pageno: i,
+                        class: newclass
+                    });
+                }
+            } else {
+                $scope.showNoResult = true;
+            }
+        });
+    }
+
+    // $scope.reload();
+
+    $scope.confDelete = function () {
+        NavigationService.deleteDonor(function (data, status) {
+            ngDialog.close();
+            window.location.reload();
+        });
+    }
+
+    $scope.deletefun = function (id) {
+        $.jStorage.set('deletedonor', id);
+        ngDialog.open({
+            template: 'views/delete.html',
+            controller: 'DonorCtrl',
+            closeByDocument: false,
+            scope: $scope
+        });
+
+    }
+    NavigationService.getCamp(function (data) {
+        $scope.camps = data;
+        $scope.camps.unshift({
+            campnumber: 'All',
+            venues: [{
+                value: "All"
+            }]
+        });
+    })
+
+    $scope.showVenues = function () {
+        console.log($scope.pagedata.campnumber);
+        var foundIndex = _.findIndex($scope.camps, {
+            'campnumber': $scope.pagedata.campnumber
+        });
+        if (foundIndex != -1) {
+            $scope.venues = $scope.camps[foundIndex].venues;
+        }
+        $scope.pagedata.camp = '';
+        $scope.pagedata.page = 1;
+        $scope.reload();
+    }
+
+    $scope.getFilterResults = function (val) {
+        switch (val) {
+            case 'id':
+                {
+                    $scope.pagedata.page = 1;
+                    // $scope.pagedata.camp = '';
+                    // $scope.pagedata.campnumber = '';
+                    $scope.pagedata.name = '';
+                    $scope.pagedata.firstname = '';
+                    $scope.pagedata.middlename = '';
+                    $scope.pagedata.lastname = '';
+                    $scope.pagedata.pincode = '';
+                    $scope.pagedata.mobile = '';
+                    $scope.reload();
+                    break;
+                }
+            case 'search':
+                {
+                    $scope.pagedata.page = 1;
+                    $scope.pagedata.donorid = '';
+                    // $scope.pagedata.pincode = '';
+                    // $scope.pagedata.mobile = '121321515';
+                    $scope.reload();
+                    break;
+                }
+            case 'venue':
+                {
+                    $scope.pagedata.page = 1;
+                    $scope.reload();
+                    break;
+                }
+            case 'limit':
+                {
+                    $scope.pagedata.page = 1;
+                    $scope.reload();
+                    break;
+                }
+            default:
+                {
+                    $scope.reload();
+                    break;
+                }
+        }
+    }
+
+    $scope.changePage = function (pageno) {
+        console.log(pageno);
+        $scope.pagedata.page = pageno.pageno;
+        $scope.reload();
+    }
+    //End Donor
+});
+
 //Donor Controller
 phonecatControllers.controller('DonorCtrl', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
@@ -325,7 +484,7 @@ phonecatControllers.controller('DonorCtrl', function ($scope, TemplateService, N
     $scope.number = 100;
     $scope.pagedata = {};
     $scope.pagedata.page = 1;
-    $scope.pagedata.limit = '20';
+    $scope.pagedata.limit = '50';
     $scope.pagedata.camp = '';
     $scope.pagedata.campnumber = '';
     $scope.pagedata.donorid = '';
@@ -892,7 +1051,7 @@ phonecatControllers.controller('oldDonorCtrl', function ($scope, TemplateService
 
     $scope.pagedata = {};
     $scope.pagedata.page = 1;
-    $scope.pagedata.limit = '20';
+    $scope.pagedata.limit = '50';
     $scope.pagedata.donorid = '';
     $scope.pagedata.name = '';
     $scope.pagedata.firstname = '';
@@ -1152,7 +1311,7 @@ phonecatControllers.controller('FamilyCtrl', function ($scope, TemplateService, 
     $scope.Family = [];
     $scope.pagedata = {};
     $scope.pagedata.page = 1;
-    $scope.pagedata.limit = '20';
+    $scope.pagedata.limit = '50';
     $scope.pagedata.search = '';
     $scope.number = 100;
     $scope.reload = function (pagedata) {
@@ -1303,7 +1462,7 @@ phonecatControllers.controller('CampCtrl', function ($scope, TemplateService, Na
     $scope.Camp = [];
     $scope.pagedata = {};
     $scope.pagedata.page = 1;
-    $scope.pagedata.limit = '20';
+    $scope.pagedata.limit = '50';
     $scope.pagedata.search = '';
     $scope.number = 100;
     $scope.reload = function (pagedata) {
@@ -1522,7 +1681,7 @@ phonecatControllers.controller('AdminCtrl', function ($scope, TemplateService, N
     $scope.admin = [];
     $scope.pagedata = {};
     $scope.pagedata.page = 1;
-    $scope.pagedata.limit = '20';
+    $scope.pagedata.limit = '50';
     $scope.pagedata.search = '';
     $scope.number = 100;
     $scope.reload = function (pagedata) {
@@ -1627,6 +1786,109 @@ phonecatControllers.controller('createAdminCtrl', function ($scope, TemplateServ
 });
 //createCamp Controller
 //editCamp Controller
+/*$scope.template = TemplateService;
+$scope.menutitle = NavigationService.makeactive('User');
+TemplateService.title = $scope.menutitle;
+TemplateService.submenu = '';
+TemplateService.content = 'views/editadmin.html';
+TemplateService.list = 2;
+$scope.navigation = NavigationService.getnav();
+$scope.admin = {};*/
+
+phonecatControllers.controller('addDonorCtrl', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
+    $scope.template = TemplateService;
+    $scope.menutitle = NavigationService.makeactive('Add Donor');
+    TemplateService.title = $scope.menutitle;
+    TemplateService.submenu = '';
+    TemplateService.content = 'views/addDonor.html';
+    TemplateService.list = 2;
+    $scope.navigation = NavigationService.getnav();
+    $scope.donorData = {};
+    $scope.donorData.campnumber = '';
+    $scope.donorData.camp = '';
+    $scope.donorData.donorid = '';
+    $scope.donorData.bottle = '';
+    //hospital
+    $scope.donorData.hospital = '';
+
+    $scope.addDonor = function () {
+        $scope.donor.campnumber = $scope.donorData.campnumber;
+        $scope.donor.camp = $scope.donorData.camp;
+        $scope.donor.bottle = $scope.donorData.bottle;
+        $scope.donor.hospital = $scope.donorData.hospital;
+        NavigationService.saveDonorWithAckAndGift($scope.donor, function (data, status) {
+            if (data.value == true && data.comment == "Bottle already exists") {
+                $scope.bottleExist = 0;
+            } else if (data.value == false) {
+                $scope.showfail = 0;
+                $scope.showSaved = false;
+            } else {
+                $scope.showfail = 1;
+                $scope.bottleExist = 1;
+                $scope.showSaved = true;
+                //  $scope.openPrintView(data.id);
+                $location.url('/adddonorview');
+            }
+        });
+        console.log("inside donorData");
+        console.log($scope.donor);
+    }
+
+    function getDetails() {
+        NavigationService.getOneDonor($routeParams.id, function (data, status) {
+            console.log(data);
+            data.isWeb = true;
+            // console.log("in edit donor getdetails", data);
+            $scope.donor = data;
+            $scope.donorData.donorid = data.donorid;
+            //   $scope.calculate(); //Add More Array
+
+
+
+            // console.log($scope.donor);
+        });
+    }
+
+    getDetails();
+
+    function generateDrop() {
+
+        NavigationService.getCamp(function (data, status) {
+            if (data.value != false) {
+                $scope.camp = data;
+
+            } else {
+                $scope.camp = [];
+            }
+        });
+
+    }
+    generateDrop();
+    $scope.changeHospitals = function (camp, venue) {
+        //    / console.log(val);
+        var foundIndex = _.findIndex($scope.camp, {
+            'campnumber': camp
+        });
+        var venueIndex = _.findIndex($scope.camp[foundIndex].venues, {
+            'value': venue
+        });
+        $scope.hospitals = $scope.camp[foundIndex].venues[venueIndex].hospital;
+        $scope.hospitals = _.uniq($scope.hospitals, 'name');
+
+    }
+
+    $scope.changeVenues = function (val) {
+        console.log(val);
+        var foundIndex = _.findIndex($scope.camp, {
+            'campnumber': val
+        });
+        console.log(foundIndex);
+        $scope.venues = $scope.camp[foundIndex].venues;
+        $scope.venues = _.uniq($scope.venues, 'value');
+
+    }
+
+});
 phonecatControllers.controller('editAdminCtrl', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive('User');
@@ -1640,6 +1902,7 @@ phonecatControllers.controller('editAdminCtrl', function ($scope, TemplateServic
 
     $scope.changeVenues = function (val) {
         console.log(val);
+
         var foundIndex = _.findIndex($scope.camp, {
             'campnumber': val
         });
@@ -1701,9 +1964,14 @@ phonecatControllers.controller('editAdminCtrl', function ($scope, TemplateServic
             NavigationService.getCamp(function (data, status) {
                 if (data.value != false) {
                     $scope.camp = data;
+                    $scope.camp.unshift({
+                        'campnumber': 'All'
+                    });
+
                     var foundIndex = _.findIndex($scope.camp, {
                         'campnumber': $scope.admin.campnumber
                     });
+
                     $scope.venues = $scope.camp[foundIndex].venues;
                     $scope.venues = _.uniq($scope.venues, 'value');
                     $scope.venues.push({
@@ -1718,6 +1986,11 @@ phonecatControllers.controller('editAdminCtrl', function ($scope, TemplateServic
 
     $scope.submitForm = function () {
         $scope.admin._id = $routeParams.id;
+        console.log("before if");
+        if($scope.admin.campnumber == 'All'){
+            console.log("after if");
+            $scope.admin.camp = 'All';
+        }
         NavigationService.saveAdmin($scope.admin, function (data, status) {
             $location.url('/admin');
         });
@@ -1767,7 +2040,7 @@ phonecatControllers.controller('GiftTypeCtrl', function ($scope, TemplateService
     $scope.GiftType = [];
     $scope.pagedata = {};
     $scope.pagedata.page = 1;
-    $scope.pagedata.limit = '20';
+    $scope.pagedata.limit = '50';
     $scope.pagedata.search = '';
     $scope.number = 100;
     $scope.reload = function (pagedata) {
@@ -1859,7 +2132,7 @@ phonecatControllers.controller('HospitalCtrl', function ($scope, TemplateService
     $scope.Hospital = [];
     $scope.pagedata = {};
     $scope.pagedata.page = 1;
-    $scope.pagedata.limit = '20';
+    $scope.pagedata.limit = '50';
     $scope.pagedata.search = '';
     $scope.number = 100;
     $scope.reload = function (pagedata) {
@@ -2207,7 +2480,7 @@ phonecatControllers.controller('SliderCtrl', function ($scope, TemplateService, 
     $scope.slider = [];
     $scope.pagedata = {};
     $scope.pagedata.page = 1;
-    $scope.pagedata.limit = '20';
+    $scope.pagedata.limit = '50';
     $scope.pagedata.search = '';
     $scope.number = 100;
     $scope.reload = function (pagedata) {
@@ -2552,7 +2825,7 @@ phonecatControllers.controller('SliderAppHomeCtrl', function ($scope, TemplateSe
     $scope.sliderAppHome = [];
     $scope.pagedata = {};
     $scope.pagedata.page = 1;
-    $scope.pagedata.limit = '20';
+    $scope.pagedata.limit = '50';
     $scope.pagedata.search = '';
     $scope.number = 100;
     $scope.reload = function (pagedata) {
@@ -2897,7 +3170,7 @@ phonecatControllers.controller('SponsorCtrl', function ($scope, TemplateService,
     $scope.sponsor = [];
     $scope.pagedata = {};
     $scope.pagedata.page = 1;
-    $scope.pagedata.limit = '20';
+    $scope.pagedata.limit = '50';
     $scope.pagedata.search = '';
     $scope.number = 100;
     $scope.reload = function (pagedata) {
@@ -3057,7 +3330,7 @@ phonecatControllers.controller('findEntryCtrl', function ($scope, TemplateServic
     $scope.number = 100;
     $scope.pagedata = {};
     $scope.pagedata.page = 1;
-    $scope.pagedata.limit = '20';
+    $scope.pagedata.limit = '50';
     $scope.pagedata.camp = $scope.access.camp;
     $scope.pagedata.campnumber = $scope.access.campnumber;
     $scope.pagedata.donorid = '';
@@ -3238,7 +3511,7 @@ phonecatControllers.controller('findVerifyCtrl', function ($scope, TemplateServi
 
     $scope.pagedata = {};
     $scope.pagedata.page = 1;
-    $scope.pagedata.limit = '20';
+    $scope.pagedata.limit = '50';
     $scope.pagedata.donorid = '';
     $scope.pagedata.name = '';
     $scope.pagedata.firstname = '';
@@ -3392,7 +3665,7 @@ phonecatControllers.controller('findGiftCtrl', function ($scope, TemplateService
 
     $scope.pagedata = {};
     $scope.pagedata.page = 1;
-    $scope.pagedata.limit = '20';
+    $scope.pagedata.limit = '50';
     $scope.pagedata.donorid = '';
     $scope.pagedata.name = '';
     $scope.pagedata.firstname = '';
@@ -3674,7 +3947,7 @@ phonecatControllers.controller('campReportUsersCtrl', function ($scope, Template
     $scope.number = 100;
     $scope.pagedata = {};
     $scope.pagedata.page = 1;
-    $scope.pagedata.limit = '20';
+    $scope.pagedata.limit = '50';
     $scope.pagedata.camp = $routeParams.camp;
     $scope.pagedata.campnumber = $routeParams.campnumber;
     $scope.pagedata.accesslevel = $routeParams.accesslevel;
@@ -3765,9 +4038,14 @@ phonecatControllers.controller('campReportUsersCtrl', function ($scope, Template
             // console.log(data);
             if (data.value != false) {
                 var mywin = window.open('', '', 'width=1000,height=600');
-                mywin.document.write(data);
+
                 mywin.document.write('<script type="text/javascript">window.onload = function() { window.print();window.close(); }</script>');
+                mywin.document.write(data);
                 mywin.document.close();
+                // $timeout(function(){
+                // mywin.document.close();
+                // },30000);
+
             }
         })
     }
@@ -3791,7 +4069,7 @@ phonecatControllers.controller('campReportHospUsersCtrl', function ($scope, Temp
     $scope.number = 100;
     $scope.pagedata = {};
     $scope.pagedata.page = 1;
-    $scope.pagedata.limit = '20';
+    $scope.pagedata.limit = '50';
     $scope.pagedata.camp = $routeParams.camp;
     $scope.pagedata.campnumber = $routeParams.campnumber;
     $scope.pagedata.hospital = $routeParams.hospital;
@@ -3900,7 +4178,7 @@ phonecatControllers.controller('NotificationCtrl', function ($scope, TemplateSer
     $scope.Notification = [];
     $scope.pagedata = {};
     $scope.pagedata.page = 1;
-    $scope.pagedata.limit = '20';
+    $scope.pagedata.limit = '50';
     $scope.pagedata.search = '';
     $scope.number = 100;
     $scope.reload = function (pagedata) {
@@ -4243,7 +4521,7 @@ phonecatControllers.controller('FolderCtrl', function ($scope, TemplateService, 
     $scope.folder = [];
     $scope.pagedata = {};
     $scope.pagedata.page = 1;
-    $scope.pagedata.limit = '20';
+    $scope.pagedata.limit = '50';
     $scope.pagedata.search = '';
     $scope.number = 100;
     $scope.reload = function (pagedata) {
@@ -4585,7 +4863,7 @@ phonecatControllers.controller('RequestCtrl', function ($scope, TemplateService,
     $scope.request = [];
     $scope.pagedata = {};
     $scope.pagedata.page = 1;
-    $scope.pagedata.limit = '20';
+    $scope.pagedata.limit = '50';
     $scope.pagedata.search = '';
     $scope.number = 100;
     $scope.reload = function (pagedata) {
@@ -4933,14 +5211,27 @@ phonecatControllers.controller('searchBloodCtrl', function ($scope, TemplateServ
     $scope.Hospital = [];
     $scope.pagedata = {};
     $scope.pagedata.page = 1;
-    $scope.pagedata.limit = '20';
+    $scope.pagedata.limit = '50';
     $scope.pagedata.search = '';
+    //searchBlood
+    $scope.pagedata.searchValue = '';
     $scope.number = 100;
     $scope.reload = function () {
-        if ($scope.pagedata.pincode && $scope.pagedata.bloodgrp) {
-            if (typeof $scope.pagedata.pincode == "string")
-                $scope.pagedata.pincode = $scope.pagedata.pincode.split(',');
+        //console.log("inside the searchBloodCtrl");
+        if ($scope.pagedata.searchValue && $scope.pagedata.bloodgrp) {
+          //  console.log("inside if");
+            if ($scope.pagedata.searchValue == 'pincode') {
+                if ($scope.pagedata.pincode) {
+                    if (typeof $scope.pagedata.pincode == "string")
+                        $scope.pagedata.pincode = $scope.pagedata.pincode.split(',');
+                }
+            } else {
+                $scope.pagedata.pincode = 'All';
+            }
             NavigationService.getSearch($scope.pagedata, function (data, status) {
+                if ($scope.pagedata.searchValue != 'pincode') {
+                    $scope.pagedata.pincode = '';
+                }
                 $scope.hospital = data;
                 $scope.pages = [];
                 var newclass = '';
@@ -4989,6 +5280,7 @@ phonecatControllers.controller('ScoreCtrl', function ($scope, TemplateService, N
 
     function populateData(data, val) {
         var grouped = _.groupBy(data, 'camp');
+       // console.log(grouped)
         var campwise = [];
         _.each(grouped, function (value, key) {
             var obj = {
@@ -5119,7 +5411,7 @@ phonecatControllers.controller('viewMobileBannerCtrl', function ($scope, Templat
     $scope.Camp = [];
     $scope.pagedata = {};
     $scope.pagedata.page = 1;
-    $scope.pagedata.limit = '20';
+    $scope.pagedata.limit = '50';
     $scope.pagedata.search = '';
     $scope.number = 100;
     $scope.reload = function (pagedata) {
@@ -5494,7 +5786,7 @@ phonecatControllers.controller('viewDonationRequestCtrl', function ($scope, Temp
     $scope.Camp = [];
     $scope.pagedata = {};
     $scope.pagedata.page = 1;
-    $scope.pagedata.limit = '20';
+    $scope.pagedata.limit = '50';
     $scope.pagedata.search = '';
     $scope.number = 100;
     $scope.reload = function (pagedata) {

@@ -93,7 +93,7 @@
                                         <td class="text-center">{{value.name}}</td>
                                         <td class="text-center">{{value.bottle}}</td>
                                         <td class="text-center">{{value.hospitalname}}</td>
-                                        <td class="text-center" ng-if="access.accesslevel == 'entry' || access.accesslevel == 'admin'"><a ng-click="deletefun(value._id)" class="btn btn-primary all-btn" ng-if="value.verified!=true"><i class="fa fa-times"></i></a>
+                                        <td class="text-center" ng-if="access.accesslevel == 'entry' || access.accesslevel == 'admin'"><a ng-click="deletefun(value._id)" class="btn btn-primary all-btn" ng-if="value.verified!=true"><i class="fa fa-times"> </i></a>
                                         </td>
                                         <td class="text-center">
                                             <a href="#/editdonor/{{value._id}}" class="btn btn-primary all-btn">

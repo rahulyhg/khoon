@@ -29,6 +29,13 @@ var navigationservice = angular.module('navigationservice', [])
                 subnav: [],
                 visible: "yes"
             }, {
+                name: 'Add Donor',
+                active: '',
+                link: '#/adddonorview',
+                subnav: [],
+                visible: "yes",
+                showToAll : "yes"
+            },{
                 name: 'Hospital',
                 active: '',
                 link: '#/hospital',
@@ -303,6 +310,12 @@ var navigationservice = angular.module('navigationservice', [])
             saveDonor: function (data, callback) {
                 $http({
                     url: adminurl + 'donor/save',
+                    method: 'POST',
+                    data: data
+                }).success(callback);
+            },saveDonorWithAckAndGift: function (data, callback) {
+                $http({
+                    url: adminurl + 'donor/addDonor',
                     method: 'POST',
                     data: data
                 }).success(callback);

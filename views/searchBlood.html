@@ -10,11 +10,18 @@
                <div class="panel-body">
                   <div class="bot search-box">
                      <div class="row">
-                        <div class="col-md-3">
+                            <div class="col-md-3">
+                                    <select ng-model="pagedata.searchValue" class="form-control">
+                                            <option value="">Search By</option>          
+                                            <option value="All">All</option>
+                                            <option value="pincode">Pincode</option>              
+                                        </select>     
+                                </div> 
+                        <div class="col-md-3" ng-if = "pagedata.searchValue == 'pincode'">
                            <textarea name="name" rows="1" class="form-control" ng-model="pagedata.pincode" placeholder="Pincodes (Comma Seperated)"></textarea>
                            <!-- <input type="search" name="search" ng-model="pagedata.search" placeholder="Pincode" ng-change="reload(pagedata);" /> -->
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-2" >
                            <select ng-model="pagedata.bloodgrp" class="form-control">
                               <option value="">Blood Group</option>
                               <option value="A+">A+</option>
@@ -30,7 +37,7 @@
                         <div class="col-md-2">
                            <a class="right btn btn-primary all-btn create-btn" ng-click="getSearchResults();">Search Blood</a>
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-2">
                            <div class="pull-right">
                               <select ng-model="pagedata.limit" class="form-control" ng-change="reload()">
                                  <option value="20" selected>20</option>

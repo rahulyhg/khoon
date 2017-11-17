@@ -1,0 +1,63 @@
+<div class="page">
+    <h2 class="title">
+    </h2>
+    <div class="row">
+        <div class="col-md-12">
+            <form ng-submit="addDonor();" name="donor" >
+                <section class="panel panel-default" style="border-radius:0px;">
+                    <div class="panel-heading panel-hdr">
+                        <span class="glyphicon glyphicon-th mr5"></span>Add Donor
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Donor Id</label>
+                        <input type="text" class='form-control' ng-model="donorData.donorid" placeholder="Donor ID" required>
+                    </div>
+                
+                    <div class='form-group'>
+                        <label>Camp Number</label>
+                        <select class="form-control" ng-model="donorData.campnumber" ng-options="cmp.campnumber as cmp.campnumber for cmp in camp"
+                            ng-change="changeVenues(donorData.campnumber);" required></select>
+                    </div>
+                    <div class='form-group' ng-if="donorData.campnumber != ''">
+                        <label>Camp</label>
+                        <select ng-model='donorData.camp' class='form-control' ng-options="venue.value as venue.value for venue in venues" ng-change="changeHospitals(donorData.campnumber, donorData.camp);"
+                            required></select>
+                    </div>
+                    <div class='form-group' ng-if="donorData.campnumber != '' && donorData.camp != ''">
+                        <label>Hospital</label>
+                        <select ng-model='donorData.hospital' class='form-control' value="{{hsp._id}}" ng-options="hsp._id as hsp.name for hsp in hospitals"
+                            ng-model="donorData.hospital" required></select>
+                    </div>
+                   
+                            <div class='form-group'>
+                                <label>Bottle Number</label>
+                                <input type='text' class='form-control' ng-model='donorData.bottle' placeholder='Bottle Number' required only-digits ng-trim="false">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4" ng-if="bottleExist==0">
+                                   <div class="form-group text-center">
+                                      <span style="color:red;"><b>Bottle Number Already Exists. <br>Assinged To : {{assignedTo}}</b></span>
+                                   </div>
+                                </div>
+                                <div class="col-md-4" ng-if="showfail == 1">
+                                   <div class="form-group text-center">
+                                      <span style="color:red;"><b>Some error. Please submit again.</b></span>
+                                   </div>
+                                </div>
+                             </div>
+                        <div class="row" ng-show="showSaved">
+                                <div class="col-md-12">
+                                   <div class="form-group text-center">
+                                      <span><b>Updated Successfully !</b></span>
+                                   </div>
+                                </div>
+                             </div>
+                    <div class="text-center" style="padding-bottom:20px;">
+                        <button type="submit" class="btn btn-primary all-btn">Save</button>
+                    </div>
+                </section>
+            </form>
+        </div>
+    </div>
+</div>
