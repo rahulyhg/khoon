@@ -75,6 +75,7 @@
                                         <th class="text-center" ng-hide="hidebottleno">Bottle Number</th>
                                         <th class="text-center">Hospital</th>
                                         <th class="text-center" ng-if="showreason==true">Delete Reason</th>
+                                        <th class="text-center" ng-if="access.accesslevel == 'admin'">Operations</th>
                                         <!-- <th class="text-center" colspan="2" ng-if="access.accesslevel == 'entry' || access.accesslevel == 'admin'">Operations</th> -->
                                     </tr>
                                 </thead>
@@ -85,6 +86,9 @@
                                         <td class="text-center" ng-hide="hidebottleno">{{value.oldbottle.bottle}}</td>
                                         <td class="text-center">{{value.oldbottle.hospitalname}}</td>
                                         <td class="text-center" ng-if="showreason==true">{{value.deletereason}}</td>
+                   
+                                        <td class="text-center" ng-if="access.accesslevel == 'admin'"><a ng-click="deletefun(value)" class="btn btn-primary all-btn"><i class="fa fa-times"></i></a>
+                                        </td>
                                         <!-- <td class="text-center" ng-if="access.accesslevel == 'entry' || access.accesslevel == 'admin'"><a ng-click="deletefun(value._id)" class="btn btn-primary all-btn"><i class="fa fa-times"></i></a>
                                         </td>
                                         <td class="text-center">

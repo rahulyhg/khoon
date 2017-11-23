@@ -5,7 +5,7 @@ window.uploadUrl = 'http://api.thetmm.org/uploadfile/upload';
 window.uploadUrl2 = 'http://api.thetmm.org/uploadfile/upload2';
 //window.uploadUrl2 = 'http://localhost:1337/uploadfile/upload2';
 //window.uploadUrl = 'http://192.168.1.131:1337/uploadfile/upload';
-// window.uploadUrl = 'http://localhost:1337/uploadfile/upload';
+ //window.uploadUrl = 'http://localhost:1337/uploadfile/upload';
 phonecatControllers.controller('home', function ($scope, TemplateService, NavigationService, $routeParams, $location, ngDialog) {
     $scope.template = TemplateService;
     $scope.menutitle = NavigationService.makeactive("Dashboard");
@@ -3944,6 +3944,10 @@ phonecatControllers.controller('campReportUsersCtrl', function ($scope, Template
     $scope.navigation = NavigationService.getnav();
     $scope.Donor = [];
     // $scope.access = $.jStorage.get('adminuser');
+    if($.jStorage.get('adminuser')){
+    $scope.access = $.jStorage.get('adminuser');
+    $scope.access.accesslevel =  $.jStorage.get('adminuser').accesslevel;
+    }
     $scope.number = 100;
     $scope.pagedata = {};
     $scope.pagedata.page = 1;
@@ -4048,6 +4052,25 @@ phonecatControllers.controller('campReportUsersCtrl', function ($scope, Template
 
             }
         })
+    }
+    $scope.confDelete = function () {
+        
+        var data = $.jStorage.get("deleteAck");
+        console.log("data:",data);
+        NavigationService.deleteAck(data,function (data, status) {
+            ngDialog.close();
+            window.location.reload();
+        });
+    }
+    $scope.deletefun = function (data) {
+        console.log("inside function");
+       $.jStorage.set('deleteAck', data);
+        ngDialog.open({
+            template: 'views/delete.html',
+            closeByEscape: false,
+            controller: 'campReportUsersCtrl',
+            closeByDocument: false
+        });
     }
     $scope.downloadExcel = function () {
         window.location.href = adminurl + "camp/excelDonor1?accesslevel=" + $scope.pagedata.accesslevel + "&camp=" + $scope.pagedata.camp + "&campnumber=" + $scope.pagedata.campnumber;
@@ -4161,9 +4184,11 @@ phonecatControllers.controller('campReportHospUsersCtrl', function ($scope, Temp
             }
         })
     }
+    
     $scope.downloadExcel = function () {
         window.location.href = adminurl + "camp/hospitalDonor1?hospital=" + $scope.pagedata.hospital + "&camp=" + $scope.pagedata.camp + "&campnumber=" + $scope.pagedata.campnumber;
     }
+    
 
     //End Donor
 }); //Notification Controller
@@ -4208,7 +4233,7 @@ phonecatControllers.controller('NotificationCtrl', function ($scope, TemplateSer
         });
     }
     $scope.deletefun = function (id) {
-        $.jStorage.set('deletenotification', id);
+       // $.jStorage.set('deletenotification', id);
         ngDialog.open({
             template: 'views/delete.html',
             closeByEscape: false,
@@ -4216,6 +4241,7 @@ phonecatControllers.controller('NotificationCtrl', function ($scope, TemplateSer
             closeByDocument: false
         });
     }
+
     //End Notification
 });
 //notification Controller

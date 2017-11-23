@@ -26,14 +26,21 @@
                            <input type='text' class='form-control' ng-model='donor.familyid' placeholder='Family Id' disabled>
                         </div>
                      </div>
-                     <div class="col-md-4" ng-click="openHistory();">
+                     <div class="col-md-4" >
                         <div class="box">
-                           <div class="text">
+                           <div >
+                                 <div ng-click="openHistory();" class="text">
                               <h4 class="text-center nomg">Donation Count</h4>
-                              <h4 class="text-center nomg">{{donor.donationcount}}</h4>
-                           </div>
+                              <h4 class="text-center nomg" ng-if="access.accesslevel != 'admin'">{{donor.donationcount}}</h4>
                         </div>
-                     </div>
+                              <input type='text' class='form-control' ng-model='donor.donationcount' placeholder='Donation Count' ng-if="access.accesslevel == 'admin'"></h4>
+                        </div>
+                  </div>     
+            </div>
+                
+                           
+                        
+                    
                   </div>
                   <div class="row">
                      <div class="col-md-4">
@@ -187,7 +194,9 @@
                               <option value=''>Please Select</option>
                               <option value='SMS'>SMS</option>
                               <option value='Multiple members for family'>Multiple members for family</option>
-                              <option value='Not fit for donation'>Not fit for donation</option>
+                              <option value='Address not proper'>Address not proper</option>
+
+                              <option value='Not fit for donation' ng-if="donor.age >= 65">Not fit for donation</option>
                               <option value='Death'>Death</option>
                            </select>
                         </div>
