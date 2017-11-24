@@ -292,6 +292,15 @@ firstapp.filter('touppercase', function () {
         }
     };
 });
+firstapp.filter('highlight', function () {
+    return function (input) {
+        if (input == false) {
+            return "red";
+        } else {
+            return "black";
+        }
+    };
+});
 firstapp.directive('onlyDigits', function () {
     return {
         require: 'ngModel',
