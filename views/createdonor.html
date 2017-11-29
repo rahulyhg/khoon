@@ -163,7 +163,8 @@
                                         <option value=''>Please Select</option>
                                         <option value='SMS'>SMS</option>
                                         <option value='Multiple members for family'>Multiple members for family</option>
-                                        <option value='Not fit for donation'>Not fit for donation</option>
+                                        <option value='Address not proper'>Address not proper</option>
+                                        <option value='Not fit for donation' ng-if="donor.age >= 65">Not fit for donation</option>
                                         <option value='Death'>Death</option>
                                     </select>
                                 </div>
