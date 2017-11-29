@@ -31,7 +31,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="value in donationRequest.data">
+                                    <tr ng-style="{'color':(value.checked|highlight)}" ng-repeat="value in donationRequest.data">
                                         <td class="text-center">{{value.fullname}}</td>
                                         <td class="text-center">{{value.donorid}}</td>
                                         <td class="text-center">{{value.date | date}}</td>
