@@ -1,5 +1,5 @@
 var adminurl = "http://api.thetmm.org/";
-// var adminurl = "http://localhost:1337/"
+ //var adminurl = "http://localhost:1337/"
 // var adminurl = "http://192.168.1.131:90/";
 var navigationservice = angular.module('navigationservice', [])
 
@@ -1003,6 +1003,13 @@ var navigationservice = angular.module('navigationservice', [])
                     data: {
                         '_id': $.jStorage.get('deleteDonationRequest')
                     }
+                }).success(callback);
+            },
+            deleteAck:function(data, callback){
+                $http({
+                    url: adminurl + 'donor/removeAck',
+                    method: 'POST',
+                    data: data
                 }).success(callback);
             },
             saveDonationRequest: function (data, callback) {
