@@ -810,6 +810,13 @@ var navigationservice = angular.module('navigationservice', [])
                     data: data
                 }).success(callback);
             },
+            updateDonor: function (callback) {
+                $http({
+                    url: adminurl + 'donor/donorUpdate',
+                    method: 'POST',
+                    data: {}
+                }).success(callback);
+            },
             getOneFolder: function (id, callback) {
                 $http({
                     url: adminurl + 'folder/findone',

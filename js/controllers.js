@@ -5012,12 +5012,18 @@ phonecatControllers.controller('DownloadCtrl', function ($scope, TemplateService
     $scope.countErr = false;
     $scope.countArr = [];
     $scope.campArr = [];
+    $scope.donorUpdated = '';
     ///////////////////////
 
     $scope.removefile = function (i) {
         $scope.download.file = "";
     };
-
+    $scope.updateDonor = function(){
+        NavigationService.updateDonor(function(data){
+            $scope.donorUpdated = "Updated";
+        });
+    } 
+    //callback
     var imagejstupld = "";
     $scope.usingFlash = FileAPI && FileAPI.upload != null;
     $scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);

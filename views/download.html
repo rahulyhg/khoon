@@ -1,65 +1,84 @@
 <div class="page">
-   <h2 class="title">
-</h2>
-   <div class="row">
-      <div class="col-md-12">
-         <section class="panel panel-default" style="border-radius:0px;">
-            <div class="panel-heading panel-hdr"><span class="glyphicon glyphicon-th mr5"></span>Download Label
-            </div>
-            <div class="panel-body">
-               <form name="form_constraints" class="form-validation" data-ng-submit="submitForm()">
-                  <div class="form-group text-center">
-                     <a class="btn btn-primary" ng-click="donwloadAll();">Download All</a>
-                  </div>
-                  <hr class="myhr">
-                  <div class="row">
-                     <div class="col-md-4">
-                        <label for="exampleInputEmail1">Upload Excel</label>
-                        <div class="scroll-x">
-                           <div class="img-box">
-                              <label>{{download.name}}</label>
-                              <button type="button" ng-click="removefile();" class="btn btn-danger close-btn" ng-if="download.name"><i class="glyphicon glyphicon-trash"></i>
-                              </button>
-                           </div>
+    <h2 class="title">
+    </h2>
+    <div class="row">
+        <div class="col-md-12">
+            <section class="panel panel-default" style="border-radius:0px;">
+                <div class="panel-heading panel-hdr">
+                    <span class="glyphicon glyphicon-th mr5"></span>Download Label
+                </div>
+                <div class="panel-body">
+                    <form name="form_constraints" class="form-validation" data-ng-submit="submitForm()">
+                        <div class="form-group text-center">
+                            <a class="btn btn-primary" ng-click="donwloadAll();">Download All</a>
                         </div>
-                        <div class="upload-div">
-                           <div ng-init="httpMethod = 'POST';howToSend = 1;"></div>
-                           <div class="upload-buttons">
-                              <input type="file" name="file" ng-file-select="onFileSelect($files)" onclick="this.value=null">
-                           </div>
+                        <hr class="myhr">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="exampleInputEmail1">Upload Excel</label>
+                                <div class="scroll-x">
+                                    <div class="img-box">
+                                        <label>{{download.name}}</label>
+                                        <button type="button" ng-click="removefile();" class="btn btn-danger close-btn" ng-if="download.name">
+                                            <i class="glyphicon glyphicon-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="upload-div">
+                                    <div ng-init="httpMethod = 'POST';howToSend = 1;"></div>
+                                    <div class="upload-buttons">
+                                        <input type="file" name="file" ng-file-select="onFileSelect($files)" onclick="this.value=null">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="padding-bottom:20px;">
+                                <button type="submit" class="btn btn-primary all-btn">Submit</button>
+                            </div>
                         </div>
-                     </div>
-                     <div class="col-md-4" style="padding-bottom:20px;">
-                        <button type="submit" class="btn btn-primary all-btn">Submit</button>
-                     </div>
-                  </div>
-                  <hr class="myhr">
-                  <div class="row">
-                     <div class="col-md-2">
-                        <div class="form-group" ng-if="countArr.length > 0">
-                           <label>Count</label>
-                           <select class="form-control" ng-model="check.count" ng-options="cmp.id as cmp.value for cmp in countArr" ng-change="changedrop();"></select>
+                        <hr class="myhr">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="form-group" ng-if="countArr.length > 0">
+                                    <label>Count</label>
+                                    <select class="form-control" ng-model="check.count" ng-options="cmp.id as cmp.value for cmp in countArr" ng-change="changedrop();"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group" ng-if="campArr.length > 0">
+                                    <label>Camp Number</label>
+                                    <select class="form-control" ng-model="check.campnumber" ng-options="cmp.campnumber as cmp.campnumber for cmp in campArr"
+                                        ng-change="changedrop();"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="margin-top: 25px;">
+                                <a class="btn btn-primary" ng-click="dataDownload();">Download</a>
+                            </div>
                         </div>
-                     </div>
-                     <div class="col-md-2">
-                        <div class="form-group" ng-if="campArr.length > 0">
-                           <label>Camp Number</label>
-                           <select class="form-control" ng-model="check.campnumber" ng-options="cmp.campnumber as cmp.campnumber for cmp in campArr" ng-change="changedrop();"></select>
+                        <hr class="myhr">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label> Change the status of donor having age greater than 60 </label>
+
+                                <a class="btn btn-primary" ng-click="updateDonor();">Update</a>
+                            </div>
                         </div>
-                     </div>
-                     <div class="col-md-4" style="margin-top: 25px;">
-                        <a class="btn btn-primary" ng-click="dataDownload();">Download</a>
-                     </div>
-                  </div>
-                  <div class="row">
-                     <div class="col-md-offset-1 col-md-10">
-                        <p style="color:red;font-weight: bold;" ng-show="countErr">Please select count.</p>
-                     </div>
-                  </div>
-                  <!--Add New Tags-->
-               </form>
-            </div>
-         </section>
-      </div>
-   </div>
+                        <div class="row ">
+                            <div class="col-md-6" style="color:red">
+                                {{donorUpdated}} </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-offset-1 col-md-10">
+                                <p style="color:red;font-weight: bold;" ng-show="countErr">Please select count.</p>
+                            </div>
+                        </div>
+
+
+                        <!--Add New Tags-->
+                    </form>
+                </div>
+
+            </section>
+        </div>
+    </div>
 </div>
